@@ -91,7 +91,7 @@ public class ActionsSdkApp {
     }
 
     private Response buildResponse(SimpleResponse simpleResponse, boolean expectUserResponse) {
-        RichResponse richResponse = new RichResponse().addSimpleResponse(simpleResponse).addSuggestions("Test");
+        RichResponse richResponse = new RichResponse().addSimpleResponse(simpleResponse);
         return buildResponse(richResponse, true);
     }
 
