@@ -18,24 +18,56 @@ public class ActionsSdkApp {
             return null;
         }
 
-        return buildResponse(textToSpeech, true);
+        return buildResponse(textToSpeech, false);
     }
 
     public Response tell(String textToSpeech, String displayText) {
         SimpleResponse simpleResponse = new SimpleResponse();
         simpleResponse.setDisplayText(displayText);
-        //TODO if smml
+        if (Util.isSsml(textToSpeech)) {
+            simpleResponse.setSsml(textToSpeech);
+        } else {
+            simpleResponse.setTextToSpeech(textToSpeech);
+        }
+        return buildResponse(simpleResponse, false);
+    }
+
+    public Response tell(SimpleResponse simpleResponse) {
+        return buildResponse(new RichResponse().addSimpleResponse(simpleResponse), false);
+    }
+
+    public Response tell(RichResponse richResponse) {
+        return buildResponse(richResponse, false);
+    }
+
+    public Response ask(String textToSpeech) {
+        if (textToSpeech.isEmpty()) {
+            return null;
+        }
+
+        return buildResponse(textToSpeech, true);
+    }
+
+    public Response ask(String textToSpeech, String displayText) {
+        SimpleResponse simpleResponse = new SimpleResponse();
+        simpleResponse.setDisplayText(displayText);
+        if (Util.isSsml(textToSpeech)) {
+            simpleResponse.setSsml(textToSpeech);
+        } else {
+            simpleResponse.setTextToSpeech(textToSpeech);
+        }
         simpleResponse.setTextToSpeech(textToSpeech);
         return buildResponse(simpleResponse, true);
     }
 
-    public Response tell(SimpleResponse simpleResponse) {
+    public Response ask(SimpleResponse simpleResponse) {
         return buildResponse(new RichResponse().addSimpleResponse(simpleResponse), true);
     }
 
-    public Response tell(RichResponse richResponse) {
+    public Response ask(RichResponse richResponse) {
         return buildResponse(richResponse, true);
     }
+
 
     private Response buildResponse(String textToSpeech, boolean expectUserResponse) {
         if (textToSpeech.isEmpty()) {

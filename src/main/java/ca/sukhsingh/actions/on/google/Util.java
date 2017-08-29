@@ -18,4 +18,8 @@ public class Util {
         }
         return false;
     }
+
+    public static boolean isSsml(String response) {
+        return response.matches("(?s).*(<(\\w+)[^>]*>.*</\\2>|<(\\w+)[^>]*/>).*");
+    }
 }

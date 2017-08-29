@@ -140,10 +140,10 @@ public class RichResponse {
         SimpleResponse simpleResponseObj = new SimpleResponse();
 
         if (response instanceof String) {
-            String response_ = response.toString();
-            return isSsml(response_)
-                    ? new SimpleResponse(null, response_, null)
-                    : new SimpleResponse(response_, null, null);
+            String _response = response.toString();
+            return isSsml(_response)
+                    ? new SimpleResponse(null, _response, null)
+                    : new SimpleResponse(_response, null, null);
         } else if (response instanceof SimpleResponse) {
             SimpleResponse response_ = (SimpleResponse) response;
             return isSsml(response_.getSsml())
@@ -156,6 +156,10 @@ public class RichResponse {
     }
 
     private boolean isSsml(String response) {
-        return response.matches("(?s).*(<(\\w+)[^>]*>.*</\\2>|<(\\w+)[^>]*/>).*");
+        if (response != null) {
+            return response.matches("(?s).*(<(\\w+)[^>]*>.*</\\2>|<(\\w+)[^>]*/>).*");
+        }
+
+        return false;
     }
 }
