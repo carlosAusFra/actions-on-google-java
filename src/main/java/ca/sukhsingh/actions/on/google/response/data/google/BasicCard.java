@@ -27,6 +27,14 @@ public class BasicCard {
     @JsonProperty("buttons")
     private List<Button> buttons;
 
+    public BasicCard() {
+        this.title = null;
+        this.formattedText = "";
+        this.subtitle = null;
+        this.image = new BasicCard.Image();
+        this.buttons = new ArrayList();
+    }
+
     /**
      * Constructor for BasicCard. Accepts optional BasicCard to clone.
      *
@@ -36,7 +44,7 @@ public class BasicCard {
         this.title = null;
         this.formattedText = "";
         this.subtitle = null;
-        this.image = null;
+        this.image = new Image();
         this.buttons = new ArrayList<Button>();
 
         if (basicCard != null) {
@@ -153,6 +161,22 @@ public class BasicCard {
         private Integer height;
         @JsonProperty("width")
         private Integer width;
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public void setAccessibilityText(String accessibilityText) {
+            this.accessibilityText = accessibilityText;
+        }
+
+        public void setHeight(Integer height) {
+            this.height = height;
+        }
+
+        public void setWidth(Integer width) {
+            this.width = width;
+        }
     }
 
     public class OpenUrlAction {
