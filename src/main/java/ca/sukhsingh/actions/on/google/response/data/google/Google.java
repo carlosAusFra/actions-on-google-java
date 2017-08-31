@@ -72,4 +72,8 @@ public class Google {
     public void setRichResponse(RichResponse richResponse) {
         this.richResponse = richResponse;
     }
+
+    public RichResponse getRichResponse() {
+        return richResponse;
+    }
 }

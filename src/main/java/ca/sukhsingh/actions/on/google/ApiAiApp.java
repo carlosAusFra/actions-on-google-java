@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Created by sukhsingh on 2017-08-28.
  */
-public class ActionsSdkApp {
+public class ApiAiApp extends AssistantApp{
 
     public Response tell(String textToSpeech) {
         if (textToSpeech.isEmpty()) {
@@ -92,7 +92,7 @@ public class ActionsSdkApp {
 
     private Response buildResponse(SimpleResponse simpleResponse, boolean expectUserResponse) {
         RichResponse richResponse = new RichResponse().addSimpleResponse(simpleResponse);
-        return buildResponse(richResponse, true);
+        return buildResponse(richResponse, expectUserResponse);
     }
 
     private Response buildResponse(RichResponse richResponse, boolean expectUserResponse) {
