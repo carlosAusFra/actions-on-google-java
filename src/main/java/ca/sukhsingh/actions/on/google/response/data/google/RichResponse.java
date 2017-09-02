@@ -107,7 +107,7 @@ public class RichResponse {
     }
 
     public RichResponse addSuggestions(Object suggestions) {
-        
+
         if (suggestions == null) {
             //TODO Logging with error
             return null;
@@ -117,6 +117,12 @@ public class RichResponse {
             for (Suggestion suggestion : suggestions_) {
                 this.suggestions.add(new Suggestion(suggestion.getTitle()));
             }
+        }
+        if (suggestions instanceof String[]) {
+          String [] _suggestions = (String [])suggestions;
+          for (String s : _suggestions) {
+              this.suggestions.add(new Suggestion(s));
+          }
         } else {
             this.suggestions.add(new Suggestion(suggestions.toString()));
         }

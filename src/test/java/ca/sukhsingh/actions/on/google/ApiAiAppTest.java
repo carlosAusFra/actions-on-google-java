@@ -1,10 +1,15 @@
 package ca.sukhsingh.actions.on.google;
 
 import ca.sukhsingh.actions.on.google.response.Response;
+import ca.sukhsingh.actions.on.google.response.data.google.SimpleResponse;
+import ca.sukhsingh.actions.on.google.response.data.google.Suggestion;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,7 +27,7 @@ public class ApiAiAppTest {
      * Describes the behavior for ApiAiApp tell method.
      */
     @Test
-    public void test() {
+    public void appTellTest() {
         Response response = app.tell("hello");
         assertNotNull(response);
 //        {
@@ -73,6 +78,41 @@ public class ApiAiAppTest {
         assertTextToSpeech(response, "hello");
         assertDisplayText(response, "hi");
 
+//        {
+//            "speech": "hello",
+//            "data": {
+//            "google": {
+//                "expect_user_response": false,
+//                "rich_response": {
+//                    "items": [{
+//                        "simple_response": {
+//                        "text_to_speech": "hello",
+//                        "display_text": "hi"
+//                     }
+//                  }],
+//                  "suggestions": [{
+//                      "title": "Say this"
+//                  },
+//                  {
+//                      "title": "or this"
+//                  }]
+//                }
+//            }
+//          },
+//            "contextOut": []
+//        }
+
+        response = app.tell(app.buildRichResponse()
+                .addSimpleResponse(new SimpleResponse("hello", "", "hi"))
+                .addSuggestions(new String [] {"say this", "say that"}));
+
+        assertNotNull(response);
+        assertSpeech(response, "hello");
+        assertExpectUserResponseFalse(response);
+        assertNotNullRichResponse(response);
+        assertTextToSpeech(response, "hello");
+        assertDisplayText(response, "hi");
+        assertSuggestions(response, "say this", "say that");
 
     }
 
@@ -106,5 +146,12 @@ public class ApiAiAppTest {
 
     private void assertSsmlText(Response response, String ssmlText) {
         assertEquals(ssmlText, response.getData().getGoogle().getRichResponse().getItems().get(0).getSimpleResponse().getSsml());
+    }
+
+    private void assertSuggestions(Response response, String ...suggestions) {
+        List<Suggestion> suggestionList = response.getData().getGoogle().getRichResponse().getSuggestions();
+        for (int i=0; i< suggestions.length; i++) {
+            assertEquals(suggestions[i], suggestionList.get(i).getTitle());
+        }
     }
 }

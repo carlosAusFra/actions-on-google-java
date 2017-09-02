@@ -12,6 +12,11 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SystemIntentData {
 
+    public SystemIntentData(String optContext, List<String> permissions) {
+        this.optContext = optContext;
+        this.permissions = permissions;
+    }
+
     @JsonProperty("@type")
     private String type;
     @JsonProperty("optContext")
