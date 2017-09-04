@@ -1,7 +1,7 @@
-package ca.sukhsingh.actions.on.google.response.data.google;
+package ca.sukhsingh.actions.on.google.response.data.google.RichResponse;
 
 /**
- * Created by sinsukhv on 2017-08-26.
+ * Created by sukhsingh on 2017-08-26.
  */
 
 import com.fasterxml.jackson.annotation.JsonInclude;

@@ -1,15 +1,14 @@
 package ca.sukhsingh.actions.on.google;
 
 import ca.sukhsingh.actions.on.google.response.Response;
-import ca.sukhsingh.actions.on.google.response.SystemIntentData;
-import ca.sukhsingh.actions.on.google.response.data.google.BasicCard;
-import ca.sukhsingh.actions.on.google.response.data.google.Google;
-import ca.sukhsingh.actions.on.google.response.data.google.RichResponse;
+import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntentData;
+import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.BasicCard;
+import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.RichResponse;
 
 import java.util.List;
 
 /**
- * Created by sinsukhv on 2017-08-31.
+ * Created by sukhsingh on 2017-08-31.
  */
 public class AssistantApp {
 

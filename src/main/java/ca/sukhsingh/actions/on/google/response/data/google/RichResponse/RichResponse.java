@@ -1,4 +1,4 @@
-package ca.sukhsingh.actions.on.google.response.data.google;
+package ca.sukhsingh.actions.on.google.response.data.google.RichResponse;
 
 /**
  * Created by sukhsingh on 2017-08-26.
@@ -6,6 +6,7 @@ package ca.sukhsingh.actions.on.google.response.data.google;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,9 @@ import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RichResponse {
+
+    Logger logger = Logger.getLogger(RichResponse.class);
+
     @JsonProperty("items")
     private List<Item> items ;
 
@@ -42,8 +46,8 @@ public class RichResponse {
 
     public RichResponse(RichResponse richResponse) {
 
-        this.items = new ArrayList<Item>();
-        this.suggestions = new ArrayList<Suggestion>();
+        this.items = new ArrayList<>();
+        this.suggestions = new ArrayList<>();
         this.linkOutSuggestion = new LinkOutSuggestion();
 
         if (richResponse != null) {
@@ -66,7 +70,7 @@ public class RichResponse {
 
     public RichResponse addSimpleResponse(Object simpleResponse) {
         if(simpleResponse == null) {
-            //TODO Logging with error
+            logger.error("Invalid SimpleResponse");
             return null;
         }
 
@@ -76,27 +80,26 @@ public class RichResponse {
                 simpleResponseCount++;
             }
             if (simpleResponseCount >= 2) {
-                //TODO error(message)
+                logger.error("Cannot include >2 SimpleResponses in RichResponse");
                 return this;
             }
         }
-        SimpleResponse simpleResponseObj = buildSimpleResponseHelper_(simpleResponse);
+        SimpleResponse _simpleResponse = buildSimpleResponseHelper_(simpleResponse);
         //TODO Check first if needs to replace BasicCard at beginning of items list
-        this.items.add(new Item(simpleResponseObj));
+        this.items.add(new Item(_simpleResponse));
         return this;
     }
 
     public RichResponse addBasicCard(BasicCard basicCard) {
         
         if(basicCard == null) {
-            //TODO Logging with error
+            logger.error("Invalid basicCard");
             return null;
         }
 
-        //TODO Validate if basic card is already present
         for (Item item : this.items) {
-            if (item.getBasicCard() != null){
-                //TODO error(message)
+            if (item.getBasicCard() != null) {
+                logger.error("Cannot include >1 BasicCard in RichResponse");
                 return this;
             }
         }
@@ -109,7 +112,7 @@ public class RichResponse {
     public RichResponse addSuggestions(Object suggestions) {
 
         if (suggestions == null) {
-            //TODO Logging with error
+            logger.error("Invalid suggestions");
             return null;
         }
         if (suggestions instanceof ArrayList) {
@@ -131,7 +134,13 @@ public class RichResponse {
     }
 
     public RichResponse addSuggestionLink(String destinationName, String suggestionUrl) {
-        if ((destinationName == null || destinationName.isEmpty()) && (suggestionUrl == null || suggestionUrl.isEmpty())) {
+        if ((destinationName == null || destinationName.isEmpty())) {
+            logger.error("destinationName cannot be empty");
+            return null;
+        }
+
+        if (suggestionUrl == null || suggestionUrl.isEmpty()) {
+            logger.error("suggestionUrl cannot be empty");
             return null;
         }
 
@@ -142,6 +151,18 @@ public class RichResponse {
     }
 
 
+    /**
+     * Helper to build SimpleResponse from speech and display text.
+     *
+     * @param {string|SimpleResponse} response String to speak, or SimpleResponse.
+     *     SSML allowed.
+     * @param {string} response.speech If using SimpleResponse, speech to be spoken
+     *     to user.
+     * @param {string=} response.displayText If using SimpleResponse, text to be shown
+     *     to user.
+     * @return {Object} Appropriate SimpleResponse object.
+     * @private
+     */
     private SimpleResponse buildSimpleResponseHelper_(Object response) {
         SimpleResponse simpleResponseObj = new SimpleResponse();
 

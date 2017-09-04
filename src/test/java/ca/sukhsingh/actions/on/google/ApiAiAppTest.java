@@ -1,14 +1,13 @@
 package ca.sukhsingh.actions.on.google;
 
 import ca.sukhsingh.actions.on.google.response.Response;
-import ca.sukhsingh.actions.on.google.response.data.google.SimpleResponse;
-import ca.sukhsingh.actions.on.google.response.data.google.Suggestion;
+import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.SimpleResponse;
+import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.Suggestion;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -114,6 +113,18 @@ public class ApiAiAppTest {
         assertDisplayText(response, "hi");
         assertSuggestions(response, "say this", "say that");
 
+    }
+
+    /**
+     * Describes the behavior for ApiAiApp ask method.
+     */
+    @Test
+    public void appAskTest() {
+        Response response;
+
+        response = app.ask("hello");
+
+        assertNotNull(response);
     }
 
     private void assertSpeech(Response response, String speech) {

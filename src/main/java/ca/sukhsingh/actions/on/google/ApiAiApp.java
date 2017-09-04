@@ -1,15 +1,13 @@
 package ca.sukhsingh.actions.on.google;
 
-import ca.sukhsingh.actions.on.google.request.Request;
-import ca.sukhsingh.actions.on.google.request.originalRequest.Coordinates;
 import ca.sukhsingh.actions.on.google.request.result.Context;
 import ca.sukhsingh.actions.on.google.response.Response;
-import ca.sukhsingh.actions.on.google.response.SystemIntent;
-import ca.sukhsingh.actions.on.google.response.SystemIntentData;
+import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntent;
+import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntentData;
 import ca.sukhsingh.actions.on.google.response.data.google.Data;
 import ca.sukhsingh.actions.on.google.response.data.google.Google;
-import ca.sukhsingh.actions.on.google.response.data.google.RichResponse;
-import ca.sukhsingh.actions.on.google.response.data.google.SimpleResponse;
+import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.RichResponse;
+import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.SimpleResponse;
 
 import java.util.ArrayList;
 import java.util.List;
