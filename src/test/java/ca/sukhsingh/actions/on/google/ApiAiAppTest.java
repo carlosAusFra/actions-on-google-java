@@ -113,6 +113,16 @@ public class ApiAiAppTest {
         assertDisplayText(response, "hi");
         assertSuggestions(response, "say this", "say that");
 
+        response = app.askWithCarousel(
+                app.buildRichResponse()
+                .addSimpleResponse(new SimpleResponse("hello", "", "hi")),
+                app.buildCarousel()
+                .addItems(app.buildOptionItem("test", new String [] {"t1", "t2", "t3"}))
+                .addItems(app.buildOptionItem("test2", new String [] {"t21", "t22", "t23"}))
+        );
+
+        assertNotNull(response);
+
     }
 
     /**

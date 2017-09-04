@@ -19,7 +19,11 @@ public class Carousel {
     Logger logger = Logger.getLogger(Carousel.class);
 
     @JsonProperty("items")
-    private List<Item> items = null;
+    private List<Item> items;
+
+    public Carousel() {
+        items = new ArrayList<>();
+    }
 
     /**
      * Constructor for Carousel. Accepts optional Carousel to clone or list of
@@ -64,5 +68,9 @@ public class Carousel {
 
         //TODO if (this.items.length > CAROUSEL_ITEM_LIMIT) {
         return this;
+    }
+
+    public List<Item> getItems() {
+        return items;
     }
 }

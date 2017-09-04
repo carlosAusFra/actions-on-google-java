@@ -169,8 +169,8 @@ public class RichResponse {
         if (response instanceof String) {
             String _response = response.toString();
             return isSsml(_response)
-                    ? new SimpleResponse(null, _response, "")
-                    : new SimpleResponse(_response, null, "");
+                    ? new SimpleResponse(null, _response, null)
+                    : new SimpleResponse(_response, null, null);
         } else if (response instanceof SimpleResponse) {
             SimpleResponse response_ = (SimpleResponse) response;
             return isSsml(response_.getSsml())

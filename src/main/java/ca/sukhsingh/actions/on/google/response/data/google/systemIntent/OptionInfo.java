@@ -1,6 +1,7 @@
 
 package ca.sukhsingh.actions.on.google.response.data.google.systemIntent;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,7 +17,11 @@ public class OptionInfo {
     @JsonProperty("key")
     private String key;
     @JsonProperty("synonyms")
-    private List<String> synonyms = null;
+    private List<String> synonyms;
+
+    public OptionInfo() {
+        synonyms = new ArrayList<>();
+    }
 
     public void setKey(String key) {
         this.key = key;

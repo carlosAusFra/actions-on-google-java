@@ -103,6 +103,10 @@ public class Item {
             }
         } else if (synonyms instanceof String) {
             this.optionInfo.getSynonyms().add((String)synonyms);
+        } else if (synonyms instanceof String[]) {
+            for (String synonym: (String[]) synonyms) {
+                this.optionInfo.getSynonyms().add(synonym);
+            }
         }
         return this;
     }

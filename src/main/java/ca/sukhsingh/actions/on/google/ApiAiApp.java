@@ -2,6 +2,7 @@ package ca.sukhsingh.actions.on.google;
 
 import ca.sukhsingh.actions.on.google.request.result.Context;
 import ca.sukhsingh.actions.on.google.response.Response;
+import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.Carousel;
 import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntent;
 import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntentData;
 import ca.sukhsingh.actions.on.google.response.data.google.Data;
@@ -209,12 +210,54 @@ public class ApiAiApp extends AssistantApp{
         SystemIntentData data = new SystemIntentData();
         data.setType(InputValueDataTypes_.OPTION);
         data.setListSelect(list);
-
         systemIntent.setData(data);
+        Data responseData = response.getData();
+        responseData.getGoogle().setSystemIntent(systemIntent);
+        response.setData(responseData);
+        return response;
+    }
 
-        Data responseData= new Data();
-        responseData.setGoogle(new Google(systemIntent));
+    /**
+     *
+     * @param {@link String}|{@link RichResponse}|{@link SimpleResponse} inputPrompt
+     * @param carousel
+     * @return {@link Response}
+     */
+    public Response askWithCarousel(Object inputPrompt, Carousel carousel) {
+        Response response = new Response();
 
+        if (Util.isNull(inputPrompt)) {
+            logger.error("Invalid inputpromt");
+            return null;
+        }
+
+        if (Util.isNull(carousel)) {
+            logger.error("Invalid carousel");
+            return null;
+        }
+
+        if (carousel.getItems().size() < 2) {
+            logger.error("List requires at least 2 items");
+            return null;
+        }
+
+        response = buildResponse(inputPrompt, true, null);
+        if (Util.isNull(response)) {
+            logger.error("Error in building response");
+            return null;
+        }
+
+
+        SystemIntent systemIntent = new SystemIntent();
+        systemIntent.setIntent(StandardIntents.OPTION);
+
+        //TODO if(this.isNotApiVersionOne_()) {
+        SystemIntentData data = new SystemIntentData();
+        data.setType(InputValueDataTypes_.OPTION);
+        data.setCarousel(carousel);
+        systemIntent.setData(data);
+        Data responseData = response.getData();
+        responseData.getGoogle().setSystemIntent(systemIntent);
         response.setData(responseData);
         return response;
     }

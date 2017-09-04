@@ -1,11 +1,13 @@
 package ca.sukhsingh.actions.on.google;
 
 import ca.sukhsingh.actions.on.google.response.Response;
+import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.Carousel;
 import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.Item;
 import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.OptionInfo;
 import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntentData;
 import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.BasicCard;
 import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.RichResponse;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 
@@ -13,6 +15,8 @@ import java.util.List;
  * Created by sukhsingh on 2017-08-31.
  */
 public class AssistantApp {
+
+    Logger logger = Logger.getLogger(AssistantApp.class);
 
     public class SupportedPermissions {
         public static final String NAME = "NAME";
@@ -54,7 +58,6 @@ public class AssistantApp {
      */
     public BasicCard buildBasicCard(String bodyText) {
         BasicCard card = new BasicCard();
-        //TODO null check
         if (!Util.isNullOrEmpty(bodyText)) {
             card.setBodyText(bodyText);
         }
@@ -68,6 +71,10 @@ public class AssistantApp {
      */
     public ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List buildList(String title) {
         return new ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List(title);
+    }
+
+    public Carousel buildCarousel() {
+        return new Carousel();
     }
 
     /**
@@ -91,12 +98,12 @@ public class AssistantApp {
      */
     public Response askForPermissions(String context, List<String> permissions) {
         if (Util.isNullOrEmpty(context)) {
-            // TODO ERROR logging
+            logger.error("invalid context");
             return null;
         }
 
         if (Util.isNull(permissions) || permissions.size() == 0) {
-            // TODO ERROR logging
+            logger.error("invalid permissions");
             return null;
         }
 
@@ -104,7 +111,7 @@ public class AssistantApp {
             if ( !permission.equals(SupportedPermissions.NAME) &&
                  !permission.equals(SupportedPermissions.DEVICE_PRECISE_LOCATION) &&
                  !permission.equals(SupportedPermissions.DEVICE_COARSE_LOCATION) ) {
-                //TODO ERROR logging
+                logger.error("invalid permission type");
                 return null;
             }
         }
