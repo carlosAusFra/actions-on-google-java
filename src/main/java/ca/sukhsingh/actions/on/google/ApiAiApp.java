@@ -16,6 +16,9 @@ import java.util.List;
 /**
  * Created by sukhsingh on 2017-08-28.
  */
+/**
+ * This is the class that handles the communication with API.AI's fulfillment API.
+ */
 public class ApiAiApp extends AssistantApp{
 
     Logger logger = Logger.getLogger(ApiAiApp.class);
@@ -55,7 +58,12 @@ public class ApiAiApp extends AssistantApp{
         return null;
     }
 
-
+    /**
+     * Tells the Assistant to render the speech response and close the mic.
+     *
+     * @param textToSpeech
+     * @return {@link Response}
+     */
     public Response tell(String textToSpeech) {
         if (textToSpeech.isEmpty()) {
             return null;
@@ -64,6 +72,13 @@ public class ApiAiApp extends AssistantApp{
         return buildResponse(textToSpeech, false, null);
     }
 
+    /**
+     * Tells the Assistant to render the speech response and close the mic.
+     *
+     * @param textToSpeech
+     * @param displayText
+     * @return {@link Response}
+     */
     public Response tell(String textToSpeech, String displayText) {
         SimpleResponse simpleResponse = new SimpleResponse();
         simpleResponse.setDisplayText(displayText);
@@ -75,14 +90,33 @@ public class ApiAiApp extends AssistantApp{
         return buildResponse(simpleResponse, false, null);
     }
 
+    /**
+     * Tells the Assistant to render the speech response and close the mic.
+     *
+     * @param simpleResponse
+     * @return {@link Response}
+     */
     public Response tell(SimpleResponse simpleResponse) {
         return buildResponse(new RichResponse().addSimpleResponse(simpleResponse), false, null);
     }
 
+    /**
+     * Tells the Assistant to render the speech response and close the mic.
+     *
+     * @param richResponse
+     * @return {@link Response}
+     */
     public Response tell(RichResponse richResponse) {
         return buildResponse(richResponse, false, null);
     }
 
+    /**
+     * Asks to collect the user's input.
+     *
+     * @param textToSpeech
+     * @param noInputPrompts
+     * @return {@link Response}
+     */
     public Response ask(String textToSpeech, String [] noInputPrompts) {
         if (textToSpeech.isEmpty()) {
             return null;
@@ -91,6 +125,12 @@ public class ApiAiApp extends AssistantApp{
         return buildResponse(textToSpeech, true, noInputPrompts);
     }
 
+    /**
+     * Asks to collect the user's input.
+     *
+     * @param {@link String} textToSpeech
+     * @return {@link Response}
+     */
     public Response ask(String textToSpeech) {
         if (textToSpeech.isEmpty()) {
             return null;
@@ -99,6 +139,13 @@ public class ApiAiApp extends AssistantApp{
         return buildResponse(textToSpeech, true, null);
     }
 
+    /**
+     * Asks to collect the user's input.
+     *
+     * @param {@link String} textToSpeech
+     * @param {@link String} displayText
+     * @return {@link Response}
+     */
     public Response ask(String textToSpeech, String displayText) {
         SimpleResponse simpleResponse = new SimpleResponse();
         simpleResponse.setDisplayText(displayText);
@@ -115,10 +162,24 @@ public class ApiAiApp extends AssistantApp{
         return buildResponse(new RichResponse().addSimpleResponse(simpleResponse), true, null);
     }
 
+    /**
+     * Asks to collect the user's input.
+     *
+     * @param richResponse
+     * @return {@link Response}
+     */
     public Response ask(RichResponse richResponse) {
         return buildResponse(richResponse, true, null);
     }
 
+
+    /**
+     * Asks to collect the user's input with a list.
+     *
+     * @param {@link String}|{@link RichResponse}|{@link SimpleResponse} inputPrompt
+     * @param {@link ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List} list
+     * @return {@link Response}
+     */
     public Response askWithList(Object inputPrompt, ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List list) {
         if (Util.isNull(inputPrompt)) {
             logger.error("Invalid inputpromt");
@@ -182,6 +243,13 @@ public class ApiAiApp extends AssistantApp{
     //                   Private Helpers
     // ---------------------------------------------------------------------------
 
+    /**
+     *
+     * @param inputPrompt
+     * @param expectUserResponse
+     * @param noInputPrompts
+     * @return {@link Response}
+     */
     private Response  buildResponse(Object inputPrompt, boolean expectUserResponse, String [] noInputPrompts){
         if (inputPrompt instanceof String) {
             String textToSpeech = (String) inputPrompt;
@@ -248,6 +316,11 @@ public class ApiAiApp extends AssistantApp{
         return null;
     }
 
+    /**
+     *
+     * @param systemIntentData
+     * @return {@link Response}
+     */
     @Override
     Response fulfillPermissionsRequest_(SystemIntentData systemIntentData) {
         Response response = new Response();
