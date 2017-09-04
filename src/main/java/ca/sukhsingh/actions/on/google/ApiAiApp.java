@@ -2,13 +2,13 @@ package ca.sukhsingh.actions.on.google;
 
 import ca.sukhsingh.actions.on.google.request.result.Context;
 import ca.sukhsingh.actions.on.google.response.Response;
-import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.Carousel;
-import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntent;
-import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntentData;
 import ca.sukhsingh.actions.on.google.response.data.google.Data;
 import ca.sukhsingh.actions.on.google.response.data.google.Google;
 import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.RichResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.SimpleResponse;
+import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.Carousel;
+import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntent;
+import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntentData;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -368,20 +368,16 @@ public class ApiAiApp extends AssistantApp{
     Response fulfillPermissionsRequest_(SystemIntentData systemIntentData) {
         Response response = new Response();
         Data data = new Data();
-        Google google = new Google();
+        Google google;
         SystemIntent systemIntent = new SystemIntent();
 
         final String inputPrompt = "PLACEHOLDER_FOR_PERMISSION";
-        //TODO _buildResponse(inputPrompt, true)
+        response = buildResponse(inputPrompt, true, null);
         response.setSpeech(inputPrompt);
-        google.setExpectUserResponse(true);
-        google.setSsml(false);
-        google.setNoInputPrompts(new ArrayList<>());
-
         systemIntent.setIntent(StandardIntents.PERMISSION);
         systemIntentData.setType(InputValueDataTypes_.PERMISSION);
         systemIntent.setData(systemIntentData);
-
+        google = response.getData().getGoogle();
         google.setSystemIntent(systemIntent);
         data.setGoogle(google);
         response.setData(data);

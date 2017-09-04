@@ -121,6 +121,14 @@ public class RichResponse {
                 this.suggestions.add(new Suggestion(suggestion.getTitle()));
             }
         }
+
+        if (suggestions instanceof List) {
+            List<String> suggestions_ = (List<String>) suggestions;
+            for (String suggestion : suggestions_) {
+                this.suggestions.add(new Suggestion(suggestion));
+            }
+        }
+
         if (suggestions instanceof String[]) {
           String [] _suggestions = (String [])suggestions;
           for (String s : _suggestions) {

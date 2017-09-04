@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -113,13 +114,6 @@ public class ApiAiAppTest {
         assertDisplayText(response, "hi");
         assertSuggestions(response, "say this", "say that");
 
-        response = app.askWithCarousel(
-                app.buildRichResponse()
-                .addSimpleResponse(new SimpleResponse("hello", "", "hi")),
-                app.buildCarousel()
-                .addItems(app.buildOptionItem("test", new String [] {"t1", "t2", "t3"}))
-                .addItems(app.buildOptionItem("test2", new String [] {"t21", "t22", "t23"}))
-        );
 
         assertNotNull(response);
 
@@ -133,8 +127,110 @@ public class ApiAiAppTest {
         Response response;
 
         response = app.ask("hello");
+        // {
+        //   'speech': 'hello',
+        //   'data': {
+        //     'google': {
+        //       'expect_user_response': true,
+        //       'is_ssml': false,
+        //       'no_input_prompts': []
+        //     }
+        //   },
+        //   'contextOut': [
+        //     {
+        //       'name': '_actions_on_google_',
+        //       'lifespan': 100,
+        //       'parameters': {}
+        //     }
+        //   ]
+        // }
 
         assertNotNull(response);
+        assertSpeech(response, "hello");
+        assertExpectUserResponseTrue(response);
+        assertIsSsmlFalse(response);
+
+        response = app.ask("hello", "hi");
+        //  {
+        //   'speech': 'hello',
+        //   'data': {
+        //     'google': {
+        //       'expect_user_response': true,
+        //       'rich_response': {
+        //         'items': [
+        //           {
+        //             'simple_response': {
+        //               'text_to_speech': 'hello',
+        //               'display_text': 'hi'
+        //             }
+        //           }
+        //         ],
+        //         'suggestions': []
+        //       }
+        //     }
+        //   },
+        //   'contextOut': [
+        //     {
+        //       'name': '_actions_on_google_',
+        //       'lifespan': 100,
+        //       'parameters': {}
+        //     }
+        //   ]
+        // };
+
+        assertNotNull(response);
+        assertSpeech(response,"hello");
+        assertExpectUserResponseTrue(response);
+        assertNotNullRichResponse(response);
+        assertTextToSpeech(response, "hello");
+        assertDisplayText(response, "hi");
+
+        response = app.ask(app.buildRichResponse()
+                .addSimpleResponse(new SimpleResponse("hello", "","hi"))
+                .addSuggestions(Arrays.asList("say this", "or this")));
+
+        //  {
+        //   'speech': 'hello',
+        //   'data': {
+        //     'google': {
+        //       'expect_user_response': true,
+        //       'rich_response': {
+        //         'items': [
+        //           {
+        //             'simple_response': {
+        //               'text_to_speech': 'hello',
+        //               'display_text': 'hi'
+        //             }
+        //           }
+        //         ],
+        //         'suggestions': [
+        //           {
+        //             'title': 'Say this'
+        //           },
+        //           {
+        //             'title': 'or this'
+        //           }
+        //         ]
+        //       }
+        //     }
+        //   },
+        //   'contextOut': [
+        //     {
+        //       'name': '_actions_on_google_',
+        //       'lifespan': 100,
+        //       'parameters': {}
+        //     }
+        //   ]
+        // }
+
+        assertNotNull(response);
+        assertSpeech(response, "hello");
+        assertExpectUserResponseTrue(response);
+        assertNotNullRichResponse(response);
+        assertTextToSpeech(response,"hello");
+        assertDisplayText(response, "hi");
+        assertSuggestions(response, "say this", "or this");
+
     }
 
     private void assertSpeech(Response response, String speech) {
@@ -143,6 +239,9 @@ public class ApiAiAppTest {
 
     private void assertExpectUserResponseFalse(Response response) {
         assertEquals(false, response.getData().getGoogle().expectUserResponse);
+    }
+    private void assertExpectUserResponseTrue(Response response) {
+        assertEquals(true, response.getData().getGoogle().expectUserResponse);
     }
 
     private void assertIsSsmlFalse(Response response) {
