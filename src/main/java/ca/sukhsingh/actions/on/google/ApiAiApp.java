@@ -335,8 +335,8 @@ public class ApiAiApp extends AssistantApp{
         google.setSsml(false);
         google.setNoInputPrompts(new ArrayList<>());
 
-        systemIntent.setIntent("actions.intent.PERMISSION");
-        systemIntentData.setType("type.googleapis.com/google.actions.v2.PermissionValueSpec");
+        systemIntent.setIntent(StandardIntents.PERMISSION);
+        systemIntentData.setType(InputValueDataTypes_.PERMISSION);
         systemIntent.setData(systemIntentData);
 
         google.setSystemIntent(systemIntent);

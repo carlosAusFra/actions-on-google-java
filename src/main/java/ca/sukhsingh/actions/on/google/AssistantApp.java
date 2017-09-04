@@ -22,20 +22,36 @@ public class AssistantApp {
 
     public class StandardIntents {
         public static final String OPTION = "actions.intent.OPTION";
+        public static final String PERMISSION = "actions.intent.PERMISSION";
     }
 
     public class InputValueDataTypes_ {
         public static final String OPTION = "type.googleapis.com/google.actions.v2.OptionValueSpec";
+        public static final String PERMISSION = "type.googleapis.com/google.actions.v2.PermissionValueSpec";
     }
 
+    /**
+     *
+     * @return {@link RichResponse}
+     */
     public RichResponse buildRichResponse() {
         return new RichResponse();
     }
 
+    /**
+     *
+     * @param richResponse
+     * @return {@link RichResponse}
+     */
     public RichResponse buildRichResponse(RichResponse richResponse) {
         return new RichResponse(richResponse);
     }
 
+    /**
+     *
+     * @param bodyText
+     * @return {@link BasicCard}
+     */
     public BasicCard buildBasicCard(String bodyText) {
         BasicCard card = new BasicCard();
         //TODO null check
@@ -45,10 +61,21 @@ public class AssistantApp {
         return card;
     }
 
+    /**
+     *
+     * @param title
+     * @return {@link ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List}
+     */
     public ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List buildList(String title) {
         return new ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List(title);
     }
 
+    /**
+     *
+     * @param key
+     * @param synonyms
+     * @return ca.sukhsingh.actions.on.google.response.data.google.systemIntent.Item
+     */
     public Item buildOptionItem(String key, Object synonyms) {
         Item item = new Item();
         item.setKey(key);
@@ -56,6 +83,12 @@ public class AssistantApp {
         return item;
     }
 
+    /**
+     *
+     * @param context
+     * @param permissions
+     * @return
+     */
     public Response askForPermissions(String context, List<String> permissions) {
         if (Util.isNullOrEmpty(context)) {
             // TODO ERROR logging
