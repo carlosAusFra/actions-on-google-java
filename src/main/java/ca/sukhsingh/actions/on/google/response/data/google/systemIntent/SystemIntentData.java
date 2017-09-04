@@ -17,6 +17,9 @@ public class SystemIntentData {
         this.permissions = permissions;
     }
 
+    public SystemIntentData() {
+    }
+
     @JsonProperty("@type")
     private String type;
     @JsonProperty("optContext")

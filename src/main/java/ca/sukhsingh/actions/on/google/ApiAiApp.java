@@ -8,6 +8,7 @@ import ca.sukhsingh.actions.on.google.response.data.google.Data;
 import ca.sukhsingh.actions.on.google.response.data.google.Google;
 import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.RichResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.SimpleResponse;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.List;
  * Created by sukhsingh on 2017-08-28.
  */
 public class ApiAiApp extends AssistantApp{
+
+    Logger logger = Logger.getLogger(ApiAiApp.class);
 
     public ApiAiApp() {
     }
@@ -116,6 +119,45 @@ public class ApiAiApp extends AssistantApp{
         return buildResponse(richResponse, true, null);
     }
 
+    public Response askWithList(Object inputPrompt, ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List list) {
+        if (Util.isNull(inputPrompt)) {
+            logger.error("Invalid inputpromt");
+            return null;
+        }
+
+        if (Util.isNull(list)) {
+            logger.error("Invalid list");
+            return null;
+        }
+
+        if (list.getItems().size() < 2) {
+            logger.error("List requires at least 2 items");
+            return null;
+        }
+
+        Response response = buildResponse(inputPrompt, true, null);
+        if (Util.isNull(response)) {
+            logger.error("Error in building response");
+            return null;
+        }
+
+        SystemIntent systemIntent = new SystemIntent();
+        systemIntent.setIntent(StandardIntents.OPTION);
+
+        //TODO if(this.isNotApiVersionOne_()) {
+        SystemIntentData data = new SystemIntentData();
+        data.setType(InputValueDataTypes_.OPTION);
+        data.setListSelect(list);
+
+        systemIntent.setData(data);
+
+        Data responseData= new Data();
+        responseData.setGoogle(new Google(systemIntent));
+
+        response.setData(responseData);
+        return response;
+    }
+
 
     public void setContext(String name, int lifespan, Object parameters) {
 
@@ -140,7 +182,7 @@ public class ApiAiApp extends AssistantApp{
     //                   Private Helpers
     // ---------------------------------------------------------------------------
 
-    private Response buildResponse(Object inputPrompt, boolean expectUserResponse, String [] noInputPrompts){
+    private Response  buildResponse(Object inputPrompt, boolean expectUserResponse, String [] noInputPrompts){
         if (inputPrompt instanceof String) {
             String textToSpeech = (String) inputPrompt;
             if (textToSpeech.isEmpty()) {

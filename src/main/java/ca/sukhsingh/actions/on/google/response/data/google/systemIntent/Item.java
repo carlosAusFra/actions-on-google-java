@@ -56,6 +56,9 @@ public class Item {
         }
     }
 
+    public Item() {
+    }
+
     public Item setTitle(String title) {
         if (isNullOrEmpty(title)) {
             logger.error("title can not be null or empty");
@@ -84,6 +87,7 @@ public class Item {
         if (isNullOrEmpty(key)) {
             logger.error("invalid key");
         }
+        this.optionInfo = new OptionInfo();
         this.optionInfo.setKey(key);
         return this;
     }

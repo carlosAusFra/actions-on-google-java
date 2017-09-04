@@ -37,6 +37,12 @@ public class Google {
     @JsonProperty("systemIntent")
     private SystemIntent systemIntent;
 
+    public Google() {
+    }
+
+    public Google(SystemIntent systemIntent) {
+        this.systemIntent = systemIntent;
+    }
 
     public void setConversationToken(String conversationToken) {
         this.conversationToken = conversationToken;

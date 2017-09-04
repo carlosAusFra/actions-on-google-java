@@ -71,4 +71,8 @@ public class List {
 
         return this;
     }
+
+    public java.util.List<Item> getItems() {
+        return items;
+    }
 }
