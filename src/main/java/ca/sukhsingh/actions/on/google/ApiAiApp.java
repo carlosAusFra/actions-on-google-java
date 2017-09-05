@@ -27,38 +27,6 @@ public class ApiAiApp extends AssistantApp{
     public ApiAiApp() {
     }
 
-    public boolean isRequestFromApiAi(String key, String value) {
-        return false;
-    }
-
-    public String getIntent() {
-        return null;
-    }
-
-    public Object getArgument(String agrName) {
-        return null;
-    }
-
-    public Object getContextArgument(String contextName, String argName) {
-        return null;
-    }
-
-    public RichResponse getIncomingRichResponse() {
-        return null;
-    }
-
-    public Object getIncomingList() {
-        return null;
-    }
-
-    public Object getIncomingCarousel() {
-        return null;
-    }
-
-    public String getSelectedOption() {
-        return null;
-    }
-
     /**
      * Tells the Assistant to render the speech response and close the mic.
      *
