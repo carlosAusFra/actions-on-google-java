@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,6 +24,20 @@ public class ApiAiAppTest {
     @InjectMocks
     private ApiAiApp app;
 
+    /*
+        test with tell(null)
+        test with tell(null,null)
+        test with tell(null, "something")
+        test with tell("something", null)
+        test with tell (textToSpeech SSML)
+
+        test with ask(null)
+        test with ask(null,null)
+        test with ask(null, "something")
+        test with ask("something", null)
+        test with ask(textToSpeech SSML)
+
+    */
     /**
      * Describes the behavior for ApiAiApp tell method.
      */
@@ -114,8 +129,17 @@ public class ApiAiAppTest {
         assertDisplayText(response, "hi");
         assertSuggestions(response, "say this", "say that");
 
+        response = app.tell(app.buildRichResponse()
+                .addSimpleResponse(new SimpleResponse("hello", "", "hi"))
+                .addSuggestions(suggestions("say this", "say that")));
 
         assertNotNull(response);
+        assertSpeech(response, "hello");
+        assertExpectUserResponseFalse(response);
+        assertNotNullRichResponse(response);
+        assertTextToSpeech(response, "hello");
+        assertDisplayText(response, "hi");
+        assertSuggestions(response, "say this", "say that");
 
     }
 
@@ -273,5 +297,13 @@ public class ApiAiAppTest {
         for (int i=0; i< suggestions.length; i++) {
             assertEquals(suggestions[i], suggestionList.get(i).getTitle());
         }
+    }
+
+    private List<Suggestion> suggestions(String ... strings) {
+        List<Suggestion> suggestions = new ArrayList<>();
+        for (String suggestion : strings) {
+            suggestions.add(new Suggestion(suggestion));
+        }
+        return suggestions;
     }
 }

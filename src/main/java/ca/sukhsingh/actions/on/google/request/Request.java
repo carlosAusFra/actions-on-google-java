@@ -176,7 +176,6 @@ public class Request {
         return getOriginalRequest().getData().getInSandbox();
     }
 
-
     public OriginalRequest getOriginalRequest() {
         return originalRequest;
     }
@@ -227,10 +226,6 @@ public class Request {
 
     public double getLongitude() {
         return getDeviceLocation().getLongitude();
-    }
-
-    public String getLatLong() {
-        return String.valueOf(getLatitude()) + "," + String.valueOf(getLongitude());
     }
 
     public List<Context> getContexts() {

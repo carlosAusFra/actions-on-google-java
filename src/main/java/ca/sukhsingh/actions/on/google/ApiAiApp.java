@@ -49,6 +49,10 @@ public class ApiAiApp extends AssistantApp{
      * @return {@link Response}
      */
     public Response tell(String textToSpeech, String displayText) {
+        if (Util.isNullOrEmpty(textToSpeech) && Util.isNullOrEmpty(displayText)) {
+            logger.error("textToSpeech and displayText is null or empty");
+            return null;
+        }
         SimpleResponse simpleResponse = new SimpleResponse();
         simpleResponse.setDisplayText(displayText);
         if (Util.isSsml(textToSpeech)) {
@@ -66,6 +70,10 @@ public class ApiAiApp extends AssistantApp{
      * @return {@link Response}
      */
     public Response tell(SimpleResponse simpleResponse) {
+        if (Util.isNull(simpleResponse)) {
+            logger.error("Invalid simple response");
+            return null;
+        }
         return buildResponse(new RichResponse().addSimpleResponse(simpleResponse), false, null);
     }
 
@@ -76,6 +84,10 @@ public class ApiAiApp extends AssistantApp{
      * @return {@link Response}
      */
     public Response tell(RichResponse richResponse) {
+        if (Util.isNull(richResponse)) {
+            logger.error("Invalid rich response");
+            return null;
+        }
         return buildResponse(richResponse, false, null);
     }
 
@@ -262,20 +274,23 @@ public class ApiAiApp extends AssistantApp{
      * @return {@link Response}
      */
     private Response  buildResponse(Object inputPrompt, boolean expectUserResponse, String [] noInputPrompts){
+
         if (inputPrompt instanceof String) {
+
             String textToSpeech = (String) inputPrompt;
             if (textToSpeech.isEmpty()) {
                 return null;
             }
 
             Response response = new Response();
+            Data data = new Data();
+            Google google = new Google();
 
             response.setSpeech(textToSpeech);
             //TODO _action_on_google_
             response.setContextOut(new ArrayList<>());
-            Data data = new Data();
-            Google google = new Google();
             google.setExpectUserResponse(expectUserResponse);
+
             if (Util.isSsml(textToSpeech)) {
                 google.setSsml(true);
                 List<SimpleResponse> finalNoInputPrompts = new ArrayList<>();
@@ -286,6 +301,7 @@ public class ApiAiApp extends AssistantApp{
                 }
                 google.setNoInputPrompts(finalNoInputPrompts);
                 google.setSsml(false);
+
             } else if (!Util.isNull(noInputPrompts)) {
                 List<SimpleResponse> finalNoInputPrompts = new ArrayList<>();
                 for (String prompt: noInputPrompts) {
@@ -293,10 +309,12 @@ public class ApiAiApp extends AssistantApp{
                 }
                 google.setNoInputPrompts(finalNoInputPrompts);
                 google.setSsml(false);
+
             } else {
                 google.setSsml(false);
                 google.setNoInputPrompts(new ArrayList<>());
             }
+
             data.setGoogle(google);
             response.setData(data);
 
@@ -334,7 +352,7 @@ public class ApiAiApp extends AssistantApp{
      */
     @Override
     Response fulfillPermissionsRequest_(SystemIntentData systemIntentData) {
-        Response response = new Response();
+        Response response;
         Data data = new Data();
         Google google;
         SystemIntent systemIntent = new SystemIntent();

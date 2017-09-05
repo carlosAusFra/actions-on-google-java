@@ -120,22 +120,21 @@ public class RichResponse {
             for (Suggestion suggestion : suggestions_) {
                 this.suggestions.add(new Suggestion(suggestion.getTitle()));
             }
-        }
-
-        if (suggestions instanceof List) {
+        } else if (suggestions instanceof List) {
             List<String> suggestions_ = (List<String>) suggestions;
             for (String suggestion : suggestions_) {
                 this.suggestions.add(new Suggestion(suggestion));
             }
-        }
-
-        if (suggestions instanceof String[]) {
+        } else if (suggestions instanceof String[]) {
           String [] _suggestions = (String [])suggestions;
           for (String s : _suggestions) {
               this.suggestions.add(new Suggestion(s));
           }
-        } else {
+        } else if (suggestions instanceof String){
             this.suggestions.add(new Suggestion(suggestions.toString()));
+        } else {
+            logger.error("Suggestion should be on of these type : String|ArrayList|List|Array");
+            return null;
         }
 
         return this;
@@ -185,7 +184,7 @@ public class RichResponse {
                     ? new SimpleResponse(null, response_.getSsml(), response_.getDisplayText())
                     : new SimpleResponse(response_.getTextToSpeech(), null, response_.getDisplayText());
         } else {
-            //TODO Logging with error
+            logger.error("SimpleResponse requires a speech parameter.");
             return null;
         }
     }

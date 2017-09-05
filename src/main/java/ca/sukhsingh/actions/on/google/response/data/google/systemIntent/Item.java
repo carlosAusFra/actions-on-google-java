@@ -78,8 +78,16 @@ public class Item {
     }
 
     public Item setImage(String url, String accessibilityText, int width, int height) {
-        //TODO null check
+        if (isNullOrEmpty(url)) {
+            logger.error("url cannot be empty or null");
+            return this;
+        }
+        if (isNullOrEmpty(accessibilityText)){
+            logger.error("accessibilityText cannot be empty or null");
+            return this;
+        }
         this.image = new Image(url, accessibilityText);
+        //TODO width & height
         return this;
     }
 

@@ -3,8 +3,6 @@ package ca.sukhsingh.actions.on.google.response;
 
 import ca.sukhsingh.actions.on.google.Util;
 import ca.sukhsingh.actions.on.google.response.data.google.Data;
-import ca.sukhsingh.actions.on.google.response.data.google.Google;
-import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
