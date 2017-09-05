@@ -1,4 +1,4 @@
-# Actions on google Java & Spring
+# Actions on google Client library for Java & Spring
 Unofficial Actions on Google SDK for Java & spring
 
 [![Build Status](https://travis-ci.org/sukhvinder1/actions-on-google-java.svg?branch=master)](https://travis-ci.org/sukhvinder1/actions-on-google-java)
