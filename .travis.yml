@@ -1,6 +1,6 @@
 language: java
+install: mvn install -DskipTests=true -Dgpg.skip=true
 sudo: false
 cache:
   directories:
   - $HOME/.m2
-script: mvn install -Dgpg.skip=true
