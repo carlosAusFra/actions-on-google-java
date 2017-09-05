@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Data {
 
-    @JsonProperty("ca/sukhsingh/actions/on/google")
+    @JsonProperty("google")
     private Google google;
 
     public Google getGoogle() {

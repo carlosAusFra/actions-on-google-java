@@ -1,7 +1,7 @@
 package ca.sukhsingh.actions.on.google;
 
 /**
- * Created by sinsukhv on 2017-08-28.
+ * Created by sukhsingh on 2017-08-28.
  */
 public class Util {
 
@@ -12,10 +12,21 @@ public class Util {
         return false;
     }
 
+    public static boolean isNotNull(Object obj) {
+        if (obj != null) {
+            return true;
+        }
+        return false;
+    }
+
     public static boolean isNullOrEmpty(String string) {
         if (string == null && string.isEmpty()) {
             return true;
         }
         return false;
+    }
+
+    public static boolean isSsml(String response) {
+        return response.matches("(?s).*(<(\\w+)[^>]*>.*</\\2>|<(\\w+)[^>]*/>).*");
     }
 }

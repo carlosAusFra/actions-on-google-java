@@ -17,6 +17,12 @@ public class ContextOut {
     @JsonProperty("parameters")
     private Parameters parameters;
 
+    public ContextOut(String name, Integer lifespan, Parameters parameters) {
+        this.name = name;
+        this.lifespan = lifespan;
+        this.parameters = parameters;
+    }
+
     public String getName() {
         return name;
     }

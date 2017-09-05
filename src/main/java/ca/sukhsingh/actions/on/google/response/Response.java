@@ -25,6 +25,10 @@ public class Response {
     public Response() {
     }
 
+    public Response(Data data) {
+        this.data = data;
+    }
+
     public Response(Response response) {
 
         this.contextOut = new ArrayList<>();

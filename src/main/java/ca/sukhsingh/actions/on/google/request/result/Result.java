@@ -22,6 +22,8 @@ public class Result {
     private Boolean actionIncomplete;
     @JsonProperty("resultParameters")
     private ResultParameters resultParameters;
+    @JsonProperty("parameters")
+    private Parameters parameters;
     @JsonProperty("contexts")
     private List<Context> contexts;
     @JsonProperty("metadata")
@@ -69,5 +71,9 @@ public class Result {
 
     public Double getScore() {
         return score;
+    }
+
+    public Parameters getParameters() {
+        return parameters;
     }
 }
