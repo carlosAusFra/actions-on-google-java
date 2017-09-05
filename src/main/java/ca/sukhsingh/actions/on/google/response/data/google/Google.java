@@ -1,6 +1,9 @@
 
 package ca.sukhsingh.actions.on.google.response.data.google;
 
+import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntent;
+import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.RichResponse;
+import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.SimpleResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -31,7 +34,15 @@ public class Google {
     public List<SimpleResponse> noInputPrompts = null;
     @JsonProperty("richResponse")
     public RichResponse richResponse;
+    @JsonProperty("systemIntent")
+    private SystemIntent systemIntent;
 
+    public Google() {
+    }
+
+    public Google(SystemIntent systemIntent) {
+        this.systemIntent = systemIntent;
+    }
 
     public void setConversationToken(String conversationToken) {
         this.conversationToken = conversationToken;
@@ -75,5 +86,9 @@ public class Google {
 
     public RichResponse getRichResponse() {
         return richResponse;
+    }
+
+    public void setSystemIntent(SystemIntent systemIntent) {
+        this.systemIntent = systemIntent;
     }
 }

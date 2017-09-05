@@ -1,20 +1,25 @@
-package ca.sukhsingh.actions.on.google.response.data.google;
+package ca.sukhsingh.actions.on.google.response.data.google.RichResponse;
 
 /**
- * Created by sinsukhv on 2017-08-26.
+ * Created by sukhsingh on 2017-08-26.
  */
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static ca.sukhsingh.actions.on.google.Util.*;
 
 /**
  * Class for initializing and constructing Basic Cards with chainable interface.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BasicCard {
+
+    Logger logger = Logger.getLogger(BasicCard.class);
 
     @JsonProperty("title")
     private String title;
@@ -74,7 +79,10 @@ public class BasicCard {
      * @return {BasicCard} Returns current constructed BasicCard.
      */
     public BasicCard setTitle (String title) {
-        //TODO check null or empty
+        if (isNullOrEmpty(title)) {
+            logger.error("Title can not be empty");
+            return this;
+        }
         this.title = title;
         return this;
     }
@@ -86,7 +94,10 @@ public class BasicCard {
      * @return {BasicCard} Returns current constructed BasicCard.
      */
     public BasicCard setSubtitle (String subtitle) {
-        //TODO check null or empty
+        if (isNullOrEmpty(subtitle)) {
+            logger.error("subtitle can not be empty");
+            return this;
+        }
         this.subtitle = subtitle;
         return this;
     }
@@ -98,7 +109,10 @@ public class BasicCard {
      * @return {BasicCard} Returns current constructed BasicCard.
      */
     public BasicCard setBodyText (String bodyText) {
-        //TODO check null or empty
+        if (isNullOrEmpty(bodyText)) {
+            logger.error("bodyText can not be empty");
+            return this;
+        }
         this.formattedText = bodyText;
         return this;
     }
@@ -114,13 +128,23 @@ public class BasicCard {
      * @return {BasicCard} Returns current constructed BasicCard.
      */
     public BasicCard setImage (String url, String accessibilityText, int width, int height) {
-        //TODO check null or empty for url and accessibilityText
+        if (isNullOrEmpty(url)) {
+            logger.error("url cannot be empty or null");
+            return this;
+        }
         this.image.url = url;
+        if (isNullOrEmpty(accessibilityText)){
+            logger.error("accessibilityText cannot be empty or null");
+            return this;
+        }
         this.image.accessibilityText = accessibilityText;
-        //TODO null check
-        this.image.width = width;
-        //TODO null check
-        this.image.height = height;
+
+        if (isNotNull(width)) {
+            this.image.width = width;
+        }
+        if (isNotNull(height)) {
+            this.image.height = height;
+        }
 
         return this;
     }
@@ -133,7 +157,14 @@ public class BasicCard {
      * @return {BasicCard} Returns current constructed BasicCard.
      */
     public BasicCard addButton (String text, String url) {
-        //TODO null check for text and url
+        if (isNullOrEmpty(text)) {
+            logger.error("text cannot be empty");
+            return this;
+        }
+        if (isNullOrEmpty(url)) {
+            logger.error("url cannot be empty");
+            return this;
+        }
         this.buttons.add(new Button(text, new OpenUrlAction(url)));
         return this;
     }
