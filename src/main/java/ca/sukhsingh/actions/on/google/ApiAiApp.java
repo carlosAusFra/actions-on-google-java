@@ -1,6 +1,5 @@
 package ca.sukhsingh.actions.on.google;
 
-import ca.sukhsingh.actions.on.google.request.result.Context;
 import ca.sukhsingh.actions.on.google.response.Response;
 import ca.sukhsingh.actions.on.google.response.data.google.Data;
 import ca.sukhsingh.actions.on.google.response.data.google.Google;
@@ -30,7 +29,7 @@ public class ApiAiApp extends AssistantApp{
     /**
      * Tells the Assistant to render the speech response and close the mic.
      *
-     * @param textToSpeech
+     * @param textToSpeech text to speech as string
      * @return {@link Response}
      */
     public Response tell(String textToSpeech) {
@@ -44,8 +43,8 @@ public class ApiAiApp extends AssistantApp{
     /**
      * Tells the Assistant to render the speech response and close the mic.
      *
-     * @param textToSpeech
-     * @param displayText
+     * @param textToSpeech text to speech as string
+     * @param displayText display text as string
      * @return {@link Response}
      */
     public Response tell(String textToSpeech, String displayText) {
@@ -66,7 +65,7 @@ public class ApiAiApp extends AssistantApp{
     /**
      * Tells the Assistant to render the speech response and close the mic.
      *
-     * @param simpleResponse
+     * @param simpleResponse a {@link SimpleResponse} Object
      * @return {@link Response}
      */
     public Response tell(SimpleResponse simpleResponse) {
@@ -80,7 +79,7 @@ public class ApiAiApp extends AssistantApp{
     /**
      * Tells the Assistant to render the speech response and close the mic.
      *
-     * @param richResponse
+     * @param richResponse a {@link RichResponse} object
      * @return {@link Response}
      */
     public Response tell(RichResponse richResponse) {
@@ -94,8 +93,12 @@ public class ApiAiApp extends AssistantApp{
     /**
      * Asks to collect the user's input.
      *
-     * @param textToSpeech
-     * @param noInputPrompts
+     * NOTE: Due to a bug, if you specify the no-input prompts,
+     * the mic is closed after the 3rd prompt, so you should use the 3rd prompt
+     * for a bye message until the bug is fixed.
+     *
+     * @param textToSpeech text to speech as string
+     * @param noInputPrompts string array of no input prompts
      * @return {@link Response}
      */
     public Response ask(String textToSpeech, String [] noInputPrompts) {
@@ -109,7 +112,7 @@ public class ApiAiApp extends AssistantApp{
     /**
      * Asks to collect the user's input.
      *
-     * @param {@link String} textToSpeech
+     * @param textToSpeech text to speech as string
      * @return {@link Response}
      */
     public Response ask(String textToSpeech) {
@@ -123,8 +126,8 @@ public class ApiAiApp extends AssistantApp{
     /**
      * Asks to collect the user's input.
      *
-     * @param {@link String} textToSpeech
-     * @param {@link String} displayText
+     * @param textToSpeech text to speech as string
+     * @param displayText display text as string
      * @return {@link Response}
      */
     public Response ask(String textToSpeech, String displayText) {
@@ -139,6 +142,12 @@ public class ApiAiApp extends AssistantApp{
         return buildResponse(simpleResponse, true, null);
     }
 
+    /**
+     * Asks to collect the user's input.
+     *
+     * @param simpleResponse inputPrompt of {@link SimpleResponse} type
+     * @return Response
+     */
     public Response ask(SimpleResponse simpleResponse) {
         return buildResponse(new RichResponse().addSimpleResponse(simpleResponse), true, null);
     }
@@ -146,19 +155,19 @@ public class ApiAiApp extends AssistantApp{
     /**
      * Asks to collect the user's input.
      *
-     * @param richResponse
+     * @param inputPrompt inputPrompt of {@link RichResponse} type
      * @return {@link Response}
      */
-    public Response ask(RichResponse richResponse) {
-        return buildResponse(richResponse, true, null);
+    public Response ask(RichResponse inputPrompt) {
+        return buildResponse(inputPrompt, true, null);
     }
 
 
     /**
      * Asks to collect the user's input with a list.
      *
-     * @param {@link String}|{@link RichResponse}|{@link SimpleResponse} inputPrompt
-     * @param {@link ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List} list
+     * @param inputPrompt {@link String}|{@link RichResponse}|{@link SimpleResponse} inputPrompt
+     * @param list {@link ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List} list
      * @return {@link Response}
      */
     public Response askWithList(Object inputPrompt, ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List list) {
@@ -198,9 +207,10 @@ public class ApiAiApp extends AssistantApp{
     }
 
     /**
+     * Asks to collect the user's input with a carousel.
      *
-     * @param {@link String}|{@link RichResponse}|{@link SimpleResponse} inputPrompt
-     * @param carousel
+     * @param inputPrompt {@link String}|{@link RichResponse}|{@link SimpleResponse}
+     * @param carousel {@link Carousel} object
      * @return {@link Response}
      */
     public Response askWithCarousel(Object inputPrompt, Carousel carousel) {
@@ -243,30 +253,23 @@ public class ApiAiApp extends AssistantApp{
     }
 
 
+    /**
+     * Set a new context for the current intent.
+     *
+     * @param name {@link String} contextOut Name
+     * @param lifespan int lifespan of context
+     * @param parameters {@link Object} additional parameters
+     */
     public void setContext(String name, int lifespan, Object parameters) {
 
     }
-
-    public Context getContexts() {
-        return null;
-    }
-
-    public Context getContext(String name) {
-        return null;
-    }
-
-    public String getRawInput() {
-        return null;
-    }
-
-    //setContext getContexts getContext getRawInput
-
 
     // ---------------------------------------------------------------------------
     //                   Private Helpers
     // ---------------------------------------------------------------------------
 
     /**
+     * Builds a response for API.AI to send back to the Assistant.
      *
      * @param inputPrompt
      * @param expectUserResponse
@@ -301,7 +304,6 @@ public class ApiAiApp extends AssistantApp{
                 }
                 google.setNoInputPrompts(finalNoInputPrompts);
                 google.setSsml(false);
-
             } else if (!Util.isNull(noInputPrompts)) {
                 List<SimpleResponse> finalNoInputPrompts = new ArrayList<>();
                 for (String prompt: noInputPrompts) {
@@ -309,12 +311,10 @@ public class ApiAiApp extends AssistantApp{
                 }
                 google.setNoInputPrompts(finalNoInputPrompts);
                 google.setSsml(false);
-
             } else {
                 google.setSsml(false);
                 google.setNoInputPrompts(new ArrayList<>());
             }
-
             data.setGoogle(google);
             response.setData(data);
 
@@ -346,13 +346,15 @@ public class ApiAiApp extends AssistantApp{
     }
 
     /**
+     * Uses a PermissionsValueSpec object to construct and send a
+     * permissions request to the user.
      *
      * @param systemIntentData
      * @return {@link Response}
      */
     @Override
     Response fulfillPermissionsRequest_(SystemIntentData systemIntentData) {
-        Response response;
+        Response response = new Response();
         Data data = new Data();
         Google google;
         SystemIntent systemIntent = new SystemIntent();
