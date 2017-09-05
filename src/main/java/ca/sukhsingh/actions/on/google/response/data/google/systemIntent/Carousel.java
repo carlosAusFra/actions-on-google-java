@@ -26,11 +26,8 @@ public class Carousel {
     }
 
     /**
-     * Constructor for Carousel. Accepts optional Carousel to clone or list of
-     * items to copy.
-     *
-     * @param {Carousel|Array<OptionItem>} carousel Either a carousel to clone, a
-     *     or an array of OptionItem to initialize a new carousel
+     * Constructor for Carousel. Accepts optional Carousel to clone or list of items to copy
+     * @param carousel {@link Object}
      */
     public Carousel(Object carousel) {
         this.items = new ArrayList<>();
@@ -48,9 +45,8 @@ public class Carousel {
 
     /**
      * Adds a single item or list of items to the carousel.
-     *
-     * @param {OptionItem|Array<OptionItem>} optionItems OptionItems to add.
-     * @return {Carousel} Returns current constructed Carousel.
+     * @param optionItems {@link Object}
+     * @return Carousel
      */
     public Carousel addItems(Object optionItems) {
         if (Util.isNull(optionItems)) {

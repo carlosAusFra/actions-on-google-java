@@ -44,7 +44,7 @@ public class AssistantApp {
 
     /**
      *
-     * @param richResponse
+     * @param richResponse {@link RichResponse} object
      * @return {@link RichResponse}
      */
     public RichResponse buildRichResponse(RichResponse richResponse) {
@@ -53,7 +53,7 @@ public class AssistantApp {
 
     /**
      *
-     * @param bodyText
+     * @param bodyText {@link String} as body text
      * @return {@link BasicCard}
      */
     public BasicCard buildBasicCard(String bodyText) {
@@ -66,7 +66,7 @@ public class AssistantApp {
 
     /**
      *
-     * @param title
+     * @param title {@link String} as title
      * @return {@link ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List}
      */
     public ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List buildList(String title) {
@@ -79,8 +79,8 @@ public class AssistantApp {
 
     /**
      *
-     * @param key
-     * @param synonyms
+     * @param key {@link String}
+     * @param synonyms {@link Object} it can be ArrayList, String or String []
      * @return ca.sukhsingh.actions.on.google.response.data.google.systemIntent.Item
      */
     public Item buildOptionItem(String key, Object synonyms) {
@@ -92,9 +92,9 @@ public class AssistantApp {
 
     /**
      *
-     * @param context
-     * @param permissions
-     * @return
+     * @param context {@link String}
+     * @param permissions {@link List} list of permissions
+     * @return Response
      */
     public Response askForPermissions(String context, List<String> permissions) {
         if (Util.isNullOrEmpty(context)) {
