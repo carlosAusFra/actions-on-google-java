@@ -57,7 +57,7 @@ public class Request {
      * If granted permission to user's name in previous intent, returns user's
      * display name, family name, and given name. If name info is unavailable,
      * returns null.
-     * @return
+     * @return Profile
      */
     public Profile getUserName() {
         if (isNull(getUser().getProfile())) {
@@ -77,8 +77,7 @@ public class Request {
     }
 
     /**
-     * If granted permission to device's location in previous intent, returns device's
-     * location (see {@link ca.sukhsingh.actions.on.google.AssistantApp#askForPermissions|askForPermissions}).
+     * If granted permission to device's location in previous intent, returns device's location.
      * If device info is unavailable, returns null.
      * @return {@link Coordinates}
      */
@@ -95,8 +94,8 @@ public class Request {
      * If the argument is included in originalRequest, and is not a text argument,
      * the entire argument object is returned.
      *
-     * @param agrName
-     * @return null|string|argument
+     * @param agrName {@link String}
+     * @return Object null|string|argument
      */
     public Object getArgument(String agrName) {
         if (isNullOrEmpty(agrName)) {
@@ -143,8 +142,8 @@ public class Request {
     /**
      * Returns true if user device has a given surface capability.
      *
-     * @param {string} capability Must be one of {@link SurfaceCapabilities}.
-     * @return
+     * @param requestedCapability {@link String} capability Must be one of SurfaceCapabilities.
+     * @return boolean
      */
     public boolean hasSurfaceCapability(String requestedCapability) {
         for (Capability capability : getSurfaceCapabilities()) {
@@ -158,8 +157,7 @@ public class Request {
     /**
      * Gets surface capabilities of user device.
      *
-     * @return {Array<string>} Supported surface capabilities, as defined in
-     *     AssistantApp.SurfaceCapabilities.
+     * @return List Supported surface capabilities, as defined in SurfaceCapabilities.
      */
     public List<Capability> getSurfaceCapabilities() {
         return originalRequest.getData().getSurface().getCapabilities();

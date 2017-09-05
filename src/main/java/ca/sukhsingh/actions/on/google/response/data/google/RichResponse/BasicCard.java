@@ -43,7 +43,7 @@ public class BasicCard {
     /**
      * Constructor for BasicCard. Accepts optional BasicCard to clone.
      *
-     * @param {BasicCard} basicCard
+     * @param basicCard {@link BasicCard}
      */
     public BasicCard(BasicCard basicCard) {
         this.title = null;
@@ -75,8 +75,8 @@ public class BasicCard {
     /**
      * Sets the title for this Basic Card.
      *
-     * @param {string} title Title to show on card.
-     * @return {BasicCard} Returns current constructed BasicCard.
+     * @param title {@link String} title Title to show on card.
+     * @return BasicCard Returns current constructed BasicCard.
      */
     public BasicCard setTitle (String title) {
         if (isNullOrEmpty(title)) {
@@ -90,8 +90,8 @@ public class BasicCard {
     /**
      * Sets the subtitle for this Basic Card.
      *
-     * @param {string} subtitle Subtitle to show on card.
-     * @return {BasicCard} Returns current constructed BasicCard.
+     * @param subtitle {@link String} subtitle Subtitle to show on card.
+     * @return BasicCard Returns current constructed BasicCard.
      */
     public BasicCard setSubtitle (String subtitle) {
         if (isNullOrEmpty(subtitle)) {
@@ -105,8 +105,8 @@ public class BasicCard {
     /**
      * Sets the body text for this Basic Card.
      *
-     * @param {string} bodyText Body text to show on card.
-     * @return {BasicCard} Returns current constructed BasicCard.
+     * @param bodyText {@link String} bodyText Body text to show on card.
+     * @return BasicCard Returns current constructed BasicCard.
      */
     public BasicCard setBodyText (String bodyText) {
         if (isNullOrEmpty(bodyText)) {
@@ -120,11 +120,11 @@ public class BasicCard {
     /**
      * Sets the image for this Basic Card.
      *
-     * @param {string} url Image source URL.
-     * @param {string} accessibilityText Text to replace for image for
+     * @param url {@link String} url Image source URL.
+     * @param accessibilityText {@link String} accessibilityText Text to replace for image for
      *     accessibility.
-     * @param {number=} width Width of the image.
-     * @param {number=} height Height of the image.
+     * @param width int width Width of the image.
+     * @param height height Height of the image.
      * @return {BasicCard} Returns current constructed BasicCard.
      */
     public BasicCard setImage (String url, String accessibilityText, int width, int height) {
@@ -152,8 +152,8 @@ public class BasicCard {
     /**
      * Adds a button below card.
      *
-     * @param {string} text Text to show on button.
-     * @param {string} url URL to open when button is selected.
+     * @param text {@link String} text Text to show on button.
+     * @param url {@link String} url URL to open when button is selected.
      * @return {BasicCard} Returns current constructed BasicCard.
      */
     public BasicCard addButton (String text, String url) {
