@@ -3,10 +3,9 @@ package ca.sukhsingh.actions.on.google;
 import ca.sukhsingh.actions.on.google.response.Response;
 import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.Carousel;
 import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.Item;
-import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.OptionInfo;
 import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntentData;
-import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.BasicCard;
-import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.RichResponse;
+import ca.sukhsingh.actions.on.google.response.data.google.richresponse.BasicCard;
+import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import org.apache.log4j.Logger;
 
 import java.util.List;

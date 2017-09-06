@@ -3,8 +3,8 @@ package ca.sukhsingh.actions.on.google;
 import ca.sukhsingh.actions.on.google.response.Response;
 import ca.sukhsingh.actions.on.google.response.data.google.Data;
 import ca.sukhsingh.actions.on.google.response.data.google.Google;
-import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.RichResponse;
-import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.SimpleResponse;
+import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
+import ca.sukhsingh.actions.on.google.response.data.google.richresponse.SimpleResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.Carousel;
 import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntent;
 import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntentData;
@@ -303,7 +303,6 @@ public class ApiAiApp extends AssistantApp{
                     }
                 }
                 google.setNoInputPrompts(finalNoInputPrompts);
-                google.setSsml(false);
             } else if (!Util.isNull(noInputPrompts)) {
                 List<SimpleResponse> finalNoInputPrompts = new ArrayList<>();
                 for (String prompt: noInputPrompts) {

@@ -1,11 +1,11 @@
 
 package ca.sukhsingh.actions.on.google.request;
 
-import ca.sukhsingh.actions.on.google.request.originalRequest.*;
+import ca.sukhsingh.actions.on.google.request.originalrequest.*;
 import ca.sukhsingh.actions.on.google.request.result.Context;
 import ca.sukhsingh.actions.on.google.request.result.Result;
 import ca.sukhsingh.actions.on.google.request.status.Status;
-import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.RichResponse;
+import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.log4j.Logger;
 
@@ -18,7 +18,7 @@ import static ca.sukhsingh.actions.on.google.Util.*;
  */
 public class Request {
 
-    @JsonProperty("originalRequest")
+    @JsonProperty("originalrequest")
     private OriginalRequest originalRequest;
     @JsonProperty("id")
     private String id;
@@ -91,7 +91,7 @@ public class Request {
 
     /**
      * Get the argument value by name from the current intent.
-     * If the argument is included in originalRequest, and is not a text argument,
+     * If the argument is included in originalrequest, and is not a text argument,
      * the entire argument object is returned.
      *
      * @param agrName {@link String}

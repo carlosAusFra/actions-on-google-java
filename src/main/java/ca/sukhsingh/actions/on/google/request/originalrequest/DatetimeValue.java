@@ -1,5 +1,5 @@
 
-package ca.sukhsingh.actions.on.google.request.originalRequest;
+package ca.sukhsingh.actions.on.google.request.originalrequest;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -9,15 +9,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Extension {
 
-    @JsonProperty("@type")
-    private String type;
+public class DatetimeValue {
+
+    @JsonProperty("date")
+    private Date date;
+    @JsonProperty("time")
+    private Time time;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    public String getType() {
-        return type;
+    public Date getDate() {
+        return date;
+    }
+
+    public Time getTime() {
+        return time;
     }
 
     @JsonAnyGetter
