@@ -303,7 +303,6 @@ public class ApiAiApp extends AssistantApp{
                     }
                 }
                 google.setNoInputPrompts(finalNoInputPrompts);
-                google.setSsml(false);
             } else if (!Util.isNull(noInputPrompts)) {
                 List<SimpleResponse> finalNoInputPrompts = new ArrayList<>();
                 for (String prompt: noInputPrompts) {

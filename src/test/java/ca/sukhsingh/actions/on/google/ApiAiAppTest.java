@@ -24,25 +24,8 @@ public class ApiAiAppTest {
     @InjectMocks
     private ApiAiApp app;
 
-    /*
-        test with tell(null)
-        test with tell(null,null)
-        test with tell(null, "something")
-        test with tell("something", null)
-        test with tell (textToSpeech SSML)
-
-        test with ask(null)
-        test with ask(null,null)
-        test with ask(null, "something")
-        test with ask("something", null)
-        test with ask(textToSpeech SSML)
-
-    */
-    /**
-     * Describes the behavior for ApiAiApp tell method.
-     */
     @Test
-    public void appTellTest() {
+    public void app_tell_with_string() {
         Response response = app.tell("hello");
         assertNotNull(response);
 //        {
@@ -64,7 +47,12 @@ public class ApiAiAppTest {
         assertNotNull(response.getData().getGoogle().noInputPrompts);
         assertNotNull(response.getContextOut());
 
-//        {
+    }
+
+    @Test
+    public void app_tell_with_TextToSpeech_And_DisplayText() {
+
+        //        {
 //            'speech': 'hello',
 //            'data': {
 //            'google': {
@@ -85,7 +73,7 @@ public class ApiAiAppTest {
 //            'contextOut': []
 //        }
 
-        response = app.tell("hello", "hi");
+        Response response = app.tell("hello", "hi");
         assertNotNull(response);
         assertSpeech(response, "hello");
         assertExpectUserResponseFalse(response);
@@ -93,7 +81,32 @@ public class ApiAiAppTest {
         assertTextToSpeech(response, "hello");
         assertDisplayText(response, "hi");
 
-//        {
+    }
+
+    @Test
+    public void app_tell_with_SSML_String() {
+        final String SPEECH = "<speak>hello</speak>";
+        Response response = app.tell(SPEECH);
+        assertNotNull(response);
+        assertSpeech(response, SPEECH);
+        assertIsSsmlTrue(response);
+    }
+
+    @Test
+    public void app_tell_with_TextToSpeech_SSML_And_DisplayText() {
+        Response response = app.tell("<speak>hello</speak>", "hi");
+        assertNotNull(response);
+    }
+
+    @Test
+    public void app_tell_with_SimpleResponse() {
+
+    }
+
+    @Test
+    public void app_tell_with_RichResponse() {
+
+        //        {
 //            "speech": "hello",
 //            "data": {
 //            "google": {
@@ -117,7 +130,7 @@ public class ApiAiAppTest {
 //            "contextOut": []
 //        }
 
-        response = app.tell(app.buildRichResponse()
+        Response response = app.tell(app.buildRichResponse()
                 .addSimpleResponse(new SimpleResponse("hello", "", "hi"))
                 .addSuggestions(new String [] {"say this", "say that"}));
 
@@ -143,11 +156,32 @@ public class ApiAiAppTest {
 
     }
 
-    /**
-     * Describes the behavior for ApiAiApp ask method.
-     */
     @Test
-    public void appAskTest() {
+    public void app_tell_with_One_Null_Param() {
+
+    }
+
+    @Test
+    public void app_tell_with_Two_Null_Params() {
+
+    }
+
+    @Test
+    public void app_tell_with_String_And_Null_Params() {
+
+    }
+
+    @Test
+    public void app_tell_with_Null_And_String_Params() {
+
+    }
+
+
+    //********* APP ASK **********
+
+    @Test
+    public void app_ask_with_String() {
+
         Response response;
 
         response = app.ask("hello");
@@ -174,7 +208,11 @@ public class ApiAiAppTest {
         assertExpectUserResponseTrue(response);
         assertIsSsmlFalse(response);
 
-        response = app.ask("hello", "hi");
+    }
+
+    @Test
+    public void app_ask_with_TextToSpeech_And_DisplayText() {
+        Response response = app.ask("hello", "hi");
         //  {
         //   'speech': 'hello',
         //   'data': {
@@ -209,7 +247,17 @@ public class ApiAiAppTest {
         assertTextToSpeech(response, "hello");
         assertDisplayText(response, "hi");
 
-        response = app.ask(app.buildRichResponse()
+    }
+
+    @Test
+    public void app_ask_with_SimpleResponse() {
+
+    }
+
+    @Test
+    public void app_ask_with_RichResponse() {
+
+        Response response = app.ask(app.buildRichResponse()
                 .addSimpleResponse(new SimpleResponse("hello", "","hi"))
                 .addSuggestions(Arrays.asList("say this", "or this")));
 
@@ -257,6 +305,26 @@ public class ApiAiAppTest {
 
     }
 
+    @Test
+    public void app_ask_with_One_Null_Param() {
+
+    }
+
+    @Test
+    public void app_ask_with_Two_Null_Params() {
+
+    }
+
+    @Test
+    public void app_ask_with_String_And_Null_Params() {
+
+    }
+
+    @Test
+    public void app_ask_with_Null_And_String_Params() {
+
+    }
+
     private void assertSpeech(Response response, String speech) {
         assertEquals(speech, response.getSpeech());
     }
@@ -270,6 +338,10 @@ public class ApiAiAppTest {
 
     private void assertIsSsmlFalse(Response response) {
         assertEquals(false, response.getData().getGoogle().isSsml);
+    }
+
+    private void assertIsSsmlTrue(Response response) {
+        assertEquals(true, response.getData().getGoogle().isSsml);
     }
 
     private void assertNotNullRichResponse(Response response) {
