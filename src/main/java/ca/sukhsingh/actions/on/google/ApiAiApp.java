@@ -48,8 +48,12 @@ public class ApiAiApp extends AssistantApp{
      * @return {@link Response}
      */
     public Response tell(String textToSpeech, String displayText) {
-        if (Util.isNullOrEmpty(textToSpeech) && Util.isNullOrEmpty(displayText)) {
-            logger.error("textToSpeech and displayText is null or empty");
+        if (Util.isNullOrEmpty(textToSpeech)) {
+            logger.error("textToSpeech is null or empty");
+            return null;
+        }
+        if (Util.isNullOrEmpty(displayText)) {
+            logger.error("displayText is null or empty");
             return null;
         }
         SimpleResponse simpleResponse = new SimpleResponse();
@@ -131,6 +135,10 @@ public class ApiAiApp extends AssistantApp{
      * @return {@link Response}
      */
     public Response ask(String textToSpeech, String displayText) {
+        if (Util.isNullOrEmpty(textToSpeech) && Util.isNullOrEmpty(displayText)) {
+            logger.error("TextToSpeech or displat text is null/empty");
+            return null;
+        }
         SimpleResponse simpleResponse = new SimpleResponse();
         simpleResponse.setDisplayText(displayText);
         if (Util.isSsml(textToSpeech)) {

@@ -20,7 +20,10 @@ public class Util {
     }
 
     public static boolean isNullOrEmpty(String string) {
-        if (string == null && string.isEmpty()) {
+        if (string == null) {
+            return true;
+        }
+        if (string.isEmpty()) {
             return true;
         }
         return false;
