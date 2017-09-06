@@ -8,6 +8,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Item {
+    
+    @JsonProperty("simpleResponse")
+    private SimpleResponse simpleResponse;
+
+    @JsonProperty("basicCard")
+    private BasicCard basicCard;
+
+    @JsonProperty("structuredResponse")
+    private StructuredResponse structuredResponse;
 
     public Item(SimpleResponse simpleResponse) {
         this.simpleResponse = simpleResponse;
@@ -20,15 +29,6 @@ public class Item {
     public Item(StructuredResponse structuredResponse) {
         this.structuredResponse = structuredResponse;
     }
-
-    @JsonProperty("simpleResponse")
-    private SimpleResponse simpleResponse;
-
-    @JsonProperty("basicCard")
-    private BasicCard basicCard;
-
-    @JsonProperty("structuredResponse")
-    private StructuredResponse structuredResponse;
 
     public SimpleResponse getSimpleResponse() {
         return simpleResponse;
