@@ -1,5 +1,5 @@
 
-package ca.sukhsingh.actions.on.google.request.originalRequest;
+package ca.sukhsingh.actions.on.google.request.originalrequest;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

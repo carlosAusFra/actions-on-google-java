@@ -1,4 +1,4 @@
-package ca.sukhsingh.actions.on.google.response.data.google.RichResponse;
+package ca.sukhsingh.actions.on.google.response.data.google.richresponse;
 
 /**
  * Created by sukhsingh on 2017-08-26.
@@ -80,7 +80,7 @@ public class RichResponse {
                 simpleResponseCount++;
             }
             if (simpleResponseCount >= 2) {
-                logger.error("Cannot include >2 SimpleResponses in RichResponse");
+                logger.error("Cannot include >2 SimpleResponses in richresponse");
                 return this;
             }
         }
@@ -99,7 +99,7 @@ public class RichResponse {
 
         for (Item item : this.items) {
             if (item.getBasicCard() != null) {
-                logger.error("Cannot include >1 BasicCard in RichResponse");
+                logger.error("Cannot include >1 BasicCard in richresponse");
                 return this;
             }
         }

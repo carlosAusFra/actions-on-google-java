@@ -1,4 +1,4 @@
-package ca.sukhsingh.actions.on.google.response.data.google.RichResponse;
+package ca.sukhsingh.actions.on.google.response.data.google.richresponse;
 
 /**
  * Created by sukhsingh on 2017-08-26.

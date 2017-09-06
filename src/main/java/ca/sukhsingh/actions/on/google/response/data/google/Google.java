@@ -2,8 +2,8 @@
 package ca.sukhsingh.actions.on.google.response.data.google;
 
 import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntent;
-import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.RichResponse;
-import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.SimpleResponse;
+import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
+import ca.sukhsingh.actions.on.google.response.data.google.richresponse.SimpleResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

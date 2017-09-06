@@ -1,8 +1,8 @@
 package ca.sukhsingh.actions.on.google;
 
 import ca.sukhsingh.actions.on.google.response.Response;
-import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.SimpleResponse;
-import ca.sukhsingh.actions.on.google.response.data.google.RichResponse.Suggestion;
+import ca.sukhsingh.actions.on.google.response.data.google.richresponse.SimpleResponse;
+import ca.sukhsingh.actions.on.google.response.data.google.richresponse.Suggestion;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

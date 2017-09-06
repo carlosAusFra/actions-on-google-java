@@ -1,40 +1,35 @@
 
-package ca.sukhsingh.actions.on.google.request.originalRequest;
+package ca.sukhsingh.actions.on.google.request.originalrequest;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Time {
+public class Date {
 
-    @JsonProperty("hours")
-    private Integer hours;
-    @JsonProperty("minutes")
-    private Integer minutes;
-    @JsonProperty("seconds")
-    private Integer seconds;
-    @JsonProperty("nanos")
-    private Integer nanos;
-
+    @JsonProperty("year")
+    private Integer year;
+    @JsonProperty("month")
+    private Integer month;
+    @JsonProperty("day")
+    private Integer day;
+    @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    public Integer getHours() {
-        return hours;
+    public Integer getYear() {
+        return year;
     }
 
-    public Integer getMinutes() {
-        return minutes;
+    public Integer getMonth() {
+        return month;
     }
 
-    public Integer getSeconds() {
-        return seconds;
-    }
-
-    public Integer getNanos() {
-        return nanos;
+    public Integer getDay() {
+        return day;
     }
 
     @JsonAnyGetter

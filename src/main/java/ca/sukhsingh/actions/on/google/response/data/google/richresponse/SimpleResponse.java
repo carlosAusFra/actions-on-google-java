@@ -1,4 +1,4 @@
-package ca.sukhsingh.actions.on.google.response.data.google.RichResponse;
+package ca.sukhsingh.actions.on.google.response.data.google.richresponse;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
