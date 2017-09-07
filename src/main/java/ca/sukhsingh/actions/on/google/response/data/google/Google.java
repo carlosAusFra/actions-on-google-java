@@ -1,7 +1,7 @@
 
 package ca.sukhsingh.actions.on.google.response.data.google;
 
-import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntent;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntent;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.SimpleResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -34,7 +34,7 @@ public class Google {
     public List<SimpleResponse> noInputPrompts = null;
     @JsonProperty("richResponse")
     public RichResponse richResponse;
-    @JsonProperty("systemIntent")
+    @JsonProperty("systemintent")
     private SystemIntent systemIntent;
 
     public Google() {

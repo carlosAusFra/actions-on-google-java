@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by sukhsingh on 2017-08-29.
@@ -25,7 +26,7 @@ public class ApiAiAppTest {
     private ApiAiApp app;
 
     @Test
-    public void app_tell_with_string() {
+    public void appTellWithString() {
         Response response = app.tell("hello");
         assertNotNull(response);
 //        {
@@ -50,13 +51,13 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void app_tell_with_TextToSpeech_And_DisplayText() {
+    public void appTellWithTextToSpeechAndDisplayText() {
 
         //        {
 //            'speech': 'hello',
 //            'data': {
 //            'google': {
-//                'expect_user_response': false,
+//                'expect_userresponse': false,
 //                'rich_response': {
 //                    'items': [
 //                    {
@@ -84,7 +85,7 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void app_tell_with_SSML_String() {
+    public void appTellWithSSMLString() {
         final String SPEECH = "<speak>hello</speak>";
         Response response = app.tell(SPEECH);
         assertNotNull(response);
@@ -93,18 +94,48 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void app_tell_with_TextToSpeech_SSML_And_DisplayText() {
-        Response response = app.tell("<speak>hello</speak>", "hi");
+    public void appTellWithTextToSpeechSSMLAndDisplayText() {
+// {
+//     "contextOut": [],
+//     "data": {
+//         "google": {
+//             "expectUserResponse": false,
+//                 "richResponse": {
+//                 "items": [{
+//                     "simpleResponse": {
+//                         "ssml": "<speak>hello</speak>",
+//                         "displayText": "simple"
+//                     }
+//                 }],
+//                     "suggestions": []
+//             }
+//         }
+//     }
+// }
+
+        final String SPEECH = "<speak>Hello</speak>";
+        final String DISPLAYTEXT = "Hi";
+        Response response = app.tell(SPEECH, DISPLAYTEXT);
         assertNotNull(response);
+        assertSsmlText(response, SPEECH);
+        assertDisplayText(response, DISPLAYTEXT);
+        assertExpectUserResponseFalse(response);
     }
 
     @Test
-    public void app_tell_with_SimpleResponse() {
-
+    public void appTellWithSimpleResponse() {
+        final String SPEECH = "Hello";
+        final String DISPLAYTEXT = "Hi";
+        SimpleResponse simpleResponse = new SimpleResponse(SPEECH,null, DISPLAYTEXT);
+        Response response = app.tell(simpleResponse);
+        assertNotNull(response);
+        assertExpectUserResponseFalse(response);
+        assertTextToSpeech(response,SPEECH);
+        assertDisplayText(response,DISPLAYTEXT);
     }
 
     @Test
-    public void app_tell_with_RichResponse() {
+    public void appTellWithRichResponse() {
 
         //        {
 //            "speech": "hello",
@@ -157,30 +188,34 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void app_tell_with_One_Null_Param() {
-
+    public void appTellWithOneNullParam() {
+        Response response = app.tell("");
+        assertNull(response);
     }
 
     @Test
-    public void app_tell_with_Two_Null_Params() {
-
+    public void appTellWithTwoNullParams() {
+        Response response = app.tell(null,null);
+        assertNull(response);
     }
 
     @Test
-    public void app_tell_with_String_And_Null_Params() {
-
+    public void appTellWithStringAndNullParams() {
+        Response response = app.tell("hi", null);
+        assertNull(response);
     }
 
     @Test
-    public void app_tell_with_Null_And_String_Params() {
-
+    public void appTellWithNullAndStringParams() {
+        Response response = app.tell(null, "hi");
+        assertNull(response);
     }
 
 
     //********* APP ASK **********
 
     @Test
-    public void app_ask_with_String() {
+    public void appAskWithString() {
 
         Response response;
 
@@ -211,7 +246,7 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void app_ask_with_TextToSpeech_And_DisplayText() {
+    public void appAskWithTextToSpeechAndDisplayText() {
         Response response = app.ask("hello", "hi");
         //  {
         //   'speech': 'hello',
@@ -233,7 +268,7 @@ public class ApiAiAppTest {
         //   },
         //   'contextOut': [
         //     {
-        //       'name': '_actions_on_google_',
+        //       'name': '_actions_ongoogle_',
         //       'lifespan': 100,
         //       'parameters': {}
         //     }
@@ -250,12 +285,20 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void app_ask_with_SimpleResponse() {
+    public void appAskWithSimpleResponse() {
+        final String SPEECH = "Hello";
+        final String DISPLAYTEXT = "Hi";
+        SimpleResponse simpleResponse = new SimpleResponse(SPEECH,null, DISPLAYTEXT);
+        Response response = app.ask(simpleResponse);
+        assertNotNull(response);
+        assertTextToSpeech(response, SPEECH);
+        assertDisplayText(response, DISPLAYTEXT);
+        assertExpectUserResponseTrue(response);
 
     }
 
     @Test
-    public void app_ask_with_RichResponse() {
+    public void appAskWithRichResponse() {
 
         Response response = app.ask(app.buildRichResponse()
                 .addSimpleResponse(new SimpleResponse("hello", "","hi"))
@@ -306,24 +349,27 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void app_ask_with_One_Null_Param() {
-
+    public void appAskWithssml() {
+        final String SPEECH = "<speak>hello</speak>";
+        Response response = app.ask(SPEECH);
+        assertNotNull(response);
+        assertIsSsmlTrue(response);
+        assertExpectUserResponseTrue(response);
+        assertSpeech(response, SPEECH);
     }
 
     @Test
-    public void app_ask_with_Two_Null_Params() {
-
+    public void appAskWithOneNullParam() {
+        Response response = app.ask("");
+        assertNull(response);
     }
 
     @Test
-    public void app_ask_with_String_And_Null_Params() {
-
+    public void appAskWithTwoNullParams() {
+        Response response = app.ask("", "");
+        assertNull(response);
     }
 
-    @Test
-    public void app_ask_with_Null_And_String_Params() {
-
-    }
 
     private void assertSpeech(Response response, String speech) {
         assertEquals(speech, response.getSpeech());

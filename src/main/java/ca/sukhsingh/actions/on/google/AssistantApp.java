@@ -1,9 +1,9 @@
 package ca.sukhsingh.actions.on.google;
 
 import ca.sukhsingh.actions.on.google.response.Response;
-import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.Carousel;
-import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.Item;
-import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntentData;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Item;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntentData;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.BasicCard;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import org.apache.log4j.Logger;
@@ -66,10 +66,10 @@ public class AssistantApp {
     /**
      *
      * @param title {@link String} as title
-     * @return {@link ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List}
+     * @return {@link ca.sukhsingh.actions.on.google.response.data.google.systemintent.List}
      */
-    public ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List buildList(String title) {
-        return new ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List(title);
+    public ca.sukhsingh.actions.on.google.response.data.google.systemintent.List buildList(String title) {
+        return new ca.sukhsingh.actions.on.google.response.data.google.systemintent.List(title);
     }
 
     public Carousel buildCarousel() {
@@ -80,7 +80,7 @@ public class AssistantApp {
      *
      * @param key {@link String}
      * @param synonyms {@link Object} it can be ArrayList, String or String []
-     * @return ca.sukhsingh.actions.on.google.response.data.google.systemIntent.Item
+     * @return ca.sukhsingh.actions.on.google.response.data.google.systemintent.Item
      */
     public Item buildOptionItem(String key, Object synonyms) {
         Item item = new Item();
@@ -117,8 +117,8 @@ public class AssistantApp {
         //TODO dialog state
 
         SystemIntentData systemIntentData = new SystemIntentData(context, permissions);
-        return fulfillPermissionsRequest_(systemIntentData);
+        return fulfillPermissionsRequest(systemIntentData);
     }
 
-    Response fulfillPermissionsRequest_(SystemIntentData systemIntentData) {return null;}
+    Response fulfillPermissionsRequest(SystemIntentData systemIntentData) {return null;}
 }

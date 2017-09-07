@@ -1,4 +1,4 @@
-package ca.sukhsingh.actions.on.google.response.data.google.systemIntent;
+package ca.sukhsingh.actions.on.google.response.data.google.systemintent;
 
 import ca.sukhsingh.actions.on.google.Util;
 import com.fasterxml.jackson.annotation.JsonInclude;

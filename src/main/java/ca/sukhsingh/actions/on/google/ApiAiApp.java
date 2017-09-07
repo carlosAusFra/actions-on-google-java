@@ -5,9 +5,9 @@ import ca.sukhsingh.actions.on.google.response.data.google.Data;
 import ca.sukhsingh.actions.on.google.response.data.google.Google;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.SimpleResponse;
-import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.Carousel;
-import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntent;
-import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntentData;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntent;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntentData;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -22,9 +22,6 @@ import java.util.List;
 public class ApiAiApp extends AssistantApp{
 
     Logger logger = Logger.getLogger(ApiAiApp.class);
-
-    public ApiAiApp() {
-    }
 
     /**
      * Tells the Assistant to render the speech response and close the mic.
@@ -48,8 +45,12 @@ public class ApiAiApp extends AssistantApp{
      * @return {@link Response}
      */
     public Response tell(String textToSpeech, String displayText) {
-        if (Util.isNullOrEmpty(textToSpeech) && Util.isNullOrEmpty(displayText)) {
-            logger.error("textToSpeech and displayText is null or empty");
+        if (Util.isNullOrEmpty(textToSpeech)) {
+            logger.error("textToSpeech is null or empty");
+            return null;
+        }
+        if (Util.isNullOrEmpty(displayText)) {
+            logger.error("displayText is null or empty");
             return null;
         }
         SimpleResponse simpleResponse = new SimpleResponse();
@@ -131,6 +132,10 @@ public class ApiAiApp extends AssistantApp{
      * @return {@link Response}
      */
     public Response ask(String textToSpeech, String displayText) {
+        if (Util.isNullOrEmpty(textToSpeech) && Util.isNullOrEmpty(displayText)) {
+            logger.error("TextToSpeech or displat text is null/empty");
+            return null;
+        }
         SimpleResponse simpleResponse = new SimpleResponse();
         simpleResponse.setDisplayText(displayText);
         if (Util.isSsml(textToSpeech)) {
@@ -167,10 +172,10 @@ public class ApiAiApp extends AssistantApp{
      * Asks to collect the user's input with a list.
      *
      * @param inputPrompt {@link String}|{@link RichResponse}|{@link SimpleResponse} inputPrompt
-     * @param list {@link ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List} list
+     * @param list {@link ca.sukhsingh.actions.on.google.response.data.google.systemintent.List} list
      * @return {@link Response}
      */
-    public Response askWithList(Object inputPrompt, ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List list) {
+    public Response askWithList(Object inputPrompt, ca.sukhsingh.actions.on.google.response.data.google.systemintent.List list) {
         if (Util.isNull(inputPrompt)) {
             logger.error("Invalid inputpromt");
             return null;
@@ -260,9 +265,9 @@ public class ApiAiApp extends AssistantApp{
      * @param lifespan int lifespan of context
      * @param parameters {@link Object} additional parameters
      */
-    public void setContext(String name, int lifespan, Object parameters) {
-
-    }
+//    public void setContext(String name, int lifespan, Object parameters) {
+//
+//    }
 
     // ---------------------------------------------------------------------------
     //                   Private Helpers
@@ -352,7 +357,7 @@ public class ApiAiApp extends AssistantApp{
      * @return {@link Response}
      */
     @Override
-    Response fulfillPermissionsRequest_(SystemIntentData systemIntentData) {
+    Response fulfillPermissionsRequest(SystemIntentData systemIntentData) {
         Response response = new Response();
         Data data = new Data();
         Google google;
