@@ -84,9 +84,9 @@ public class RichResponse {
                 return this;
             }
         }
-        SimpleResponse _simpleResponse = buildSimpleResponseHelper_(simpleResponse);
+        SimpleResponse simpleResponse_ = buildSimpleResponseHelper(simpleResponse);
         //TODO Check first if needs to replace BasicCard at beginning of items list
-        this.items.add(new Item(_simpleResponse));
+        this.items.add(new Item(simpleResponse_));
         return this;
     }
 
@@ -170,7 +170,7 @@ public class RichResponse {
      * @return {Object} Appropriate SimpleResponse object.
      * @private
      */
-    private SimpleResponse buildSimpleResponseHelper_(Object response) {
+    private SimpleResponse buildSimpleResponseHelper(Object response) {
         SimpleResponse simpleResponseObj = new SimpleResponse();
 
         if (response instanceof String) {

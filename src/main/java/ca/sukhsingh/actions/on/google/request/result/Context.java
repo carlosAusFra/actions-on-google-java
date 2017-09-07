@@ -15,4 +15,27 @@ public class Context {
     @JsonProperty("lifespan")
     private Integer lifespan;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ContextParameters getContextParameters() {
+        return contextParameters;
+    }
+
+    public void setContextParameters(ContextParameters contextParameters) {
+        this.contextParameters = contextParameters;
+    }
+
+    public Integer getLifespan() {
+        return lifespan;
+    }
+
+    public void setLifespan(Integer lifespan) {
+        this.lifespan = lifespan;
+    }
 }

@@ -103,7 +103,7 @@ public class Request {
             return null;
         }
 
-        Argument argument = findArgument_(agrName);
+        Argument argument = findArgument(agrName);
         if (isNull(argument)) {
             logger.error("Failed to get argument value: " + agrName);
             return null;
@@ -254,7 +254,7 @@ public class Request {
         return null;
     }
     
-    private Argument findArgument_(String...targets) {
+    private Argument findArgument(String...targets) {
        // Argument argument = new Argument();
         if (isNotNull(getOriginalRequest().getData()) && isNotNull(getOriginalRequest().getData().getInputs())) {
             for (Input input : getOriginalRequest().getData().getInputs()) {
