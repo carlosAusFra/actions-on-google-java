@@ -19,8 +19,6 @@ import static ca.sukhsingh.actions.on.google.Util.*;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BasicCard {
 
-    Logger logger = Logger.getLogger(BasicCard.class);
-
     @JsonProperty("title")
     private String title;
     @JsonProperty("subtitle")
@@ -31,6 +29,8 @@ public class BasicCard {
     private Image image;
     @JsonProperty("buttons")
     private List<Button> buttons;
+
+    Logger logger = Logger.getLogger(BasicCard.class);
 
     public BasicCard() {
         this.title = null;
@@ -171,16 +171,15 @@ public class BasicCard {
 
     public class Button {
 
+        @JsonProperty("title")
+        private String title;
+        @JsonProperty("openUrlAction")
+        private OpenUrlAction openUrlAction;
+
         public Button(String title, OpenUrlAction openUrlAction) {
             this.title = title;
             this.openUrlAction = openUrlAction;
         }
-
-        @JsonProperty("title")
-        private String title;
-
-        @JsonProperty("openUrlAction")
-        private OpenUrlAction openUrlAction;
     }
 
     public class Image {

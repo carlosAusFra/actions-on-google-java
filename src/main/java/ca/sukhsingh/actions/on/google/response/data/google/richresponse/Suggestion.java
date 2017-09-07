@@ -9,12 +9,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Suggestion {
 
+    @JsonProperty("title")
+    private String title;
+
     public Suggestion(String title) {
         this.title = title;
     }
-
-    @JsonProperty("title")
-    private String title;
 
     public String getTitle() {
         return title;

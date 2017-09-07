@@ -85,9 +85,9 @@ public class Request {
         return originalRequest.getData().getDevice().getLocation().getCoordinates();
     }
 
-    public void getInputType() {
-
-    }
+//    public void getInputType() {
+//
+//    }
 
     /**
      * Get the argument value by name from the current intent.
@@ -115,29 +115,29 @@ public class Request {
         //TODO if (!this.isNotApiVersionOne_()) { 1235
     }
 
-    public void getTransactionRequirementsResult() {
-
-    }
-
-    public void getDeliveryAddress() {
-
-    }
-
-    public void getTransactionDecision() {
-
-    }
-
-    public void getUserConfirmation() {
-
-    }
-
-    public void getDateTime() {
-
-    }
-
-    public void getSignInStatus() {
-
-    }
+//    public void getTransactionRequirementsResult() {
+//
+//    }
+//
+//    public void getDeliveryAddress() {
+//
+//    }
+//
+//    public void getTransactionDecision() {
+//
+//    }
+//
+//    public void getUserConfirmation() {
+//
+//    }
+//
+//    public void getDateTime() {
+//
+//    }
+//
+//    public void getSignInStatus() {
+//
+//    }
 
     /**
      * Returns true if user device has a given surface capability.
