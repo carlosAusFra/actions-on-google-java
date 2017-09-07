@@ -12,3 +12,8 @@ __Maven:__
       <artifactId>actions-on-google</artifactId>
       <version>1.0</version>
     </dependency>
+
+
+__Gradle:__
+    
+    compile 'ca.sukhsingh.actions:actions-on-google:1.0'
