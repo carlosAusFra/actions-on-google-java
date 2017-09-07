@@ -12,14 +12,6 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SystemIntentData {
 
-    public SystemIntentData(String optContext, List<String> permissions) {
-        this.optContext = optContext;
-        this.permissions = permissions;
-    }
-
-    public SystemIntentData() {
-    }
-
     @JsonProperty("@type")
     private String type;
     @JsonProperty("optContext")
@@ -30,6 +22,14 @@ public class SystemIntentData {
     private ca.sukhsingh.actions.on.google.response.data.google.systemintent.List listSelect;
     @JsonProperty("carouselSelect")
     private Carousel carousel;
+
+    public SystemIntentData() {
+    }
+
+    public SystemIntentData(String optContext, List<String> permissions) {
+        this.optContext = optContext;
+        this.permissions = permissions;
+    }
 
     public String getType() {
         return type;

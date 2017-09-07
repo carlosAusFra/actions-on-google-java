@@ -360,7 +360,7 @@ public class ApiAiApp extends AssistantApp{
      * @return {@link Response}
      */
     @Override
-    Response fulfillPermissionsRequest_(SystemIntentData systemIntentData) {
+    Response fulfillPermissionsRequest(SystemIntentData systemIntentData) {
         Response response = new Response();
         Data data = new Data();
         Google google;

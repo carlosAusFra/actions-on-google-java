@@ -117,8 +117,8 @@ public class AssistantApp {
         //TODO dialog state
 
         SystemIntentData systemIntentData = new SystemIntentData(context, permissions);
-        return fulfillPermissionsRequest_(systemIntentData);
+        return fulfillPermissionsRequest(systemIntentData);
     }
 
-    Response fulfillPermissionsRequest_(SystemIntentData systemIntentData) {return null;}
+    Response fulfillPermissionsRequest(SystemIntentData systemIntentData) {return null;}
 }
