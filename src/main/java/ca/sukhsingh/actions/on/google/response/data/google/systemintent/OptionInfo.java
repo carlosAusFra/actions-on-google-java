@@ -1,5 +1,5 @@
 
-package ca.sukhsingh.actions.on.google.response.data.google.systemIntent;
+package ca.sukhsingh.actions.on.google.response.data.google.systemintent;
 
 import java.util.ArrayList;
 import java.util.List;

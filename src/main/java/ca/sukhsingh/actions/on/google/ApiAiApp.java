@@ -5,9 +5,9 @@ import ca.sukhsingh.actions.on.google.response.data.google.Data;
 import ca.sukhsingh.actions.on.google.response.data.google.Google;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.SimpleResponse;
-import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.Carousel;
-import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntent;
-import ca.sukhsingh.actions.on.google.response.data.google.systemIntent.SystemIntentData;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntent;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntentData;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -175,10 +175,10 @@ public class ApiAiApp extends AssistantApp{
      * Asks to collect the user's input with a list.
      *
      * @param inputPrompt {@link String}|{@link RichResponse}|{@link SimpleResponse} inputPrompt
-     * @param list {@link ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List} list
+     * @param list {@link ca.sukhsingh.actions.on.google.response.data.google.systemintent.List} list
      * @return {@link Response}
      */
-    public Response askWithList(Object inputPrompt, ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List list) {
+    public Response askWithList(Object inputPrompt, ca.sukhsingh.actions.on.google.response.data.google.systemintent.List list) {
         if (Util.isNull(inputPrompt)) {
             logger.error("Invalid inputpromt");
             return null;

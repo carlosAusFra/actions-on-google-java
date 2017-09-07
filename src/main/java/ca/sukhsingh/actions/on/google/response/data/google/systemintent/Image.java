@@ -1,5 +1,5 @@
 
-package ca.sukhsingh.actions.on.google.response.data.google.systemIntent;
+package ca.sukhsingh.actions.on.google.response.data.google.systemintent;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,5 +20,13 @@ public class Image {
     public Image(String url, String accessibilityText) {
         this.url = url;
         this.accessibilityText = accessibilityText;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getAccessibilityText() {
+        return accessibilityText;
     }
 }

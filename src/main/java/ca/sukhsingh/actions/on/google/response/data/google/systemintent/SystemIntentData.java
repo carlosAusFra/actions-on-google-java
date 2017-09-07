@@ -1,5 +1,5 @@
 
-package ca.sukhsingh.actions.on.google.response.data.google.systemIntent;
+package ca.sukhsingh.actions.on.google.response.data.google.systemintent;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -27,7 +27,7 @@ public class SystemIntentData {
     @JsonProperty("permissions")
     private List<String> permissions ;
     @JsonProperty("listSelect")
-    private ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List listSelect;
+    private ca.sukhsingh.actions.on.google.response.data.google.systemintent.List listSelect;
     @JsonProperty("carouselSelect")
     private Carousel carousel;
 
@@ -55,11 +55,11 @@ public class SystemIntentData {
         this.permissions = permissions;
     }
 
-    public ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List getListSelect() {
+    public ca.sukhsingh.actions.on.google.response.data.google.systemintent.List getListSelect() {
         return listSelect;
     }
 
-    public void setListSelect(ca.sukhsingh.actions.on.google.response.data.google.systemIntent.List listSelect) {
+    public void setListSelect(ca.sukhsingh.actions.on.google.response.data.google.systemintent.List listSelect) {
         this.listSelect = listSelect;
     }
 
