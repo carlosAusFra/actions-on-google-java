@@ -6,17 +6,11 @@ package ca.sukhsingh.actions.on.google;
 public class Util {
 
     public static boolean isNull(Object obj) {
-        if (obj == null) {
-            return true;
-        }
-        return false;
+        return obj == null;
     }
 
     public static boolean isNotNull(Object obj) {
-        if (obj != null) {
-            return true;
-        }
-        return false;
+        return obj != null;
     }
 
     public static boolean isNullOrEmpty(String string) {

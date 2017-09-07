@@ -23,9 +23,6 @@ public class ApiAiApp extends AssistantApp{
 
     Logger logger = Logger.getLogger(ApiAiApp.class);
 
-    public ApiAiApp() {
-    }
-
     /**
      * Tells the Assistant to render the speech response and close the mic.
      *
@@ -268,9 +265,9 @@ public class ApiAiApp extends AssistantApp{
      * @param lifespan int lifespan of context
      * @param parameters {@link Object} additional parameters
      */
-    public void setContext(String name, int lifespan, Object parameters) {
-
-    }
+//    public void setContext(String name, int lifespan, Object parameters) {
+//
+//    }
 
     // ---------------------------------------------------------------------------
     //                   Private Helpers
