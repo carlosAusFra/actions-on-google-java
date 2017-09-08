@@ -1,6 +1,5 @@
 package ca.sukhsingh.actions.on.google.response.data.google.systemintent;
 
-import ca.sukhsingh.actions.on.google.Util;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -30,7 +29,7 @@ public class List {
 
     public List(Object list) {
         this.items = new ArrayList<>();
-        if (Util.isNotNull(list)) {
+        if (isNotNull(list)) {
             if (list instanceof String) {
                 this.title = (String) list;
             } else if (list instanceof ArrayList) {
