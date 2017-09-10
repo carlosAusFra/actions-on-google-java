@@ -27,7 +27,7 @@ __Gradle:__
     
     compile 'ca.sukhsingh.actions:actions-on-google:1.0'
 
-## Spring-boot-example
+## Spring boot example
     
     import ca.sukhsingh.actions.on.google.ApiAiApp;
     import ca.sukhsingh.actions.on.google.request.Request;
