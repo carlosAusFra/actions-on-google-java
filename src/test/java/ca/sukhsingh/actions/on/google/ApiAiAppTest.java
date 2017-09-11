@@ -6,15 +6,13 @@ import ca.sukhsingh.actions.on.google.response.data.google.richresponse.Suggesti
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by sukhsingh on 2017-08-29.
@@ -51,9 +49,19 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void appTellWithTextToSpeechAndDisplayText() {
+    public void appTellWithSSMLString() {
+        final String SPEECH = "<speak>hello</speak>";
+        Response response = app.tell(SPEECH);
+        assertNotNull(response);
+        assertSpeech(response, SPEECH);
+        assertIsSsmlTrue(response);
+    }
 
-        //        {
+    @Test
+    public void appTellWithTextToSpeechAndDisplayText() {
+        Response response = app.tell("hello", "hi");
+
+//        {
 //            'speech': 'hello',
 //            'data': {
 //            'google': {
@@ -74,7 +82,6 @@ public class ApiAiAppTest {
 //            'contextOut': []
 //        }
 
-        Response response = app.tell("hello", "hi");
         assertNotNull(response);
         assertSpeech(response, "hello");
         assertExpectUserResponseFalse(response);
@@ -85,16 +92,11 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void appTellWithSSMLString() {
-        final String SPEECH = "<speak>hello</speak>";
-        Response response = app.tell(SPEECH);
-        assertNotNull(response);
-        assertSpeech(response, SPEECH);
-        assertIsSsmlTrue(response);
-    }
-
-    @Test
     public void appTellWithTextToSpeechSSMLAndDisplayText() {
+        final String SPEECH = "<speak>Hello</speak>";
+        final String DISPLAYTEXT = "Hi";
+        Response response = app.tell(SPEECH, DISPLAYTEXT);
+
 // {
 //     "contextOut": [],
 //     "data": {
@@ -112,10 +114,6 @@ public class ApiAiAppTest {
 //         }
 //     }
 // }
-
-        final String SPEECH = "<speak>Hello</speak>";
-        final String DISPLAYTEXT = "Hi";
-        Response response = app.tell(SPEECH, DISPLAYTEXT);
         assertNotNull(response);
         assertSsmlText(response, SPEECH);
         assertDisplayText(response, DISPLAYTEXT);
@@ -124,6 +122,19 @@ public class ApiAiAppTest {
 
     @Test
     public void appTellWithSimpleResponse() {
+        final String SPEECH = "Hello";
+        final String DISPLAYTEXT = "Hi";
+        SimpleResponse simpleResponse = new SimpleResponse(SPEECH, DISPLAYTEXT);
+        Response response = app.tell(simpleResponse);
+        assertNotNull(response);
+        assertExpectUserResponseFalse(response);
+        assertTextToSpeech(response,SPEECH);
+        assertSsmlText(response,null);
+        assertDisplayText(response,DISPLAYTEXT);
+    }
+
+    @Test
+    public void appTellWithSimpleResponseWithSSML() {
         final String SPEECH = "<speak>Hello</speak>";
         final String DISPLAYTEXT = "Hi";
         SimpleResponse simpleResponse = new SimpleResponse(SPEECH, DISPLAYTEXT);
@@ -137,8 +148,11 @@ public class ApiAiAppTest {
 
     @Test
     public void appTellWithRichResponse() {
+        Response response = app.tell(app.buildRichResponse()
+                .addSimpleResponse("hello", "hi")
+                .addSuggestions(new String [] {"say this", "say that"}));
 
-        //        {
+//        {
 //            "speech": "hello",
 //            "data": {
 //            "google": {
@@ -162,9 +176,7 @@ public class ApiAiAppTest {
 //            "contextOut": []
 //        }
 
-        Response response = app.tell(app.buildRichResponse()
-                .addSimpleResponse("hello", "hi")
-                .addSuggestions(new String [] {"say this", "say that"}));
+
 
         assertNotNull(response);
         assertSpeech(response, "hello");
@@ -174,15 +186,24 @@ public class ApiAiAppTest {
         assertDisplayText(response, "hi");
         assertSuggestions(response, "say this", "say that");
 
-        response = app.tell(app.buildRichResponse()
-                .addSimpleResponse(new SimpleResponse("hello", "hi"))
+    }
+
+    @Test
+    public void appTellWithRichResponseWithSSML() {
+
+        //SimpleResponse with SSML
+
+        final String SSML = "<speak>hello</speak>";
+
+        Response response = app.tell(app.buildRichResponse()
+                .addSimpleResponse(new SimpleResponse(SSML, "hi"))
                 .addSuggestions(suggestions("say this", "say that")));
 
         assertNotNull(response);
-        assertSpeech(response, "hello");
         assertExpectUserResponseFalse(response);
         assertNotNullRichResponse(response);
-        assertTextToSpeech(response, "hello");
+        assertTextToSpeech(response, null);
+        assertSsmlText(response, SSML);
         assertDisplayText(response, "hi");
         assertSuggestions(response, "say this", "say that");
 
@@ -247,6 +268,25 @@ public class ApiAiAppTest {
     }
 
     @Test
+    public void appAskWithStringWithSSML() {
+
+        Response response;
+
+        response = app.ask("<speak>hello</speak>");
+        assertNotNull(response);
+        assertSpeech(response, "<speak>hello</speak>");
+        assertExpectUserResponseTrue(response);
+        assertIsSsmlTrue(response);
+
+    }
+
+    //TODO ask with textToSpeech and with no inputPrompts
+    @Test
+    public void appAskWithTextToSpeechAndNoInputPrompts() throws Exception {
+
+    }
+
+    @Test
     public void appAskWithTextToSpeechAndDisplayText() {
         Response response = app.ask("hello", "hi");
         //  {
@@ -282,6 +322,33 @@ public class ApiAiAppTest {
         assertNotNullRichResponse(response);
         assertTextToSpeech(response, "hello");
         assertDisplayText(response, "hi");
+
+    }
+
+    @Test
+    public void appAskWithTextToSpeechAndDisplayTextWithSSML() {
+        final String SSML = "<speak>Hello</speak>";
+        Response response = app.ask(SSML, "hi");
+
+        assertNotNull(response);
+        assertExpectUserResponseTrue(response);
+        assertNotNullRichResponse(response);
+        assertSsmlText(response, SSML);
+        assertTextToSpeech(response, null);
+        assertDisplayText(response, "hi");
+    }
+
+    @Test
+    public void appAskWithSimpleResponseWithSSML() {
+        final String SSML = "<speak>Hello</speak>";
+        final String DISPLAYTEXT = "Hi";
+        SimpleResponse simpleResponse = new SimpleResponse(SSML, DISPLAYTEXT);
+        Response response = app.ask(simpleResponse);
+        assertNotNull(response);
+        assertTextToSpeech(response, null);
+        assertSsmlText(response, SSML);
+        assertDisplayText(response, DISPLAYTEXT);
+        assertExpectUserResponseTrue(response);
 
     }
 
@@ -370,6 +437,36 @@ public class ApiAiAppTest {
         Response response = app.ask("", "");
         assertNull(response);
     }
+
+    // ****** ASK WITH LIST *******
+
+    /*
+    askWithList(inputPrompt, list)
+        1. null inputPrompt
+        2. null list
+        3. list < 2
+        4. InputPrompt
+            a. as string
+                i.  string as textToSpeech
+                ii. String as SSML
+            b. as SimpleResponse
+            c. as RichResponse
+     */
+
+
+    // ****** ASK WITH CAROUSEL *******
+    /*
+    askWithCarousel(inputPrompt, carousel)
+        1. null inputPrompt
+        2. null list
+        3. list < 2
+        4. InputPrompt
+            a. as string
+                i.  string as textToSpeech
+                ii. String as SSML
+            b. as SimpleResponse
+            c. as RichResponse
+     */
 
 
     private void assertSpeech(Response response, String speech) {
