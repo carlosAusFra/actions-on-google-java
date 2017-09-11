@@ -34,7 +34,7 @@ public class Google {
     public List<SimpleResponse> noInputPrompts = null;
     @JsonProperty("richResponse")
     public RichResponse richResponse;
-    @JsonProperty("systemintent")
+    @JsonProperty("systemIntent")
     private SystemIntent systemIntent;
 
     public Google() {
