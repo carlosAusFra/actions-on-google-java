@@ -4,6 +4,7 @@ package ca.sukhsingh.actions.on.google.response.data.google.richresponse;
  * Created by sukhsingh on 2017-08-26.
  */
 
+import ca.sukhsingh.actions.on.google.Util;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.log4j.Logger;
@@ -87,6 +88,23 @@ public class RichResponse {
         SimpleResponse simpleResponse_ = buildSimpleResponseHelper(simpleResponse);
         //TODO Check first if needs to replace BasicCard at beginning of items list
         this.items.add(new Item(simpleResponse_));
+        return this;
+    }
+
+    public RichResponse addSimpleResponse(String textOrSsml, String displayText) {
+        if (Util.isNullOrEmpty(textOrSsml)) {
+            logger.error("Invalid textOrSsml");
+            return null;
+        }
+
+        if (Util.isNullOrEmpty(displayText)) {
+            logger.error("Invalid displayText");
+            return null;
+        }
+
+        SimpleResponse simpleResponse = new SimpleResponse(textOrSsml, displayText);
+        //TODO Check first if needs to replace BasicCard at beginning of items list
+        this.items.add(new Item(simpleResponse));
         return this;
     }
 
@@ -175,14 +193,14 @@ public class RichResponse {
 
         if (response instanceof String) {
             String _response = response.toString();
-            return isSsml(_response)
-                    ? new SimpleResponse(null, _response, null)
-                    : new SimpleResponse(_response, null, null);
+            return new SimpleResponse(_response, null);
         } else if (response instanceof SimpleResponse) {
             SimpleResponse response_ = (SimpleResponse) response;
-            return isSsml(response_.getSsml())
-                    ? new SimpleResponse(null, response_.getSsml(), response_.getDisplayText())
-                    : new SimpleResponse(response_.getTextToSpeech(), null, response_.getDisplayText());
+            if (Util.isNotNull(response_.getTextToSpeech())) {
+                return new SimpleResponse(response_.getTextToSpeech(), response_.getDisplayText());
+            }
+
+            return new SimpleResponse(response_.getSsml(), response_.getDisplayText());
         } else {
             logger.error("SimpleResponse requires a speech parameter.");
             return null;

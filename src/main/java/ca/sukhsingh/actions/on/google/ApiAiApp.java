@@ -304,14 +304,14 @@ public class ApiAiApp extends AssistantApp{
                 List<SimpleResponse> finalNoInputPrompts = new ArrayList<>();
                 if (!Util.isNull(noInputPrompts)){
                     for (String prompt: noInputPrompts) {
-                        finalNoInputPrompts.add(new SimpleResponse(null, prompt, null));
+                        finalNoInputPrompts.add(new SimpleResponse(prompt, null));
                     }
                 }
                 google.setNoInputPrompts(finalNoInputPrompts);
             } else if (!Util.isNull(noInputPrompts)) {
                 List<SimpleResponse> finalNoInputPrompts = new ArrayList<>();
                 for (String prompt: noInputPrompts) {
-                    finalNoInputPrompts.add(new SimpleResponse(prompt, null, null));
+                    finalNoInputPrompts.add(new SimpleResponse(prompt, null));
                 }
                 google.setNoInputPrompts(finalNoInputPrompts);
                 google.setSsml(false);

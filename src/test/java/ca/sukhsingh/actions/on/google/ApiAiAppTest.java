@@ -124,13 +124,14 @@ public class ApiAiAppTest {
 
     @Test
     public void appTellWithSimpleResponse() {
-        final String SPEECH = "Hello";
+        final String SPEECH = "<speak>Hello</speak>";
         final String DISPLAYTEXT = "Hi";
-        SimpleResponse simpleResponse = new SimpleResponse(SPEECH,null, DISPLAYTEXT);
+        SimpleResponse simpleResponse = new SimpleResponse(SPEECH, DISPLAYTEXT);
         Response response = app.tell(simpleResponse);
         assertNotNull(response);
         assertExpectUserResponseFalse(response);
-        assertTextToSpeech(response,SPEECH);
+        assertTextToSpeech(response,null);
+        assertSsmlText(response,SPEECH);
         assertDisplayText(response,DISPLAYTEXT);
     }
 
@@ -162,7 +163,7 @@ public class ApiAiAppTest {
 //        }
 
         Response response = app.tell(app.buildRichResponse()
-                .addSimpleResponse(new SimpleResponse("hello", "", "hi"))
+                .addSimpleResponse("hello", "hi")
                 .addSuggestions(new String [] {"say this", "say that"}));
 
         assertNotNull(response);
@@ -174,7 +175,7 @@ public class ApiAiAppTest {
         assertSuggestions(response, "say this", "say that");
 
         response = app.tell(app.buildRichResponse()
-                .addSimpleResponse(new SimpleResponse("hello", "", "hi"))
+                .addSimpleResponse(new SimpleResponse("hello", "hi"))
                 .addSuggestions(suggestions("say this", "say that")));
 
         assertNotNull(response);
@@ -288,7 +289,7 @@ public class ApiAiAppTest {
     public void appAskWithSimpleResponse() {
         final String SPEECH = "Hello";
         final String DISPLAYTEXT = "Hi";
-        SimpleResponse simpleResponse = new SimpleResponse(SPEECH,null, DISPLAYTEXT);
+        SimpleResponse simpleResponse = new SimpleResponse(SPEECH, DISPLAYTEXT);
         Response response = app.ask(simpleResponse);
         assertNotNull(response);
         assertTextToSpeech(response, SPEECH);
@@ -301,7 +302,7 @@ public class ApiAiAppTest {
     public void appAskWithRichResponse() {
 
         Response response = app.ask(app.buildRichResponse()
-                .addSimpleResponse(new SimpleResponse("hello", "","hi"))
+                .addSimpleResponse(new SimpleResponse("hello","hi"))
                 .addSuggestions(Arrays.asList("say this", "or this")));
 
         //  {
