@@ -140,6 +140,26 @@ public class RichResponse {
         return this;
     }
 
+    public RichResponse addSuggestions(String...suggestions) {
+
+        if (suggestions == null) {
+            logger.error("Invalid suggestions");
+            return null;
+        }
+
+        if (suggestions instanceof String[]) {
+            String [] _suggestions = (String [])suggestions;
+            for (String s : _suggestions) {
+                this.suggestions.add(new Suggestion(s));
+            }
+        } else {
+            logger.error("Suggestion should be on of these type : String|ArrayList|List|Array");
+            return null;
+        }
+
+        return this;
+    }
+
     public RichResponse addSuggestionLink(String destinationName, String suggestionUrl) {
         if ((destinationName == null || destinationName.isEmpty())) {
             logger.error("destinationName cannot be empty");

@@ -163,7 +163,7 @@ public class ApiAiAppTest {
 
         Response response = app.tell(app.buildRichResponse()
                 .addSimpleResponse(new SimpleResponse("hello", "", "hi"))
-                .addSuggestions(new String [] {"say this", "say that"}));
+                .addSuggestions("say this", "say that"));
 
         assertNotNull(response);
         assertSpeech(response, "hello");
