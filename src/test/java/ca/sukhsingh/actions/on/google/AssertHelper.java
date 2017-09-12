@@ -16,22 +16,22 @@ import static org.junit.Assert.assertNotNull;
 public class AssertHelper {
 
     protected void assertSpeech(Response response, String speech) {
-        assertEquals(speech, response.getSpeech());
+        assertEquals("Speech test",speech, response.getSpeech());
     }
 
     protected void assertExpectUserResponseFalse(Response response) {
-        assertEquals(false, response.getData().getGoogle().expectUserResponse);
+        assertEquals("Expect User Response False",false, response.getData().getGoogle().expectUserResponse);
     }
     protected void assertExpectUserResponseTrue(Response response) {
-        assertEquals(true, response.getData().getGoogle().expectUserResponse);
+        assertEquals("Expect User Response True",true, response.getData().getGoogle().expectUserResponse);
     }
 
     protected void assertIsSsmlFalse(Response response) {
-        assertEquals(false, response.getData().getGoogle().isSsml);
+        assertEquals("Is Ssml False",false, response.getData().getGoogle().isSsml);
     }
 
     protected void assertIsSsmlTrue(Response response) {
-        assertEquals(true, response.getData().getGoogle().isSsml);
+        assertEquals("Is Ssml True",true, response.getData().getGoogle().isSsml);
     }
 
     protected void assertNotNullRichResponse(Response response) {
@@ -43,21 +43,21 @@ public class AssertHelper {
     }
 
     protected void assertTextToSpeech(Response response, String speech) {
-        assertEquals(speech, response.getData().getGoogle().getRichResponse().getItems().get(0).getSimpleResponse().getTextToSpeech());
+        assertEquals("Text to speech", speech, response.getData().getGoogle().getRichResponse().getItems().get(0).getSimpleResponse().getTextToSpeech());
     }
 
     protected void assertDisplayText(Response response, String displayText) {
-        assertEquals(displayText, response.getData().getGoogle().getRichResponse().getItems().get(0).getSimpleResponse().getDisplayText());
+        assertEquals("Display Text",displayText, response.getData().getGoogle().getRichResponse().getItems().get(0).getSimpleResponse().getDisplayText());
     }
 
     protected void assertSsmlText(Response response, String ssmlText) {
-        assertEquals(ssmlText, response.getData().getGoogle().getRichResponse().getItems().get(0).getSimpleResponse().getSsml());
+        assertEquals("SSML Text",ssmlText, response.getData().getGoogle().getRichResponse().getItems().get(0).getSimpleResponse().getSsml());
     }
 
     protected void assertSuggestions(Response response, String ...suggestions) {
         List<Suggestion> suggestionList = response.getData().getGoogle().getRichResponse().getSuggestions();
         for (int i=0; i< suggestions.length; i++) {
-            assertEquals(suggestions[i], suggestionList.get(i).getTitle());
+            assertEquals("Suggestion Title", suggestions[i], suggestionList.get(i).getTitle());
         }
     }
 
@@ -67,5 +67,29 @@ public class AssertHelper {
             suggestions.add(new Suggestion(suggestion));
         }
         return suggestions;
+    }
+
+    protected void assertOptionIntent(Response response) {
+        assertEquals("System Intent : OPTION",AssistantApp.StandardIntents.OPTION, response.getData().getGoogle().getSystemIntent().getIntent());
+    }
+
+    protected void assertOptionSystemIntentData(Response response) {
+        assertEquals("System Intent Data type",AssistantApp.InputValueDataTypes_.OPTION, response.getData().getGoogle().getSystemIntent().getData().getType());
+    }
+
+    protected void assertListSelect(Response response, ca.sukhsingh.actions.on.google.response.data.google.systemintent.List list) {
+
+        ca.sukhsingh.actions.on.google.response.data.google.systemintent.List responseList = response.getData().getGoogle().getSystemIntent().getData().getListSelect();
+        assertNotNull(responseList);
+        assertNotNull(responseList);
+        assertEquals("List Select title", list.getTitle(), responseList.getTitle());
+        for (int i=0; i<responseList.getItems().size(); i++) {
+            assertEquals("List Select Item title", list.getItems().get(1).getTitle(), responseList.getItems().get(1).getTitle());
+            assertEquals("List Select Item Description", list.getItems().get(1).getDescription(), responseList.getItems().get(1).getDescription());
+            assertEquals("List Select Item Image url", list.getItems().get(1).getImage().getUrl(), responseList.getItems().get(1).getImage().getUrl());
+            assertEquals("List Select Item Image AccessibilityText", list.getItems().get(1).getImage().getAccessibilityText(), responseList.getItems().get(1).getImage().getAccessibilityText());
+            assertEquals("List Select Item OptionInfo key", list.getItems().get(1).getOptionInfo().getKey(), responseList.getItems().get(1).getOptionInfo().getKey());
+            assertEquals("List Select Item OptionInfo Synonyms", list.getItems().get(1).getOptionInfo().getSynonyms(), responseList.getItems().get(1).getOptionInfo().getSynonyms());
+        }
     }
 }

@@ -74,6 +74,10 @@ public class List {
         return this;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public java.util.List<Item> getItems() {
         return items;
     }

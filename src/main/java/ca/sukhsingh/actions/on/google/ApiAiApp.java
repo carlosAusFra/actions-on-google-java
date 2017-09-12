@@ -30,7 +30,8 @@ public class ApiAiApp extends AssistantApp{
      * @return {@link Response}
      */
     public Response tell(String textToSpeech) {
-        if (textToSpeech.isEmpty()) {
+        if (Util.isNullOrEmpty(textToSpeech)) {
+            logger.error("Invalid text to speech");
             return null;
         }
 
@@ -103,7 +104,7 @@ public class ApiAiApp extends AssistantApp{
      * @return {@link Response}
      */
     public Response ask(String textToSpeech, String [] noInputPrompts) {
-        if (textToSpeech.isEmpty()) {
+        if (Util.isNullOrEmpty(textToSpeech)) {
             return null;
         }
 

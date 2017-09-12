@@ -95,4 +95,8 @@ public class Google {
     public List<SimpleResponse> getNoInputPrompts() {
         return noInputPrompts;
     }
+
+    public SystemIntent getSystemIntent() {
+        return systemIntent;
+    }
 }

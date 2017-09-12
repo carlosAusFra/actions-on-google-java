@@ -4,12 +4,14 @@ import ca.sukhsingh.actions.on.google.response.Response;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.BasicCard;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.SimpleResponse;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Item;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
@@ -213,8 +215,29 @@ public class ApiAiAppTest extends AssertHelper {
     }
 
     @Test
-    public void appTellWithOneNullParam()throws Exception {
+    public void appTellWithEmptyParam()throws Exception {
         Response response = app.tell("");
+        assertNull(response);
+    }
+
+    @Test
+    public void appTellWithOneNullStringParam()throws Exception {
+        String string = null;
+        Response response = app.tell(string);
+        assertNull(response);
+    }
+
+    @Test
+    public void appTellWithOneNullSimpleResParam()throws Exception {
+        SimpleResponse simpleResponse = null;
+        Response response = app.tell(simpleResponse);
+        assertNull(response);
+    }
+
+    @Test
+    public void appTellWithOneNullRichResParam()throws Exception {
+        RichResponse richResponse = null;
+        Response response = app.tell(richResponse);
         assertNull(response);
     }
 
@@ -300,6 +323,18 @@ public class ApiAiAppTest extends AssertHelper {
         assertIsSsmlTrue(response);
         assertEquals("Can you say that again ?", response.getData().getGoogle().getNoInputPrompts().get(0).getTextToSpeech());
         assertEquals("What ?", response.getData().getGoogle().getNoInputPrompts().get(1).getTextToSpeech());
+    }
+
+    @Test
+    public void appAskWithEmptyTextToSpeechAndNoInputPrompts() throws Exception {
+        Response response = app.ask("", new String[] {"Can you say that again ?", "What ?"});
+        assertNull(response);
+    }
+
+    @Test
+    public void appAskWithNullTextToSpeechAndNoInputPrompts() throws Exception {
+        Response response = app.ask(null, new String[] {"Can you say that again ?", "What ?"});
+        assertNull(response);
     }
 
     @Test
@@ -482,18 +517,92 @@ public class ApiAiAppTest extends AssertHelper {
     }
 
     @Test
-    public void askWithListWithListSizeInvalid() throws Exception {}
-
-    @Test
-    public void askWithListWhereInputPromptParamIsString() throws Exception {
+    public void askWithListWithListSizeInvalid() throws Exception {
+        List list = new List();
+        java.util.List<Item> itemList = new ArrayList<>();
+        itemList.add(new Item());
+        list.setItems(itemList);
+        Response response = app.askWithList(new Object(), list);
+        assertNull(response);
     }
 
     @Test
-    public void askWithListWhereInputPromptParamIsStringAsSSML() throws Exception {}
+    public void askWithListWhereInputPromptParamIsString() throws Exception {
+        Response response = app.askWithList("Hello", getListSelect());
+        assertNotNull(response);
+        assertSpeech(response, "Hello");
+        assertExpectUserResponseTrue(response);
+        assertIsSsmlFalse(response);
+        assertNotNull(response.getData().getGoogle().getSystemIntent());
+        assertOptionIntent(response);
+        assertOptionSystemIntentData(response);
+        assertListSelect(response, getListSelect());
+    }
+
     @Test
-    public void askWithListWhereInputPromptParamIsSimpleResObj() throws Exception {}
+    public void askWithListWhereInputPromptParamIsStringAsSSML() throws Exception {
+        Response response = app.askWithList("<speak>Hello</speak>", getListSelect());
+        assertNotNull(response);
+        assertSpeech(response, "<speak>Hello</speak>");
+        assertExpectUserResponseTrue(response);
+        assertIsSsmlTrue(response);
+        assertNotNull(response.getData().getGoogle().getSystemIntent());
+        assertOptionIntent(response);
+        assertOptionSystemIntentData(response);
+        assertListSelect(response, getListSelect());
+
+    }
+
     @Test
-    public void askWithListWhereInputPromptParamIsRichResObj() throws Exception {}
+    public void askWithListWhereInputPromptParamIsSimpleResObj() throws Exception {
+        SimpleResponse simpleResponse = new SimpleResponse();
+        simpleResponse.setDisplayText("Hello");
+        simpleResponse.setTextToSpeech("Hi");
+        Response response = app.askWithList(simpleResponse, getListSelect());
+        assertNotNull(response);
+        assertTextToSpeech(response, "Hi");
+        assertDisplayText(response, "Hello");
+        assertExpectUserResponseTrue(response);
+        assertNotNull(response.getData().getGoogle().getSystemIntent());
+        assertOptionIntent(response);
+        assertOptionSystemIntentData(response);
+        assertListSelect(response, getListSelect());
+    }
+
+    @Test
+    public void askWithListWhereInputPromptParamIsSimpleResObjWithSSML() throws Exception {
+        SimpleResponse simpleResponse = new SimpleResponse("<speak>Hi</speak>", "Hello");
+        Response response = app.askWithList(simpleResponse, getListSelect());
+        assertNotNull(response);
+        assertSsmlText(response, "<speak>Hi</speak>");
+        assertDisplayText(response, "Hello");
+        assertExpectUserResponseTrue(response);
+        //assertIsSsmlTrue(response);
+        assertNotNull(response.getData().getGoogle().getSystemIntent());
+        assertOptionIntent(response);
+        assertOptionSystemIntentData(response);
+        assertListSelect(response, getListSelect());
+    }
+
+    @Test
+    public void askWithListWhereInputPromptParamIsRichResObj() throws Exception {
+        RichResponse richResponse = new RichResponse();
+        SimpleResponse simpleResponse = new SimpleResponse();
+        simpleResponse.setDisplayText("Hello");
+        simpleResponse.setTextToSpeech("Hi");
+        richResponse.addSimpleResponse(simpleResponse);
+        richResponse.addSuggestions("one", "two", "three");
+        Response response = app.askWithList(richResponse, getListSelect());
+        assertNotNull(response);
+        assertTextToSpeech(response, "Hi");
+        assertDisplayText(response, "Hello");
+        assertSuggestions(response, "one", "two", "three");
+        assertExpectUserResponseTrue(response);
+        assertNotNull(response.getData().getGoogle().getSystemIntent());
+        assertOptionIntent(response);
+        assertOptionSystemIntentData(response);
+        assertListSelect(response, getListSelect());
+    }
 
     // ****** ASK WITH CAROUSEL *******
     /*
@@ -629,5 +738,23 @@ public class ApiAiAppTest extends AssertHelper {
     @Test
     public void askForPermissionHappyPath() throws Exception {
 
+    }
+
+    private List getListSelect() {
+        return app.buildList("Test Title")
+                .addItems(
+                        app.buildOptionItem("Test 1",
+                                new String [] {"test 1", "test ONE", "test i", "one"})
+                                .setDescription("Test Description")
+                                .setImage("www.test.com", "text accessibility", 0,0)
+                                .setTitle("test item title")
+                )
+                .addItems(
+                        app.buildOptionItem("Test 2",
+                                new String [] {"test 2", "test two", "test ii", "two"})
+                                .setDescription("Test Description")
+                                .setImage("www.test.com", "text accessibility", 0,0)
+                                .setTitle("test item title")
+                );
     }
 }
