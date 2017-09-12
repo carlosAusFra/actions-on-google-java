@@ -6,7 +6,6 @@ Unofficial Actions on Google SDK for Java & spring
 [![Maven Central](https://img.shields.io/badge/maven--central-1.0-brightgreen.svg)](http://search.maven.org/#artifactdetails%7Cca.sukhsingh.actions%7Cactions-on-google%7C1.0%7Cjar)
 [![Javadocs](http://javadoc.io/badge/ca.sukhsingh.actions/actions-on-google.svg)](https://actions.sukhsingh.ca/docs/index.html)
 
-
 This is a port of the [official Node.js SDK](https://github.com/actions-on-google/actions-on-google-nodejs) to Java or Spring.
 
 ## Setup Instructions 
