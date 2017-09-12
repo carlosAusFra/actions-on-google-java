@@ -4,6 +4,7 @@ import ca.sukhsingh.actions.on.google.response.Response;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.BasicCard;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.SimpleResponse;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Item;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.List;
 import org.junit.Test;
@@ -554,6 +555,12 @@ public class ApiAiAppTest extends AssertHelper {
     }
 
     @Test
+    public void askWithListWhereInputPromptParamIsEmptyString() throws Exception {
+        Response response = app.askWithList("", getListSelect()) ;
+        assertNull(response);
+    }
+
+    @Test
     public void askWithListWhereInputPromptParamIsSimpleResObj() throws Exception {
         SimpleResponse simpleResponse = new SimpleResponse();
         simpleResponse.setDisplayText("Hello");
@@ -619,19 +626,108 @@ public class ApiAiAppTest extends AssertHelper {
      */
 
     @Test
-    public void askWithCarouselWithNullInputPrompt() throws Exception {}
+    public void askWithCarouselWithNullInputPrompt() throws Exception {
+        assertNull(app.askWithCarousel(null, getCarousel()));
+    }
+
     @Test
-    public void askWithCarouselWithNullList() throws Exception {}
+    public void askWithCarouselWithNullList() throws Exception {
+        assertNull(app.askWithCarousel(new Object(), null));
+    }
+
     @Test
-    public void askWithCarouselWithInvalidListSize() throws Exception {}
+    public void askWithCarouselWithEmptyInputPromptString() throws Exception {
+        assertNull(app.askWithCarousel("", getCarousel()));
+    }
+
     @Test
-    public void askWithCarouselWhereInputPromptisString() throws Exception {}
+    public void askWithCarouselWithInvalidListSize() throws Exception {
+        Carousel carousel = new Carousel();
+        java.util.List<Item> itemList = new ArrayList<>();
+        itemList.add(new Item());
+        itemList.add(new Item());
+        carousel.setItems(itemList);
+        assertNull(app.askWithCarousel(new Object(), carousel));
+    }
+
     @Test
-    public void askWithCarouselWhereInputPromptParamIsStringAsSSML() throws Exception {}
+    public void askWithCarouselWhereInputPromptIsString() throws Exception {
+        Response response = app.askWithCarousel("Hello", getCarousel());
+        assertNotNull(response);
+        assertSpeech(response,"Hello");
+        assertNotNull(response.getData());
+        assertNotNull(response.getData().getGoogle());
+        assertExpectUserResponseTrue(response);
+        assertIsSsmlFalse(response);
+        assertOptionIntent(response);
+        assertOptionSystemIntentData(response);
+        assertCarousel(response, getCarousel());
+    }
+
     @Test
-    public void askWithCarouselWhereInputPromptParamIsSimpleResObj() throws Exception {}
+    public void askWithCarouselWhereInputPromptParamIsStringAsSSML() throws Exception {
+        Response response = app.askWithCarousel("<speak>Hello</speak>", getCarousel());
+        assertNotNull(response);
+        assertSpeech(response,"<speak>Hello</speak>");
+        assertNotNull(response.getData());
+        assertNotNull(response.getData().getGoogle());
+        assertExpectUserResponseTrue(response);
+        assertIsSsmlTrue(response);
+        assertOptionIntent(response);
+        assertOptionSystemIntentData(response);
+        assertCarousel(response, getCarousel());
+    }
+
     @Test
-    public void askWithCarouselWhereInputPromptParamIsRichResObj() throws Exception {}
+    public void askWithCarouselWhereInputPromptParamIsSimpleResObj() throws Exception {
+        SimpleResponse simpleResponse = new SimpleResponse();
+        simpleResponse.setDisplayText("Hello");
+        simpleResponse.setTextToSpeech("Hi");
+        Response response = app.askWithCarousel(simpleResponse, getCarousel());
+        assertNotNull(response);
+        assertTextToSpeech(response, "Hi");
+        assertDisplayText(response, "Hello");
+        assertExpectUserResponseTrue(response);
+        assertNotNull(response.getData().getGoogle().getSystemIntent());
+        assertOptionIntent(response);
+        assertOptionSystemIntentData(response);
+        assertCarousel(response, getCarousel());
+    }
+
+    @Test
+    public void askWithCarouselWhereInputPromptParamIsSimpleResObjWithSSML() throws Exception {
+        SimpleResponse simpleResponse = new SimpleResponse("<speak>Hi</speak>", "Hello");
+        Response response = app.askWithCarousel(simpleResponse, getCarousel());
+        assertNotNull(response);
+        assertSsmlText(response, "<speak>Hi</speak>");
+        assertDisplayText(response, "Hello");
+        assertExpectUserResponseTrue(response);
+        //assertIsSsmlTrue(response);
+        assertNotNull(response.getData().getGoogle().getSystemIntent());
+        assertOptionIntent(response);
+        assertOptionSystemIntentData(response);
+        assertCarousel(response, getCarousel());
+    }
+
+    @Test
+    public void askWithCarouselWhereInputPromptParamIsRichResObj() throws Exception {
+        RichResponse richResponse = new RichResponse();
+        SimpleResponse simpleResponse = new SimpleResponse();
+        simpleResponse.setDisplayText("Hello");
+        simpleResponse.setTextToSpeech("Hi");
+        richResponse.addSimpleResponse(simpleResponse);
+        richResponse.addSuggestions("one", "two", "three");
+        Response response = app.askWithCarousel(richResponse, getCarousel());
+        assertNotNull(response);
+        assertTextToSpeech(response, "Hi");
+        assertDisplayText(response, "Hello");
+        assertSuggestions(response, "one", "two", "three");
+        assertExpectUserResponseTrue(response);
+        assertNotNull(response.getData().getGoogle().getSystemIntent());
+        assertOptionIntent(response);
+        assertOptionSystemIntentData(response);
+        assertCarousel(response, getCarousel());
+    }
 
     // ******** AssistantApp **********
 
@@ -687,6 +783,8 @@ public class ApiAiAppTest extends AssertHelper {
     public void buildOptionItem() throws Exception {
     }
 
+    // *********** askForPermissions **********
+
     /*
     askForPermissions(string, List<String>
         1. Null context
@@ -698,23 +796,49 @@ public class ApiAiAppTest extends AssertHelper {
 
     @Test
     public void askForPermissionsWithNullContext() throws Exception {
+        assertNull(app.askForPermission(null, "String"));
     }
 
     @Test
     public void askForPermissionsWithNullListParam() throws Exception {
+        assertNull(app.askForPermissions("String", null));
     }
 
     @Test
     public void askForPermissionsWithEmptyListParam() throws Exception {
+        assertNull(app.askForPermissions("String", new ArrayList<>()));
     }
 
     @Test
     public void askForPermissionsWithInvalidPermissionType() throws Exception {
+        java.util.List<String> list = new ArrayList<>();
+        list.add("Invalid");
+        assertNull(app.askForPermissions("String", list));
+    }
+
+    @Test
+    public void askForPermissionsWithInvalidAndValidPermissionType() throws Exception {
+        java.util.List<String> list = new ArrayList<>();
+        list.add("Invalid");
+        list.add(ApiAiApp.SupportedPermissions.DEVICE_PRECISE_LOCATION);
+        assertNull(app.askForPermissions("String", list));
     }
 
     @Test
     public void askForPermissionsHappyPath() throws Exception {
-
+        java.util.List<String> list = new ArrayList<>();
+        list.add(ApiAiApp.SupportedPermissions.DEVICE_PRECISE_LOCATION);
+        list.add(ApiAiApp.SupportedPermissions.NAME);
+        Response response = app.askForPermissions("To do this", list);
+        assertNotNull(response);
+        assertSpeech(response,"PLACEHOLDER_FOR_PERMISSION");
+        assertExpectUserResponseTrue(response);
+        assertIsSsmlFalse(response);
+        assertPermissionIntent(response);
+        assertNotNull(response.getData().getGoogle().getSystemIntent());
+        assertPermissionystemIntentData(response);
+        assertEquals("Permissions", response.getData().getGoogle().getSystemIntent().getData().getPermissions(), list);
+        assertEquals("Opt Context", response.getData().getGoogle().getSystemIntent().getData().getOptContext(), "To do this");
     }
 
     /*
@@ -726,22 +850,52 @@ public class ApiAiAppTest extends AssertHelper {
      */
     @Test
     public void askForPermissionWithNullContext() throws Exception {
+        assertNull(app.askForPermission(null, "String"));
     }
 
     @Test
     public void askForPermissionWithNullPermission() throws Exception {
+        assertNull(app.askForPermission("String", null));
     }
     @Test
     public void askForPermissionWithInvalidPermissionType() throws Exception {
+        assertNull(app.askForPermission("Sting", "Invalid"));
     }
 
     @Test
     public void askForPermissionHappyPath() throws Exception {
-
+        Response response = app.askForPermission("To do this", AssistantApp.SupportedPermissions.NAME);
+        assertNotNull(response);
+        assertSpeech(response,"PLACEHOLDER_FOR_PERMISSION");
+        assertExpectUserResponseTrue(response);
+        assertIsSsmlFalse(response);
+        assertPermissionIntent(response);
+        assertNotNull(response.getData().getGoogle().getSystemIntent());
+        assertPermissionystemIntentData(response);
+        assertEquals("Permissions", response.getData().getGoogle().getSystemIntent().getData().getPermissions().get(0), AssistantApp.SupportedPermissions.NAME);
+        assertEquals("Opt Context", response.getData().getGoogle().getSystemIntent().getData().getOptContext(), "To do this");
     }
 
     private List getListSelect() {
         return app.buildList("Test Title")
+                .addItems(
+                        app.buildOptionItem("Test 1",
+                                new String [] {"test 1", "test ONE", "test i", "one"})
+                                .setDescription("Test Description")
+                                .setImage("www.test.com", "text accessibility", 0,0)
+                                .setTitle("test item title")
+                )
+                .addItems(
+                        app.buildOptionItem("Test 2",
+                                new String [] {"test 2", "test two", "test ii", "two"})
+                                .setDescription("Test Description")
+                                .setImage("www.test.com", "text accessibility", 0,0)
+                                .setTitle("test item title")
+                );
+    }
+
+    private Carousel getCarousel() {
+        return app.buildCarousel()
                 .addItems(
                         app.buildOptionItem("Test 1",
                                 new String [] {"test 1", "test ONE", "test i", "one"})

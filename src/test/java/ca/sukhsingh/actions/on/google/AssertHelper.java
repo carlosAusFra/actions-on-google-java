@@ -2,6 +2,7 @@ package ca.sukhsingh.actions.on.google;
 
 import ca.sukhsingh.actions.on.google.response.Response;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.Suggestion;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +74,16 @@ public class AssertHelper {
         assertEquals("System Intent : OPTION",AssistantApp.StandardIntents.OPTION, response.getData().getGoogle().getSystemIntent().getIntent());
     }
 
+    protected void assertPermissionIntent(Response response) {
+        assertEquals("System Intent : PERMISSION",AssistantApp.StandardIntents.PERMISSION, response.getData().getGoogle().getSystemIntent().getIntent());
+    }
+
     protected void assertOptionSystemIntentData(Response response) {
         assertEquals("System Intent Data type",AssistantApp.InputValueDataTypes_.OPTION, response.getData().getGoogle().getSystemIntent().getData().getType());
+    }
+
+    protected void assertPermissionystemIntentData(Response response) {
+        assertEquals("System Intent Data type",AssistantApp.InputValueDataTypes_.PERMISSION, response.getData().getGoogle().getSystemIntent().getData().getType());
     }
 
     protected void assertListSelect(Response response, ca.sukhsingh.actions.on.google.response.data.google.systemintent.List list) {
@@ -84,12 +93,27 @@ public class AssertHelper {
         assertNotNull(responseList);
         assertEquals("List Select title", list.getTitle(), responseList.getTitle());
         for (int i=0; i<responseList.getItems().size(); i++) {
-            assertEquals("List Select Item title", list.getItems().get(1).getTitle(), responseList.getItems().get(1).getTitle());
-            assertEquals("List Select Item Description", list.getItems().get(1).getDescription(), responseList.getItems().get(1).getDescription());
-            assertEquals("List Select Item Image url", list.getItems().get(1).getImage().getUrl(), responseList.getItems().get(1).getImage().getUrl());
-            assertEquals("List Select Item Image AccessibilityText", list.getItems().get(1).getImage().getAccessibilityText(), responseList.getItems().get(1).getImage().getAccessibilityText());
-            assertEquals("List Select Item OptionInfo key", list.getItems().get(1).getOptionInfo().getKey(), responseList.getItems().get(1).getOptionInfo().getKey());
-            assertEquals("List Select Item OptionInfo Synonyms", list.getItems().get(1).getOptionInfo().getSynonyms(), responseList.getItems().get(1).getOptionInfo().getSynonyms());
+            assertEquals("List Select Item title", list.getItems().get(i).getTitle(), responseList.getItems().get(i).getTitle());
+            assertEquals("List Select Item Description", list.getItems().get(i).getDescription(), responseList.getItems().get(i).getDescription());
+            assertEquals("List Select Item Image url", list.getItems().get(i).getImage().getUrl(), responseList.getItems().get(i).getImage().getUrl());
+            assertEquals("List Select Item Image AccessibilityText", list.getItems().get(i).getImage().getAccessibilityText(), responseList.getItems().get(i).getImage().getAccessibilityText());
+            assertEquals("List Select Item OptionInfo key", list.getItems().get(i).getOptionInfo().getKey(), responseList.getItems().get(i).getOptionInfo().getKey());
+            assertEquals("List Select Item OptionInfo Synonyms", list.getItems().get(i).getOptionInfo().getSynonyms(), responseList.getItems().get(i).getOptionInfo().getSynonyms());
+        }
+    }
+
+    protected void assertCarousel(Response response, Carousel carousel) {
+
+        Carousel responseCarousel = response.getData().getGoogle().getSystemIntent().getData().getCarousel();
+
+        assertNotNull(responseCarousel);
+        for (int i=0; i<responseCarousel.getItems().size(); i++) {
+            assertEquals("Carousel Item title", carousel.getItems().get(i).getTitle(), responseCarousel.getItems().get(i).getTitle());
+            assertEquals("Carousel Item Description", carousel.getItems().get(i).getDescription(), responseCarousel.getItems().get(i).getDescription());
+            assertEquals("Carousel Item Image url", carousel.getItems().get(i).getImage().getUrl(), responseCarousel.getItems().get(i).getImage().getUrl());
+            assertEquals("Carousel Item Image AccessibilityText", carousel.getItems().get(i).getImage().getAccessibilityText(), responseCarousel.getItems().get(i).getImage().getAccessibilityText());
+            assertEquals("Carousel Item OptionInfo key", carousel.getItems().get(i).getOptionInfo().getKey(), responseCarousel.getItems().get(i).getOptionInfo().getKey());
+            assertEquals("Carousel Item OptionInfo Synonyms", carousel.getItems().get(i).getOptionInfo().getSynonyms(), responseCarousel.getItems().get(i).getOptionInfo().getSynonyms());
         }
     }
 }
