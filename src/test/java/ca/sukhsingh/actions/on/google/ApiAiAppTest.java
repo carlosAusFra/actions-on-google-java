@@ -1,30 +1,33 @@
 package ca.sukhsingh.actions.on.google;
 
 import ca.sukhsingh.actions.on.google.response.Response;
+import ca.sukhsingh.actions.on.google.response.data.google.richresponse.BasicCard;
+import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.SimpleResponse;
-import ca.sukhsingh.actions.on.google.response.data.google.richresponse.Suggestion;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by sukhsingh on 2017-08-29.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ApiAiAppTest {
+public class ApiAiAppTest extends AssertHelper {
 
     @InjectMocks
     private ApiAiApp app;
 
+
     @Test
-    public void appTellWithString() {
+    public void appTellWithString()throws Exception {
         Response response = app.tell("hello");
         assertNotNull(response);
 //        {
@@ -49,7 +52,7 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void appTellWithSSMLString() {
+    public void appTellWithSSMLString()throws Exception {
         final String SPEECH = "<speak>hello</speak>";
         Response response = app.tell(SPEECH);
         assertNotNull(response);
@@ -58,7 +61,7 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void appTellWithTextToSpeechAndDisplayText() {
+    public void appTellWithTextToSpeechAndDisplayText()throws Exception {
         Response response = app.tell("hello", "hi");
 
 //        {
@@ -92,7 +95,7 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void appTellWithTextToSpeechSSMLAndDisplayText() {
+    public void appTellWithTextToSpeechSSMLAndDisplayText()throws Exception {
         final String SPEECH = "<speak>Hello</speak>";
         final String DISPLAYTEXT = "Hi";
         Response response = app.tell(SPEECH, DISPLAYTEXT);
@@ -121,7 +124,7 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void appTellWithSimpleResponse() {
+    public void appTellWithSimpleResponse()throws Exception {
         final String SPEECH = "Hello";
         final String DISPLAYTEXT = "Hi";
         SimpleResponse simpleResponse = new SimpleResponse(SPEECH, DISPLAYTEXT);
@@ -134,7 +137,7 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void appTellWithSimpleResponseWithSSML() {
+    public void appTellWithSimpleResponseWithSSML()throws Exception {
         final String SPEECH = "<speak>Hello</speak>";
         final String DISPLAYTEXT = "Hi";
         SimpleResponse simpleResponse = new SimpleResponse(SPEECH, DISPLAYTEXT);
@@ -147,7 +150,7 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void appTellWithRichResponse() {
+    public void appTellWithRichResponse()throws Exception {
         Response response = app.tell(app.buildRichResponse()
                 .addSimpleResponse("hello", "hi")
                 .addSuggestions(new String [] {"say this", "say that"}));
@@ -189,7 +192,7 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void appTellWithRichResponseWithSSML() {
+    public void appTellWithRichResponseWithSSML()throws Exception {
 
         //SimpleResponse with SSML
 
@@ -210,25 +213,25 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void appTellWithOneNullParam() {
+    public void appTellWithOneNullParam()throws Exception {
         Response response = app.tell("");
         assertNull(response);
     }
 
     @Test
-    public void appTellWithTwoNullParams() {
+    public void appTellWithTwoNullParams()throws Exception {
         Response response = app.tell(null,null);
         assertNull(response);
     }
 
     @Test
-    public void appTellWithStringAndNullParams() {
+    public void appTellWithStringAndNullParams()throws Exception {
         Response response = app.tell("hi", null);
         assertNull(response);
     }
 
     @Test
-    public void appTellWithNullAndStringParams() {
+    public void appTellWithNullAndStringParams()throws Exception {
         Response response = app.tell(null, "hi");
         assertNull(response);
     }
@@ -237,7 +240,7 @@ public class ApiAiAppTest {
     //********* APP ASK **********
 
     @Test
-    public void appAskWithString() {
+    public void appAskWithString()throws Exception {
 
         Response response;
 
@@ -268,7 +271,7 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void appAskWithStringWithSSML() {
+    public void appAskWithStringWithSSML()throws Exception {
 
         Response response;
 
@@ -280,14 +283,27 @@ public class ApiAiAppTest {
 
     }
 
-    //TODO ask with textToSpeech and with no inputPrompts
     @Test
     public void appAskWithTextToSpeechAndNoInputPrompts() throws Exception {
-
+        Response response = app.ask("Hello", new String[] {"Can you say that again ?", "What ?"});
+        assertNotNull(response);
+        assertSpeech(response,"Hello");
+        assertEquals("Can you say that again ?", response.getData().getGoogle().getNoInputPrompts().get(0).getTextToSpeech());
+        assertEquals("What ?", response.getData().getGoogle().getNoInputPrompts().get(1).getTextToSpeech());
     }
 
     @Test
-    public void appAskWithTextToSpeechAndDisplayText() {
+    public void appAskWithTextToSpeechAndNoInputPromptsWithSSML() throws Exception {
+        Response response = app.ask("<speak>Hello</speak>", new String[] {"Can you say that again ?", "What ?"});
+        assertNotNull(response);
+        assertSpeech(response,"<speak>Hello</speak>");
+        assertIsSsmlTrue(response);
+        assertEquals("Can you say that again ?", response.getData().getGoogle().getNoInputPrompts().get(0).getTextToSpeech());
+        assertEquals("What ?", response.getData().getGoogle().getNoInputPrompts().get(1).getTextToSpeech());
+    }
+
+    @Test
+    public void appAskWithTextToSpeechAndDisplayText()throws Exception {
         Response response = app.ask("hello", "hi");
         //  {
         //   'speech': 'hello',
@@ -326,7 +342,7 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void appAskWithTextToSpeechAndDisplayTextWithSSML() {
+    public void appAskWithTextToSpeechAndDisplayTextWithSSML()throws Exception {
         final String SSML = "<speak>Hello</speak>";
         Response response = app.ask(SSML, "hi");
 
@@ -339,7 +355,7 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void appAskWithSimpleResponseWithSSML() {
+    public void appAskWithSimpleResponseWithSSML()throws Exception {
         final String SSML = "<speak>Hello</speak>";
         final String DISPLAYTEXT = "Hi";
         SimpleResponse simpleResponse = new SimpleResponse(SSML, DISPLAYTEXT);
@@ -353,7 +369,7 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void appAskWithSimpleResponse() {
+    public void appAskWithSimpleResponse()throws Exception {
         final String SPEECH = "Hello";
         final String DISPLAYTEXT = "Hi";
         SimpleResponse simpleResponse = new SimpleResponse(SPEECH, DISPLAYTEXT);
@@ -366,7 +382,7 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void appAskWithRichResponse() {
+    public void appAskWithRichResponse()throws Exception {
 
         Response response = app.ask(app.buildRichResponse()
                 .addSimpleResponse(new SimpleResponse("hello","hi"))
@@ -417,7 +433,7 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void appAskWithssml() {
+    public void appAskWithssml()throws Exception {
         final String SPEECH = "<speak>hello</speak>";
         Response response = app.ask(SPEECH);
         assertNotNull(response);
@@ -427,13 +443,13 @@ public class ApiAiAppTest {
     }
 
     @Test
-    public void appAskWithOneNullParam() {
+    public void appAskWithOneNullParam()throws Exception {
         Response response = app.ask("");
         assertNull(response);
     }
 
     @Test
-    public void appAskWithTwoNullParams() {
+    public void appAskWithTwoNullParams()throws Exception {
         Response response = app.ask("", "");
         assertNull(response);
     }
@@ -453,6 +469,31 @@ public class ApiAiAppTest {
             c. as RichResponse
      */
 
+    @Test
+    public void askWithListNullInputPrompt() throws Exception {
+        Response response = app.askWithList(null, new List());
+        assertNull(response);
+    }
+
+    @Test
+    public void askWithListNullList() throws Exception {
+        Response response = app.askWithList(new Object(), null);
+        assertNull(response);
+    }
+
+    @Test
+    public void askWithListWithListSizeInvalid() throws Exception {}
+
+    @Test
+    public void askWithListWhereInputPromptParamIsString() throws Exception {
+    }
+
+    @Test
+    public void askWithListWhereInputPromptParamIsStringAsSSML() throws Exception {}
+    @Test
+    public void askWithListWhereInputPromptParamIsSimpleResObj() throws Exception {}
+    @Test
+    public void askWithListWhereInputPromptParamIsRichResObj() throws Exception {}
 
     // ****** ASK WITH CAROUSEL *******
     /*
@@ -468,58 +509,125 @@ public class ApiAiAppTest {
             c. as RichResponse
      */
 
+    @Test
+    public void askWithCarouselWithNullInputPrompt() throws Exception {}
+    @Test
+    public void askWithCarouselWithNullList() throws Exception {}
+    @Test
+    public void askWithCarouselWithInvalidListSize() throws Exception {}
+    @Test
+    public void askWithCarouselWhereInputPromptisString() throws Exception {}
+    @Test
+    public void askWithCarouselWhereInputPromptParamIsStringAsSSML() throws Exception {}
+    @Test
+    public void askWithCarouselWhereInputPromptParamIsSimpleResObj() throws Exception {}
+    @Test
+    public void askWithCarouselWhereInputPromptParamIsRichResObj() throws Exception {}
 
-    private void assertSpeech(Response response, String speech) {
-        assertEquals(speech, response.getSpeech());
+    // ******** AssistantApp **********
+
+    /*
+    buildRichResponse
+     */
+    @Test
+    public void buildRichResponseTest() throws Exception {
+        assertNotNull(app.buildRichResponse());
     }
 
-    private void assertExpectUserResponseFalse(Response response) {
-        assertEquals(false, response.getData().getGoogle().expectUserResponse);
-    }
-    private void assertExpectUserResponseTrue(Response response) {
-        assertEquals(true, response.getData().getGoogle().expectUserResponse);
-    }
-
-    private void assertIsSsmlFalse(Response response) {
-        assertEquals(false, response.getData().getGoogle().isSsml);
-    }
-
-    private void assertIsSsmlTrue(Response response) {
-        assertEquals(true, response.getData().getGoogle().isSsml);
+    /*
+    buildRichResponse(richResponse)
+     */
+    @Test
+    public void buildRichResponseTestWithRichResAsParam() throws Exception {
+        RichResponse richResponse = new RichResponse();
+        richResponse.addSimpleResponse("Hello");
+        RichResponse response = app.buildRichResponse(richResponse);
+        assertNotNull(response);
+        assertEquals("Hello", response.getItems().get(0).getSimpleResponse().getTextToSpeech());
     }
 
-    private void assertNotNullRichResponse(Response response) {
-        assertNotNull(response.getData().getGoogle().getRichResponse());
-        assertNotNull(response.getData().getGoogle().getRichResponse().getItems());
-        assertNotNull(response.getData().getGoogle().getRichResponse().getItems().get(0).getSimpleResponse());
-        assertNotNull(response.getData().getGoogle().getRichResponse().getSuggestions());
+    /*
+    buildBasicCard(string)
+     */
+    @Test
+    public void buildBasicCardTest() throws Exception {
+        BasicCard basicCard = app.buildBasicCard("Hello");
+        assertNotNull(basicCard);
+    }
+
+    /*
+    buildList(string)
+     */
+    @Test
+    public void buildListTest() throws Exception {
+    }
+
+    /*
+    buildCarousel()
+     */
+
+    @Test
+    public void buildCarousel() throws Exception {
+
+    }
+    /*
+    buildOptionItem()
+     */
+
+    @Test
+    public void buildOptionItem() throws Exception {
+    }
+
+    /*
+    askForPermissions(string, List<String>
+        1. Null context
+        2. Null list
+        3. Empty List
+        4. Invalid Permission Type
+        5. HappyPath
+     */
+
+    @Test
+    public void askForPermissionsWithNullContext() throws Exception {
+    }
+
+    @Test
+    public void askForPermissionsWithNullListParam() throws Exception {
+    }
+
+    @Test
+    public void askForPermissionsWithEmptyListParam() throws Exception {
+    }
+
+    @Test
+    public void askForPermissionsWithInvalidPermissionType() throws Exception {
+    }
+
+    @Test
+    public void askForPermissionsHappyPath() throws Exception {
 
     }
 
-    private void assertTextToSpeech(Response response, String speech) {
-        assertEquals(speech, response.getData().getGoogle().getRichResponse().getItems().get(0).getSimpleResponse().getTextToSpeech());
+    /*
+    askForPermission(string, string)
+        1. Null context
+        2. Null permission
+        3. Invalid Permission
+        4. HappyPath
+     */
+    @Test
+    public void askForPermissionWithNullContext() throws Exception {
     }
 
-    private void assertDisplayText(Response response, String displayText) {
-        assertEquals(displayText, response.getData().getGoogle().getRichResponse().getItems().get(0).getSimpleResponse().getDisplayText());
+    @Test
+    public void askForPermissionWithNullPermission() throws Exception {
+    }
+    @Test
+    public void askForPermissionWithInvalidPermissionType() throws Exception {
     }
 
-    private void assertSsmlText(Response response, String ssmlText) {
-        assertEquals(ssmlText, response.getData().getGoogle().getRichResponse().getItems().get(0).getSimpleResponse().getSsml());
-    }
+    @Test
+    public void askForPermissionHappyPath() throws Exception {
 
-    private void assertSuggestions(Response response, String ...suggestions) {
-        List<Suggestion> suggestionList = response.getData().getGoogle().getRichResponse().getSuggestions();
-        for (int i=0; i< suggestions.length; i++) {
-            assertEquals(suggestions[i], suggestionList.get(i).getTitle());
-        }
-    }
-
-    private List<Suggestion> suggestions(String ... strings) {
-        List<Suggestion> suggestions = new ArrayList<>();
-        for (String suggestion : strings) {
-            suggestions.add(new Suggestion(suggestion));
-        }
-        return suggestions;
     }
 }

@@ -8,6 +8,7 @@ import ca.sukhsingh.actions.on.google.response.data.google.richresponse.BasicCar
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -118,6 +119,21 @@ public class AssistantApp {
 
         SystemIntentData systemIntentData = new SystemIntentData(context, permissions);
         return fulfillPermissionsRequest(systemIntentData);
+    }
+
+    public Response askForPermission(String context, String permission) {
+        if (Util.isNullOrEmpty(context)) {
+            logger.error("invalid context");
+            return null;
+        }
+
+        if (Util.isNullOrEmpty(permission)) {
+            logger.error("invalid context");
+            return null;
+        }
+        List<String> permissions = new ArrayList<>();
+        permissions.add(permission);
+        return askForPermissions(context, permissions);
     }
 
     Response fulfillPermissionsRequest(SystemIntentData systemIntentData) {return null;}

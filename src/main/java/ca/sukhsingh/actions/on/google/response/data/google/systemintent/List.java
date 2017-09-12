@@ -42,6 +42,9 @@ public class List {
         }
     }
 
+    public List() {
+    }
+
     public List setTitle(String title) {
         if (isNullOrEmpty(title)) {
             logger.error("title cannot be empty");

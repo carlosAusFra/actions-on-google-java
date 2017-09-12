@@ -84,11 +84,15 @@ public class Google {
         this.richResponse = richResponse;
     }
 
+    public void setSystemIntent(SystemIntent systemIntent) {
+        this.systemIntent = systemIntent;
+    }
+
     public RichResponse getRichResponse() {
         return richResponse;
     }
 
-    public void setSystemIntent(SystemIntent systemIntent) {
-        this.systemIntent = systemIntent;
+    public List<SimpleResponse> getNoInputPrompts() {
+        return noInputPrompts;
     }
 }

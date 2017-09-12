@@ -139,9 +139,16 @@ public class RichResponse {
                 this.suggestions.add(new Suggestion(suggestion.getTitle()));
             }
         } else if (suggestions instanceof List) {
-            List<String> suggestions_ = (List<String>) suggestions;
-            for (String suggestion : suggestions_) {
-                this.suggestions.add(new Suggestion(suggestion));
+            // check if List<String> or List<Suggestion>
+            if (((List) suggestions).get(0) instanceof String) {
+                List<String> suggestions_ = (List<String>) suggestions;
+                for (String suggestion : suggestions_) {
+                    this.suggestions.add(new Suggestion(suggestion));
+                }
+            } else if (((List) suggestions).get(0) instanceof Suggestion) {
+                this.suggestions = (List<Suggestion>) suggestions;
+            } else {
+                logger.error("Invalid list. List must be of either String or Suggestion");
             }
         } else if (suggestions instanceof String[]) {
           String [] _suggestions = (String [])suggestions;
