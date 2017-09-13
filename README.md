@@ -47,9 +47,9 @@ __Gradle:__
         @PostMapping(value = "/hook")
         public ResponseEntity<Response> tell(@RequestBody Request request) {
             rs = app.ask(app.buildRichResponse()
-                    .addSimpleResponse("Hello World!", "Hello World")
-                    .addSuggestions("quit", "Suggestion", "Hi"));
-             
+                            .addSimpleResponse(new SimpleResponse("Hello World!", null, "Hello World!"))
+                            .addSuggestions("Basic Card", "Suggestion", "etc");
+                            
             return new ResponseEntity<>(rs, HttpStatus.OK);
         }
     }
