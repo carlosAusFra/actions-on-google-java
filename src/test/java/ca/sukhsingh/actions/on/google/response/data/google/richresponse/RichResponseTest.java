@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -216,6 +217,80 @@ public class RichResponseTest extends AssertHelper {
         6. object as invalid type
      */
 
+    @Test
+    public void addSuggestionsWithNullParam() throws Exception {
+        assertNull(richResponse.addSuggestions(null));
+    }
+
+    @Test
+    public void addSuggestionsWithStringArrayListParam () throws Exception {
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add("test");
+        strings.add("test2");
+        richResponse.addSuggestions(strings);
+        assertEquals("test", richResponse.getSuggestions().get(0).getTitle());
+        assertEquals("test2", richResponse.getSuggestions().get(1).getTitle());
+    }
+
+    @Test
+    public void addSuggestionsWithSuggestionArrayListParam() throws Exception {
+        ArrayList<Suggestion> suggestions = new ArrayList<>();
+        suggestions.add(new Suggestion("test1"));
+        suggestions.add(new Suggestion("test2"));
+        richResponse.addSuggestions(suggestions);
+        assertEquals("test1", richResponse.getSuggestions().get(0).getTitle());
+        assertEquals("test2", richResponse.getSuggestions().get(1).getTitle());
+    }
+
+    @Test
+    public void addSuggestionsWithInvalidArrayListParam() throws Exception {
+        ArrayList<Object> suggestions = new ArrayList<>();
+        suggestions.add(1);
+        suggestions.add(1);
+        richResponse.addSuggestions(suggestions);
+        assertEquals(0,richResponse.getSuggestions().size());
+    }
+
+    @Test
+    public void addSuggestionsWithStringListParam () throws Exception {
+        richResponse.addSuggestions(Arrays.asList("test1", "test2"));
+        assertEquals("test1", richResponse.getSuggestions().get(0).getTitle());
+        assertEquals("test2", richResponse.getSuggestions().get(1).getTitle());
+    }
+
+    @Test
+    public void addSuggestionsWithSuggestionListParam() throws Exception {
+        Suggestion suggestion = new Suggestion("test");
+        richResponse.addSuggestions(Arrays.asList(suggestion));
+        assertEquals("test", richResponse.getSuggestions().get(0).getTitle());
+    }
+
+    @Test
+    public void addSuggestionsWithInvalidListParam() throws Exception {
+        richResponse.addSuggestions(Arrays.asList(1,2,3));
+        assertEquals(0,richResponse.getSuggestions().size());
+    }
+
+    @Test
+    public void addSuggestionsWithStringArrayParam () throws Exception {
+        richResponse.addSuggestions(new String[] {"test1", "test2"});
+        assertEquals("test1", richResponse.getSuggestions().get(0).getTitle());
+        assertEquals("test2", richResponse.getSuggestions().get(1).getTitle());
+    }
+
+    @Test
+    public void addSuggestionsWithStringParam () throws Exception {
+        richResponse.addSuggestions("test1");
+        assertEquals("test1", richResponse.getSuggestions().get(0).getTitle());
+    }
+
+    @Test
+    public void addSuggestionsWithMultipleStringParam () throws Exception {
+        richResponse.addSuggestions("test1", "test2", "test3");
+        assertEquals("test1", richResponse.getSuggestions().get(0).getTitle());
+        assertEquals("test2", richResponse.getSuggestions().get(1).getTitle());
+        assertEquals("test3", richResponse.getSuggestions().get(2).getTitle());
+    }
     /*
     addSuggestions(string, string, ...)
         1. null param
@@ -223,8 +298,42 @@ public class RichResponseTest extends AssertHelper {
         3. More than one string params
      */
 
+    @Test
+    public void addSuggestions2WithNullParam() throws Exception {
+        String [] strings= null;
+        assertNull(richResponse.addSuggestions(strings));
+    }
+
+    @Test
+    public void addSuggestionsWithOneParam() throws Exception {
+        String [] strings= {"test"};
+        richResponse.addSuggestions(strings);
+        assertEquals("test", richResponse.getSuggestions().get(0).getTitle());
+    }
+
     /*
     addSuggestionLink
         1. Null or empty params
      */
+
+    @Test
+    public void addSuggestionLinkNullParams() throws Exception {
+        richResponse.addSuggestionLink(null, null);
+        assertNull(richResponse.getLinkOutSuggestion().getDestinationName());
+        assertNull(richResponse.getLinkOutSuggestion().getUrl());
+    }
+
+    @Test
+    public void addSuggestionLinkEmptyParams() throws Exception {
+        richResponse.addSuggestionLink("", "");
+        assertNull(richResponse.getLinkOutSuggestion().getDestinationName());
+        assertNull(richResponse.getLinkOutSuggestion().getUrl());
+    }
+
+    @Test
+    public void addSuggestionLink() throws Exception {
+        richResponse.addSuggestionLink("test", "test-url");
+        assertEquals("test", richResponse.getLinkOutSuggestion().getDestinationName());
+        assertEquals("test-url", richResponse.getLinkOutSuggestion().getUrl());
+    }
 }
