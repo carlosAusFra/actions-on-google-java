@@ -7,12 +7,16 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 /**
  * Created by sukhsingh on 2017-09-06.
  */
-@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class RichResponseTest extends AssertHelper {
 
@@ -38,32 +42,75 @@ public class RichResponseTest extends AssertHelper {
      */
 
     @Test
-    public void addSimpleResponseTestWithItemMoreThenTwo() throws Exception {}
+    public void addSimpleResponseTestWithItemMoreThenTwo() throws Exception {
+        RichResponse response = new RichResponse();
+        List<Item> itemList = new ArrayList<>();
+        itemList.add(new Item(new SimpleResponse("Hello", "hi")));
+        itemList.add(new Item(new SimpleResponse("hello","hi")));
+        response.setItems(itemList);
+        RichResponse richResponse = new RichResponse(response);
+        richResponse.addSimpleResponse(new SimpleResponse("sukh", "singh"));
+
+        assertEquals("Item size should be 2", 2, richResponse.getItems().size());
+        assertEquals("Items should be exactly same as itemList", itemList, richResponse.getItems());
+    }
     @Test
     public void addSimpleResponseTestWithNullParam() throws Exception {
         RichResponse response = richResponse.addSimpleResponse(null);
         assertNull(response);
     }
+
     @Test
-    public void simpleResponseParamWithTextToSpeechString() {}
+    public void simpleResponseParamWithTextToSpeechString() {
+        richResponse.addSimpleResponse("Hello");
+        assertTextToSpeech(richResponse, "Hello");
+    }
+
     @Test
-    public void simpleResponseParamWithSSSMLString() {}
+    public void simpleResponseParamWithSSSMLString() {
+        final String SSML = "<speak>Hello</speak>";
+        richResponse.addSimpleResponse(SSML);
+        assertSsmlText(richResponse, SSML);
+    }
+
+//    public void simpleResponseParamWithEmptyString() {
+//
+//    }
+
     @Test
-    public void simpleResponseParamWithEmptyString() {}
+    public void simpleResponseParamWithNullParam() {
+        richResponse.addSimpleResponse(null);
+        assertEquals("Rich response should not have any item",0,richResponse.getItems().size());
+    }
     @Test
-    public void simpleResponseParamWithNullParam() {}
+    public void simpleResponseObjWithTextToSpeech() {
+        richResponse.addSimpleResponse(new SimpleResponse("Hello", "hi"));
+        assertTextToSpeech(richResponse,"Hello");
+        assertDisplayText(richResponse, "hi");
+    }
+
     @Test
-    public void simpleResponseObjWithTextToSpeech() {}
+    public void simpleResponseObjWithSSML() {
+        richResponse.addSimpleResponse(new SimpleResponse("<speak>Hello</speak>", "hi"));
+        assertSsmlText(richResponse,"<speak>Hello</speak>");
+        assertDisplayText(richResponse, "hi");
+    }
+
     @Test
-    public void simpleResponseObjWithSSML() {}
+    public void simpleResponseObjWithBothEmptyParams() {
+        richResponse.addSimpleResponse(new SimpleResponse("", ""));
+        assertEquals("Rich response should not have any item",0,richResponse.getItems().size());
+    }
+
+
+//    public void simpleResponseObjWithOnlyOneEmptyParam() {}
+
+//    public void simpleResponseObjWithBothNullParams() {}
     @Test
-    public void simpleResponseObjWithBothEmptyParams() {}
-    @Test
-    public void simpleResponseObjWithOnlyOneEmptyParam() {}
-    @Test
-    public void simpleResponseObjWithBothNullParams() {}
-    @Test
-    public void addSimpleResponseTestWithInvalidObj() throws Exception {}
+    public void addSimpleResponseTestWithInvalidObj() throws Exception {
+        richResponse.addSimpleResponse(new Object());
+        assertNull(richResponse.getItems().get(0).getSimpleResponse());
+    }
     
     /*
     addSimpleResponse(string, string)

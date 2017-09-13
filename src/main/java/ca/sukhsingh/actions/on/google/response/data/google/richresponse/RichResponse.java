@@ -27,24 +27,42 @@ public class RichResponse {
     @JsonProperty("linkOutSuggestion")
     private LinkOutSuggestion linkOutSuggestion;
 
+    /**
+     * Get all the list of items
+     * @return {@link List<Item>}
+     */
     public List<Item> getItems() {
         return items;
     }
 
+    /**
+     * Get all the list of Suggestion
+     * @return {@link List<Suggestion>}
+     */
     public List<Suggestion> getSuggestions() {
         return suggestions;
     }
 
+    /**
+     * @return {@link LinkOutSuggestion}
+     */
     public LinkOutSuggestion getLinkOutSuggestion() {
         return linkOutSuggestion;
     }
 
+    /**
+     * Default constructor for RichResponse
+     */
     public RichResponse() {
         this.items = new ArrayList<>();
         this.suggestions = new ArrayList<>();
         this.linkOutSuggestion = new LinkOutSuggestion();
     }
 
+    /**
+     * Constructor for RichResponse. Accepts RichResponse to clone.
+     * @param richResponse
+     */
     public RichResponse(RichResponse richResponse) {
 
         this.items = new ArrayList<>();
@@ -69,6 +87,14 @@ public class RichResponse {
         }
     }
 
+    /**
+     * Adds a SimpleResponse to list of items.
+     *
+     * @param simpleResponse param can be  string|SimpleResponse
+     *                       Simple response to present to
+     *                       user. If just a string, display text will not be set.
+     * @return {@link RichResponse} Returns current constructed RichResponse.
+     */
     public RichResponse addSimpleResponse(Object simpleResponse) {
         if(simpleResponse == null) {
             logger.error("Invalid SimpleResponse");
@@ -202,6 +228,9 @@ public class RichResponse {
         return this;
     }
 
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
 
     /**
      * Helper to build SimpleResponse from speech and display text.

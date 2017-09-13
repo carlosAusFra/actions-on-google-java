@@ -1,6 +1,7 @@
 package ca.sukhsingh.actions.on.google;
 
 import ca.sukhsingh.actions.on.google.response.Response;
+import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.Suggestion;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
 
@@ -47,12 +48,24 @@ public class AssertHelper {
         assertEquals("Text to speech", speech, response.getData().getGoogle().getRichResponse().getItems().get(0).getSimpleResponse().getTextToSpeech());
     }
 
+    protected void assertTextToSpeech(RichResponse response, String speech) {
+        assertEquals("Text to speech", speech, response.getItems().get(0).getSimpleResponse().getTextToSpeech());
+    }
+
     protected void assertDisplayText(Response response, String displayText) {
         assertEquals("Display Text",displayText, response.getData().getGoogle().getRichResponse().getItems().get(0).getSimpleResponse().getDisplayText());
     }
 
+    protected void assertDisplayText(RichResponse response, String displayText) {
+        assertEquals("Display Text",displayText, response.getItems().get(0).getSimpleResponse().getDisplayText());
+    }
+
     protected void assertSsmlText(Response response, String ssmlText) {
         assertEquals("SSML Text",ssmlText, response.getData().getGoogle().getRichResponse().getItems().get(0).getSimpleResponse().getSsml());
+    }
+
+    protected void assertSsmlText(RichResponse response, String ssmlText) {
+        assertEquals("SSML Text",ssmlText, response.getItems().get(0).getSimpleResponse().getSsml());
     }
 
     protected void assertSuggestions(Response response, String ...suggestions) {

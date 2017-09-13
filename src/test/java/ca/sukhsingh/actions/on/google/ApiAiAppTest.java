@@ -7,6 +7,7 @@ import ca.sukhsingh.actions.on.google.response.data.google.richresponse.SimpleRe
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Item;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.List;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntentData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -645,7 +646,6 @@ public class ApiAiAppTest extends AssertHelper {
         Carousel carousel = new Carousel();
         java.util.List<Item> itemList = new ArrayList<>();
         itemList.add(new Item());
-        itemList.add(new Item());
         carousel.setItems(itemList);
         assertNull(app.askWithCarousel(new Object(), carousel));
     }
@@ -796,7 +796,7 @@ public class ApiAiAppTest extends AssertHelper {
 
     @Test
     public void askForPermissionsWithNullContext() throws Exception {
-        assertNull(app.askForPermission(null, "String"));
+        assertNull(app.askForPermissions(null, new ArrayList<>()));
     }
 
     @Test
@@ -874,6 +874,12 @@ public class ApiAiAppTest extends AssertHelper {
         assertPermissionystemIntentData(response);
         assertEquals("Permissions", response.getData().getGoogle().getSystemIntent().getData().getPermissions().get(0), AssistantApp.SupportedPermissions.NAME);
         assertEquals("Opt Context", response.getData().getGoogle().getSystemIntent().getData().getOptContext(), "To do this");
+    }
+
+    @Test
+    public void fulfillPermissionsRequestTest() throws Exception {
+        AssistantApp assistantApp = new AssistantApp();
+        assertNull(assistantApp.fulfillPermissionsRequest(new SystemIntentData()));
     }
 
     private List getListSelect() {
