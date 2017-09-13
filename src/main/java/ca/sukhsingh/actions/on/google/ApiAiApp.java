@@ -30,7 +30,8 @@ public class ApiAiApp extends AssistantApp{
      * @return {@link Response}
      */
     public Response tell(String textToSpeech) {
-        if (textToSpeech.isEmpty()) {
+        if (Util.isNullOrEmpty(textToSpeech)) {
+            logger.error("Invalid text to speech");
             return null;
         }
 
@@ -103,7 +104,7 @@ public class ApiAiApp extends AssistantApp{
      * @return {@link Response}
      */
     public Response ask(String textToSpeech, String [] noInputPrompts) {
-        if (textToSpeech.isEmpty()) {
+        if (Util.isNullOrEmpty(textToSpeech)) {
             return null;
         }
 
@@ -304,14 +305,14 @@ public class ApiAiApp extends AssistantApp{
                 List<SimpleResponse> finalNoInputPrompts = new ArrayList<>();
                 if (!Util.isNull(noInputPrompts)){
                     for (String prompt: noInputPrompts) {
-                        finalNoInputPrompts.add(new SimpleResponse(null, prompt, null));
+                        finalNoInputPrompts.add(new SimpleResponse(prompt, null));
                     }
                 }
                 google.setNoInputPrompts(finalNoInputPrompts);
             } else if (!Util.isNull(noInputPrompts)) {
                 List<SimpleResponse> finalNoInputPrompts = new ArrayList<>();
                 for (String prompt: noInputPrompts) {
-                    finalNoInputPrompts.add(new SimpleResponse(prompt, null, null));
+                    finalNoInputPrompts.add(new SimpleResponse(prompt, null));
                 }
                 google.setNoInputPrompts(finalNoInputPrompts);
                 google.setSsml(false);

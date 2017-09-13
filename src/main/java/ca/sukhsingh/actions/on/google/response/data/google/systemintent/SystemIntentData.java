@@ -43,16 +43,8 @@ public class SystemIntentData {
         return optContext;
     }
 
-    public void setOptContext(String optContext) {
-        this.optContext = optContext;
-    }
-
     public List<String> getPermissions() {
         return permissions;
-    }
-
-    public void setPermissions(List<String> permissions) {
-        this.permissions = permissions;
     }
 
     public ca.sukhsingh.actions.on.google.response.data.google.systemintent.List getListSelect() {

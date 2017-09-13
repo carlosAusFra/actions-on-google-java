@@ -3,12 +3,13 @@ package ca.sukhsingh.actions.on.google;
 import ca.sukhsingh.actions.on.google.response.Response;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Item;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.List;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntentData;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.BasicCard;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import org.apache.log4j.Logger;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by sukhsingh on 2017-08-31.
@@ -66,10 +67,10 @@ public class AssistantApp {
     /**
      *
      * @param title {@link String} as title
-     * @return {@link ca.sukhsingh.actions.on.google.response.data.google.systemintent.List}
+     * @return {@link List}
      */
-    public ca.sukhsingh.actions.on.google.response.data.google.systemintent.List buildList(String title) {
-        return new ca.sukhsingh.actions.on.google.response.data.google.systemintent.List(title);
+    public List buildList(String title) {
+        return new List(title);
     }
 
     public Carousel buildCarousel() {
@@ -92,10 +93,10 @@ public class AssistantApp {
     /**
      *
      * @param context {@link String}
-     * @param permissions {@link List} list of permissions
+     * @param permissions {@link java.util.List} list of permissions
      * @return Response
      */
-    public Response askForPermissions(String context, List<String> permissions) {
+    public Response askForPermissions(String context, java.util.List<String> permissions) {
         if (Util.isNullOrEmpty(context)) {
             logger.error("invalid context");
             return null;
@@ -118,6 +119,21 @@ public class AssistantApp {
 
         SystemIntentData systemIntentData = new SystemIntentData(context, permissions);
         return fulfillPermissionsRequest(systemIntentData);
+    }
+
+    public Response askForPermission(String context, String permission) {
+        if (Util.isNullOrEmpty(context)) {
+            logger.error("invalid context");
+            return null;
+        }
+
+        if (Util.isNullOrEmpty(permission)) {
+            logger.error("invalid context");
+            return null;
+        }
+        java.util.List<String> permissions = new ArrayList<>();
+        permissions.add(permission);
+        return askForPermissions(context, permissions);
     }
 
     Response fulfillPermissionsRequest(SystemIntentData systemIntentData) {return null;}

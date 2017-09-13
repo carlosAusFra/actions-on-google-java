@@ -1,5 +1,6 @@
 package ca.sukhsingh.actions.on.google.response.data.google.richresponse;
 
+import ca.sukhsingh.actions.on.google.Util;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,9 +16,12 @@ public class SimpleResponse {
     @JsonProperty("displayText")
     private String displayText;
 
-    public SimpleResponse(String textToSpeech, String ssml, String displayText) {
-        this.textToSpeech = textToSpeech;
-        this.ssml = ssml;
+    public SimpleResponse(String textToSpeech, String displayText) {
+        if (Util.isSsml(textToSpeech)) {
+            this.ssml = textToSpeech;
+        } else {
+            this.textToSpeech = textToSpeech;
+        }
         this.displayText = displayText;
     }
 

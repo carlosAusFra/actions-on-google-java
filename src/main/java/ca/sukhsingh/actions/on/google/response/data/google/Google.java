@@ -34,7 +34,7 @@ public class Google {
     public List<SimpleResponse> noInputPrompts = null;
     @JsonProperty("richResponse")
     public RichResponse richResponse;
-    @JsonProperty("systemintent")
+    @JsonProperty("systemIntent")
     private SystemIntent systemIntent;
 
     public Google() {
@@ -84,11 +84,19 @@ public class Google {
         this.richResponse = richResponse;
     }
 
+    public void setSystemIntent(SystemIntent systemIntent) {
+        this.systemIntent = systemIntent;
+    }
+
     public RichResponse getRichResponse() {
         return richResponse;
     }
 
-    public void setSystemIntent(SystemIntent systemIntent) {
-        this.systemIntent = systemIntent;
+    public List<SimpleResponse> getNoInputPrompts() {
+        return noInputPrompts;
+    }
+
+    public SystemIntent getSystemIntent() {
+        return systemIntent;
     }
 }
