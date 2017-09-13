@@ -21,7 +21,7 @@ public class AssistantApp {
     public class SupportedPermissions {
         public static final String NAME = "NAME";
         public static final String DEVICE_PRECISE_LOCATION = "DEVICE_PRECISE_LOCATION";
-        public static final String DEVICE_COARSE_LOCATION = "DEVICE_PRECISE_LOCATION";
+        public static final String DEVICE_COARSE_LOCATION = "DEVICE_COARSE_LOCATION";
     }
 
     public class StandardIntents {
