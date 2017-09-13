@@ -27,24 +27,22 @@ public class RichResponse {
     @JsonProperty("linkOutSuggestion")
     private LinkOutSuggestion linkOutSuggestion;
 
-    /**
-     * Get all the list of items
-     * @return {@link List<Item>}
-     */
+//    /**
+//     * @return {@link List<Item>} Get all the list of items
+//     */
     public List<Item> getItems() {
         return items;
     }
 
-    /**
-     * Get all the list of Suggestion
-     * @return {@link List<Suggestion>}
-     */
+//    /**
+//     * @return {@link List<Suggestion>} Get all the list of Suggestion
+//     */
     public List<Suggestion> getSuggestions() {
         return suggestions;
     }
 
     /**
-     * @return {@link LinkOutSuggestion}
+     * @return {@link LinkOutSuggestion} get link out suggestion object
      */
     public LinkOutSuggestion getLinkOutSuggestion() {
         return linkOutSuggestion;
@@ -61,7 +59,7 @@ public class RichResponse {
 
     /**
      * Constructor for RichResponse. Accepts RichResponse to clone.
-     * @param richResponse
+     * @param richResponse returns RichResponse object
      */
     public RichResponse(RichResponse richResponse) {
 
