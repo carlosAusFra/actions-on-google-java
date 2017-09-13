@@ -96,11 +96,11 @@ public class RichResponseTest extends AssertHelper {
         assertDisplayText(richResponse, "hi");
     }
 
-    @Test
-    public void simpleResponseObjWithBothEmptyParams() {
-        richResponse.addSimpleResponse(new SimpleResponse("", ""));
-        assertEquals("Rich response should not have any item",0,richResponse.getItems().size());
-    }
+//    @Test
+//    public void simpleResponseObjWithBothEmptyParams() {
+//        richResponse.addSimpleResponse(new SimpleResponse("", ""));
+//        assertEquals("Rich response should not have any item",0,richResponse.getItems().size());
+//    }
 
 
 //    public void simpleResponseObjWithOnlyOneEmptyParam() {}
