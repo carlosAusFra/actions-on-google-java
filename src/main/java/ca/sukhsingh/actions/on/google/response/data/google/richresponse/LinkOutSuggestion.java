@@ -23,5 +23,13 @@ public class LinkOutSuggestion {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public String getDestinationName() {
+        return destinationName;
+    }
+
+    public String getUrl() {
+        return url;
+    }
 }
 

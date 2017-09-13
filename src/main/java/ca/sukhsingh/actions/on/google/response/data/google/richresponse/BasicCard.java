@@ -169,6 +169,26 @@ public class BasicCard {
         return this;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getSubtitle() {
+        return subtitle;
+    }
+
+    public String getFormattedText() {
+        return formattedText;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public List<Button> getButtons() {
+        return buttons;
+    }
+
     public class Button {
 
         @JsonProperty("title")
@@ -206,6 +226,14 @@ public class BasicCard {
 
         public void setWidth(Integer width) {
             this.width = width;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public String getAccessibilityText() {
+            return accessibilityText;
         }
     }
 

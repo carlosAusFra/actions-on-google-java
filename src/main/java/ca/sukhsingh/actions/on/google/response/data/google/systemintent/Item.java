@@ -118,5 +118,21 @@ public class Item {
         }
         return this;
     }
+
+    public OptionInfo getOptionInfo() {
+        return optionInfo;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Image getImage() {
+        return image;
+    }
 }
 
