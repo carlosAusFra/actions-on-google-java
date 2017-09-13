@@ -27,16 +27,10 @@ public class RichResponse {
     @JsonProperty("linkOutSuggestion")
     private LinkOutSuggestion linkOutSuggestion;
 
-//    /**
-//     * @return {@link List<Item>} Get all the list of items
-//     */
     public List<Item> getItems() {
         return items;
     }
 
-//    /**
-//     * @return {@link List<Suggestion>} Get all the list of Suggestion
-//     */
     public List<Suggestion> getSuggestions() {
         return suggestions;
     }
@@ -115,6 +109,13 @@ public class RichResponse {
         return this;
     }
 
+    /**
+     * Adds a SimpleResponse to list of items.
+     *
+     * @param textOrSsml textOrSSML can be textToSpeech or SSML
+     * @param displayText this method required displayText
+     * @return {@link RichResponse} Returns current constructed RichResponse.
+     */
     public RichResponse addSimpleResponse(String textOrSsml, String displayText) {
         if (Util.isNullOrEmpty(textOrSsml)) {
             logger.error("Invalid textOrSsml");
@@ -132,6 +133,12 @@ public class RichResponse {
         return this;
     }
 
+    /**
+     * Adds a BasicCard to list of items.
+     *
+     * @param basicCard basicCard Basic card to include in response.
+     * @return {@link RichResponse} Returns current constructed RichResponse.
+     */
     public RichResponse addBasicCard(BasicCard basicCard) {
         
         if(basicCard == null) {
@@ -141,7 +148,7 @@ public class RichResponse {
 
         for (Item item : this.items) {
             if (item.getBasicCard() != null) {
-                logger.error("Cannot include >1 BasicCard in richresponse");
+                logger.error("Cannot include >1 BasicCard in rich response");
                 return this;
             }
         }

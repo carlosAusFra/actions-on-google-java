@@ -529,6 +529,11 @@ public class ApiAiAppTest extends AssertHelper {
     }
 
     @Test
+    public void askWithListWithInvalidInputPrompt() throws Exception {
+        assertNull(app.askWithList(1, getListSelect()));
+    }
+
+    @Test
     public void askWithListWhereInputPromptParamIsString() throws Exception {
         Response response = app.askWithList("Hello", getListSelect());
         assertNotNull(response);

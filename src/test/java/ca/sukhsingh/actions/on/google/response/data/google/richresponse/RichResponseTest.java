@@ -96,16 +96,6 @@ public class RichResponseTest extends AssertHelper {
         assertDisplayText(richResponse, "hi");
     }
 
-//    @Test
-//    public void simpleResponseObjWithBothEmptyParams() {
-//        richResponse.addSimpleResponse(new SimpleResponse("", ""));
-//        assertEquals("Rich response should not have any item",0,richResponse.getItems().size());
-//    }
-
-
-//    public void simpleResponseObjWithOnlyOneEmptyParam() {}
-
-//    public void simpleResponseObjWithBothNullParams() {}
     @Test
     public void addSimpleResponseTestWithInvalidObj() throws Exception {
         richResponse.addSimpleResponse(new Object());
@@ -122,11 +112,96 @@ public class RichResponseTest extends AssertHelper {
         param 1 as SSML string
      */
 
+    @Test
+    public void addSimpleResponseWithBothStringsNull() throws Exception {
+        richResponse.addSimpleResponse(null,null);
+        assertEquals("Item size should be 0",0,richResponse.getItems().size());
+    }
+
+    @Test
+    public void addSimpleResponseWithBothStringsEmpty() throws Exception {
+        richResponse.addSimpleResponse("","");
+        assertEquals("Item size should be 0",0,richResponse.getItems().size());
+    }
+
+    @Test
+    public void addSimpleResponseWithOneStringNull() throws Exception {
+        richResponse.addSimpleResponse("Hello",null);
+        assertEquals("Item size should be 0",0,richResponse.getItems().size());
+    }
+
+    @Test
+    public void addSimpleResponseWithOneStringEmpty() throws Exception {
+        richResponse.addSimpleResponse("Hello","");
+        assertEquals("Item size should be 0",0,richResponse.getItems().size());
+    }
+
+    @Test
+    public void addSimpleResponseWithTextToSpeech() throws Exception {
+        richResponse.addSimpleResponse("Hello","Hi");
+        assertTextToSpeech(richResponse, "Hello");
+        assertDisplayText(richResponse, "Hi");
+    }
+
+    @Test
+    public void addSimpleResponseWithSSML() throws Exception {
+        richResponse.addSimpleResponse("<speak>Hello</speak>","Hi");
+        assertSsmlText(richResponse, "<speak>Hello</speak>");
+        assertDisplayText(richResponse, "Hi");
+    }
+
     /*
     addBasicCard
         1. basic card null
-        2.
+        2. More then one basic card
+        3. HappyPath
      */
+
+    @Test
+    public void addBasicCardWithNullParam() throws Exception {
+        richResponse.addBasicCard(null);
+        assertEquals("Item size should be 0",0,richResponse.getItems().size());
+    }
+
+    @Test
+    public void addBasicCard() throws Exception {
+        richResponse.addBasicCard(new BasicCard()
+                .setTitle("Title")
+                .setBodyText("BodyText")
+                .setSubtitle("Subtitle")
+                .setImage("url", "accessibility", 9, 6)
+                .addButton("Visit", "url"));
+
+        assertEquals("Basic card title", "Title", richResponse.getItems().get(0).getBasicCard().getTitle());
+        assertEquals("Basic card BodyText", "BodyText", richResponse.getItems().get(0).getBasicCard().getFormattedText());
+        assertEquals("Basic card Subtitle", "Subtitle", richResponse.getItems().get(0).getBasicCard().getSubtitle());
+        assertEquals("Basic card Image Url", "url", richResponse.getItems().get(0).getBasicCard().getImage().getUrl());
+        assertEquals("Basic card Image accessibility", "accessibility", richResponse.getItems().get(0).getBasicCard().getImage().getAccessibilityText());
+    }
+
+    @Test
+    public void addTwoBasicCard() throws Exception {
+        richResponse.addBasicCard(new BasicCard()
+                .setTitle("Title")
+                .setBodyText("BodyText")
+                .setSubtitle("Subtitle")
+                .setImage("url", "accessibility", 9, 6)
+                .addButton("Visit", "url"));
+
+        richResponse.addBasicCard(new BasicCard()
+                .setTitle("Title2")
+                .setBodyText("BodyText2")
+                .setSubtitle("Subtitle2")
+                .setImage("url2", "accessibility2", 9, 6)
+                .addButton("Visit2", "url2"));
+
+        assertEquals("Item size should be 1",1, richResponse.getItems().size());
+        assertEquals("Basic card title", "Title", richResponse.getItems().get(0).getBasicCard().getTitle());
+        assertEquals("Basic card BodyText", "BodyText", richResponse.getItems().get(0).getBasicCard().getFormattedText());
+        assertEquals("Basic card Subtitle", "Subtitle", richResponse.getItems().get(0).getBasicCard().getSubtitle());
+        assertEquals("Basic card Image Url", "url", richResponse.getItems().get(0).getBasicCard().getImage().getUrl());
+        assertEquals("Basic card Image accessibility", "accessibility", richResponse.getItems().get(0).getBasicCard().getImage().getAccessibilityText());
+    }
 
     /*
     addSuggestions(object)
