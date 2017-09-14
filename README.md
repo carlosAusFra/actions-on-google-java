@@ -28,28 +28,38 @@ __Gradle:__
     
     compile 'ca.sukhsingh.actions:actions-on-google:1.0'
 
-## Spring boot example
-    
-    import ca.sukhsingh.actions.on.google.ApiAiApp;
-    import ca.sukhsingh.actions.on.google.request.Request;
-    import ca.sukhsingh.actions.on.google.response.Response;
-    import ca.sukhsingh.actions.on.google.response.data.google.richresponse.SimpleResponse;
-    
-    import org.springframework.http.HttpStatus;
-    import org.springframework.http.ResponseEntity;
-    
-    @RestController
-    @RequestMapping(value = "/json")
-    public class Controller {
-        @Inject
-        ApiAiApp app;
-        
-        @PostMapping(value = "/hook")
-        public ResponseEntity<Response> tell(@RequestBody Request request) {
-            rs = app.ask(app.buildRichResponse()
-                            .addSimpleResponse(new SimpleResponse("Hello World!", null, "Hello World!"))
-                            .addSuggestions("Basic Card", "Suggestion", "etc");
-                            
-            return new ResponseEntity<>(rs, HttpStatus.OK);
-        }
+## To Get Started
+If you are using spring-mvc/Spring-boot:
+Just Inject ApiAiApp in the class. 
+
+* ApiAiApp : This class will give access to all the methods which can be used to prepare a response for user
+* Request : Request is object is upto date request which api.ai will send to the webhook
+* Response : This object is upto date response which api.ai will consume
+
+##### Example :
+
+```java
+@RestController
+@RequestMapping(value = "/tell")
+public class AppTell {
+    @Inject
+    ApiAiApp app;
+
+    @PostMapping(value = "/hook")
+    public ResponseEntity<Response> tell(@RequestBody Request request) {
+        Response response = app.tell("Hello World!");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
+}
+```
+
+### Things you can do with this Library
+* Tell
+* Ask
+* Ask with List
+* Ask with Carousel
+* Ask for Permission(s)
+* Ask with no inputPrompts
+* Rich Response - Simple Response & Bubbles
+* Rich Response - Add suggestions & Link out to suggestion
+* Rich Response - Basic Card
