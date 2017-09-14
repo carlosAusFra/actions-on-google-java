@@ -297,7 +297,7 @@ public class ApiAiApp extends AssistantApp{
 
             response.setSpeech(textToSpeech);
             //TODO _action_on_google_
-            response.setContextOut(new ArrayList<>());
+            response.addContextOuts(new ArrayList<>());
             google.setExpectUserResponse(expectUserResponse);
 
             if (Util.isSsml(textToSpeech)) {
@@ -335,7 +335,7 @@ public class ApiAiApp extends AssistantApp{
             Response response = new Response();
 
             response.setSpeech(richResponse.getItems().get(0).getSimpleResponse().getTextToSpeech());
-            response.setContextOut(new ArrayList<>());
+            response.addContextOuts(new ArrayList<>());
             Data data = new Data();
             Google google = new Google();
 
