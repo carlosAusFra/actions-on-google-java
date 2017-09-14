@@ -64,3 +64,5 @@ public class AppTell {
 * [Rich Response - Add suggestions & Link out to suggestion](https://github.com/sukhvinder1/actions-on-google-java/wiki/RichResponse---addSuggestions)
 * [Rich Response - Basic Card](https://github.com/sukhvinder1/actions-on-google-java/wiki/RichResponse---buildBasicCard)
 
+### License
+See [License](https://github.com/sukhvinder1/actions-on-google-java/blob/master/LICENSE)
