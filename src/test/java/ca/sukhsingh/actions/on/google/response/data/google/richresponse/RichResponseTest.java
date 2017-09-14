@@ -272,6 +272,12 @@ public class RichResponseTest extends AssertHelper {
     }
 
     @Test
+    public void addSuggestionWithInvalidParam() throws Exception {
+        richResponse.addSuggestions(new SimpleResponse());
+        assertEquals(0,richResponse.getSuggestions().size());
+    }
+
+    @Test
     public void addSuggestionsWithStringArrayParam () throws Exception {
         richResponse.addSuggestions(new String[] {"test1", "test2"});
         assertEquals("test1", richResponse.getSuggestions().get(0).getTitle());
@@ -284,13 +290,6 @@ public class RichResponseTest extends AssertHelper {
         assertEquals("test1", richResponse.getSuggestions().get(0).getTitle());
     }
 
-    @Test
-    public void addSuggestionsWithMultipleStringParam () throws Exception {
-        richResponse.addSuggestions("test1", "test2", "test3");
-        assertEquals("test1", richResponse.getSuggestions().get(0).getTitle());
-        assertEquals("test2", richResponse.getSuggestions().get(1).getTitle());
-        assertEquals("test3", richResponse.getSuggestions().get(2).getTitle());
-    }
     /*
     addSuggestions(string, string, ...)
         1. null param
@@ -311,6 +310,14 @@ public class RichResponseTest extends AssertHelper {
         assertEquals("test", richResponse.getSuggestions().get(0).getTitle());
     }
 
+    @Test
+    public void addSuggestionsWithMultipleStringParam () throws Exception {
+        richResponse.addSuggestions("test1", "test2", "test3");
+        assertEquals("test1", richResponse.getSuggestions().get(0).getTitle());
+        assertEquals("test2", richResponse.getSuggestions().get(1).getTitle());
+        assertEquals("test3", richResponse.getSuggestions().get(2).getTitle());
+    }
+
     /*
     addSuggestionLink
         1. Null or empty params
@@ -319,6 +326,13 @@ public class RichResponseTest extends AssertHelper {
     @Test
     public void addSuggestionLinkNullParams() throws Exception {
         richResponse.addSuggestionLink(null, null);
+        assertNull(richResponse.getLinkOutSuggestion().getDestinationName());
+        assertNull(richResponse.getLinkOutSuggestion().getUrl());
+    }
+
+    @Test
+    public void addSuggestionLinkNullURL() throws Exception {
+        richResponse.addSuggestionLink("test", null);
         assertNull(richResponse.getLinkOutSuggestion().getDestinationName());
         assertNull(richResponse.getLinkOutSuggestion().getUrl());
     }
