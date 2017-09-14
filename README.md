@@ -19,14 +19,14 @@ __Maven:__
     <dependency>
       <groupId>ca.sukhsingh.actions</groupId>
       <artifactId>actions-on-google</artifactId>
-      <version>1.0</version>
+      <version>1.0.1</version>
     </dependency>
 
 
 If you are using gradle, simply add the dependency as follows:
 __Gradle:__
     
-    compile 'ca.sukhsingh.actions:actions-on-google:1.0'
+    compile 'ca.sukhsingh.actions:actions-on-google:1.0.1'
 
 ## To Get Started
 If you are using spring-mvc/Spring-boot:
