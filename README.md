@@ -54,12 +54,13 @@ public class AppTell {
 ```
 
 ### Things you can do with this Library
-* Tell
-* Ask
-* Ask with List
-* Ask with Carousel
-* Ask for Permission(s)
+* [Tell](https://github.com/sukhvinder1/actions-on-google-java/wiki/app.tell)
+* [Ask](https://github.com/sukhvinder1/actions-on-google-java/wiki/app.ask)
+* [Ask with List](https://github.com/sukhvinder1/actions-on-google-java/wiki/app.askWithList)
+* [Ask with Carousel](https://github.com/sukhvinder1/actions-on-google-java/wiki/app.askWithCarousel)
+* [Ask for Permission(s)](https://github.com/sukhvinder1/actions-on-google-java/wiki/app.askForPermisssion(s))
 * Ask with no inputPrompts
-* Rich Response - Simple Response & Bubbles
-* Rich Response - Add suggestions & Link out to suggestion
-* Rich Response - Basic Card
+* [Rich Response - Simple Response & Bubbles](https://github.com/sukhvinder1/actions-on-google-java/wiki/RichResponse---buildSimpleResponse)
+* [Rich Response - Add suggestions & Link out to suggestion](https://github.com/sukhvinder1/actions-on-google-java/wiki/RichResponse---addSuggestions)
+* [Rich Response - Basic Card](https://github.com/sukhvinder1/actions-on-google-java/wiki/RichResponse---buildBasicCard)
+
