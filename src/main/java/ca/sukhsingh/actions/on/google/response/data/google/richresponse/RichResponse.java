@@ -197,12 +197,6 @@ public class RichResponse {
                 logger.error("Invalid list. List must be of either String or Suggestion");
             }
 
-        } else if (suggestions instanceof String[]) {
-            String [] _suggestions = (String [])suggestions;
-            for (String s : _suggestions) {
-                this.suggestions.add(new Suggestion(s));
-            }
-
         } else if (suggestions instanceof String){
             this.suggestions.add(new Suggestion(suggestions.toString()));
 
@@ -226,9 +220,6 @@ public class RichResponse {
             for (String s : _suggestions) {
                 this.suggestions.add(new Suggestion(s));
             }
-        } else {
-            logger.error("Suggestion should be on of these type : String|ArrayList|List|Array");
-            return null;
         }
 
         return this;
@@ -284,13 +275,5 @@ public class RichResponse {
             logger.error("SimpleResponse requires a speech parameter.");
             return null;
         }
-    }
-
-    private boolean isSsml(String response) {
-        if (response != null) {
-            return response.matches("(?s).*(<(\\w+)[^>]*>.*</\\2>|<(\\w+)[^>]*/>).*");
-        }
-
-        return false;
     }
 }

@@ -33,9 +33,6 @@ public class BasicCard {
     Logger logger = Logger.getLogger(BasicCard.class);
 
     public BasicCard() {
-        this.title = null;
-        this.formattedText = "";
-        this.subtitle = null;
         this.image = new BasicCard.Image();
         this.buttons = new ArrayList();
     }
@@ -200,6 +197,14 @@ public class BasicCard {
             this.title = title;
             this.openUrlAction = openUrlAction;
         }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getOpenUrlAction() {
+            return openUrlAction.getUrl();
+        }
     }
 
     public class Image {
@@ -211,22 +216,6 @@ public class BasicCard {
         private Integer height;
         @JsonProperty("width")
         private Integer width;
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
-        public void setAccessibilityText(String accessibilityText) {
-            this.accessibilityText = accessibilityText;
-        }
-
-        public void setHeight(Integer height) {
-            this.height = height;
-        }
-
-        public void setWidth(Integer width) {
-            this.width = width;
-        }
 
         public String getUrl() {
             return url;
@@ -243,6 +232,10 @@ public class BasicCard {
 
         public OpenUrlAction(String url) {
             this.url = url;
+        }
+
+        public String getUrl() {
+            return url;
         }
     }
 }

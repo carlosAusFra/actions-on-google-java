@@ -23,6 +23,8 @@ public class Response {
     private Data data;
 
     public Response() {
+        this.contextOut = new ArrayList<>();
+        this.data = new Data();
     }
 
     public Response(Data data) {
@@ -34,13 +36,13 @@ public class Response {
         this.contextOut = new ArrayList<>();
         this.data = new Data();
 
-        if (Util.isNull(response)){
+        if (Util.isNotNull(response)){
             if (!Util.isNullOrEmpty(response.speech)) {
                 this.speech = response.speech;
             }
 
             if (!Util.isNull(response.contextOut)){
-                this.contextOut = contextOut;
+                this.contextOut = response.contextOut;
             }
 
             if (!Util.isNull(response.data)) {
@@ -51,10 +53,6 @@ public class Response {
 
     public void addContextOut(ContextOut contextOut) {
         this.contextOut.add(contextOut);
-    }
-
-    public void addContextOuts(List<ContextOut> contextOuts) {
-        this.contextOut.addAll(contextOuts);
     }
 
     public String getSpeech() {
@@ -69,7 +67,7 @@ public class Response {
         return contextOut;
     }
 
-    public void setContextOut(List<ContextOut> contextOut) {
+    public void addContextOuts(List<ContextOut> contextOut) {
         this.contextOut = contextOut;
     }
 
