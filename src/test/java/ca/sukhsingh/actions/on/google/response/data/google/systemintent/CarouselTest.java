@@ -29,7 +29,7 @@ public class CarouselTest extends AssertHelper {
         item.setKey("key");
         item.setImage("url", "test", 0,0);
         items.add(item);
-        carousel = new Carousel(item);
+        carousel = new Carousel(items);
 
         assertNotNull(carousel);
         assertEquals("title", carousel.getItems().get(0).getTitle());

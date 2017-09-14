@@ -46,7 +46,9 @@ public class RichResponseTest extends AssertHelper {
     public void addSimpleResponseTestWithItemMoreThenTwo() throws Exception {
         RichResponse response = new RichResponse();
         List<Item> itemList = new ArrayList<>();
-        itemList.add(new Item(new SimpleResponse("Hello", "hi")));
+        Item item = new Item(new SimpleResponse("Hello", "hi"));
+        item.setBasicCard(new BasicCard());
+        itemList.add(item);
         itemList.add(new Item(new SimpleResponse("hello","hi")));
         response.setItems(itemList);
         RichResponse richResponse = new RichResponse(response);

@@ -1,6 +1,7 @@
 package ca.sukhsingh.actions.on.google.response;
 
 import ca.sukhsingh.actions.on.google.response.data.google.Data;
+import ca.sukhsingh.actions.on.google.response.data.google.Google;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -30,5 +31,15 @@ public class ResponseTest {
         assertEquals("one", response.getContextOut().get(0).getName());
         assertEquals("two", response.getContextOut().get(1).getName());
 
+    }
+
+    @Test
+    public void responseConstructorWithData() throws Exception {
+        Data data = new Data();
+        Google google = new Google();
+        google.setSsml(false);
+        data.setGoogle(google);
+        Response response = new Response(data);
+        assertEquals(false, response.getData().getGoogle().isSsml);
     }
 }
