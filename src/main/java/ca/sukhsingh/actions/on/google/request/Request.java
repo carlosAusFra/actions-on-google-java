@@ -18,7 +18,7 @@ import static ca.sukhsingh.actions.on.google.Util.*;
  */
 public class Request {
 
-    @JsonProperty("originalrequest")
+    @JsonProperty("originalRequest")
     private OriginalRequest originalRequest;
     @JsonProperty("id")
     private String id;
