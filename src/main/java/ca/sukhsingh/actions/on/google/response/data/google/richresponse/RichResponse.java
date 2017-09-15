@@ -259,8 +259,6 @@ public class RichResponse {
      * @private
      */
     private SimpleResponse buildSimpleResponseHelper(Object response) {
-        SimpleResponse simpleResponseObj = new SimpleResponse();
-
         if (response instanceof String) {
             String _response = response.toString();
             return new SimpleResponse(_response, null);

@@ -203,7 +203,7 @@ public class ApiAiApp extends AssistantApp{
 
         //TODO if(this.isNotApiVersionOne_()) {
         SystemIntentData data = new SystemIntentData();
-        data.setType(InputValueDataTypes_.OPTION);
+        data.setType(InputValueDataTypes.OPTION);
         data.setListSelect(list);
         systemIntent.setData(data);
         Data responseData = response.getData();
@@ -249,7 +249,7 @@ public class ApiAiApp extends AssistantApp{
 
         //TODO if(this.isNotApiVersionOne_()) {
         SystemIntentData data = new SystemIntentData();
-        data.setType(InputValueDataTypes_.OPTION);
+        data.setType(InputValueDataTypes.OPTION);
         data.setCarousel(carousel);
         systemIntent.setData(data);
         Data responseData = response.getData();
@@ -368,7 +368,7 @@ public class ApiAiApp extends AssistantApp{
         response = buildResponse(inputPrompt, true, null);
         response.setSpeech(inputPrompt);
         systemIntent.setIntent(StandardIntents.PERMISSION);
-        systemIntentData.setType(InputValueDataTypes_.PERMISSION);
+        systemIntentData.setType(InputValueDataTypes.PERMISSION);
         systemIntent.setData(systemIntentData);
         google = response.getData().getGoogle();
         google.setSystemIntent(systemIntent);

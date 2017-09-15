@@ -1,7 +1,6 @@
 package ca.sukhsingh.actions.on.google.response.data.google.richresponse;
 
 import ca.sukhsingh.actions.on.google.AssertHelper;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -12,7 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 /**

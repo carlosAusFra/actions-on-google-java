@@ -15,8 +15,8 @@ public class Item {
     @JsonProperty("basicCard")
     private BasicCard basicCard;
 
-    @JsonProperty("structuredResponse")
-    private StructuredResponse structuredResponse;
+//    @JsonProperty("structuredResponse")
+//    private StructuredResponse structuredResponse;
 
     public Item(SimpleResponse simpleResponse) {
         this.simpleResponse = simpleResponse;
@@ -54,13 +54,13 @@ public class Item {
 //        this.structuredResponse = structuredResponse;
 //    }
 
-    public class StructuredResponse {
-
-        @JsonProperty("orderUpdate")
-        private OrderUpdate orderUpdate;
-    }
-
-    //TODO still have to do it
+//    public class StructuredResponse {
+//
+//        @JsonProperty("orderUpdate")
+//        private OrderUpdate orderUpdate;
+//    }
+//
+//    //TODO still have to do it
     public class OrderUpdate {
 
     }

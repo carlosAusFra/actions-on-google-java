@@ -63,6 +63,10 @@ public class Result {
         return action;
     }
 
+    public Parameters getParameters() {
+        return parameters;
+    }
+
     public Boolean getActionIncomplete() {
         return actionIncomplete;
     }
