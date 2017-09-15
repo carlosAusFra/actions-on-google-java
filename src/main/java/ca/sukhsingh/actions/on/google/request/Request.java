@@ -3,9 +3,11 @@ package ca.sukhsingh.actions.on.google.request;
 
 import ca.sukhsingh.actions.on.google.request.originalrequest.*;
 import ca.sukhsingh.actions.on.google.request.result.Context;
+import ca.sukhsingh.actions.on.google.request.result.Message;
 import ca.sukhsingh.actions.on.google.request.result.Result;
 import ca.sukhsingh.actions.on.google.request.status.Status;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +57,7 @@ public class Request {
      */
     public User getUser() {
         if (isNull(originalRequest.getData().getUser())) {
+            logger.error("No user object");
             return null;
         }
         return originalRequest.getData().getUser();
@@ -66,11 +69,11 @@ public class Request {
      * returns null.
      * @return Profile
      */
-    public Profile getUserName() {
+    public String getUserName() {
         if (isNull(getUser().getProfile())) {
             return null;
         }
-        return getUser().getProfile();
+        return getUser().getProfile().getDisplayName();
     }
 
     /**
@@ -91,10 +94,6 @@ public class Request {
     public Coordinates getDeviceLocation() {
         return originalRequest.getData().getDevice().getLocation().getCoordinates();
     }
-
-//    public void getInputType() {
-//
-//    }
 
     /**
      * Get the argument value by name from the current intent.
@@ -166,7 +165,12 @@ public class Request {
      * @return List Supported surface capabilities, as defined in SurfaceCapabilities.
      */
     public List<Capability> getSurfaceCapabilities() {
-        return originalRequest.getData().getSurface().getCapabilities();
+        logger.debug("getSurfaceCapabilities");
+        if (isNotNull(originalRequest.getData().getSurface().getCapabilities())) {
+            return originalRequest.getData().getSurface().getCapabilities();
+        }
+        logger.error("No capabilities found");
+        return null;
     }
 
     /**
@@ -232,16 +236,79 @@ public class Request {
         return getDeviceLocation().getLongitude();
     }
 
+    /**
+     * Returns the incoming context by name for this intent.
+     *
+     * @param name name of the context
+     * @return {@link Context} if found then return context otherwise null
+     */
+    public Context getContext(String name) {
+        if (isNull(result.getContexts())) {
+            logger.error("No contexts included in request");
+            return null;
+        }
+
+        for (Context context : result.getContexts()) {
+            if (context.getName().equals(name)){
+                return context;
+            }
+        }
+        logger.debug("Failed to get context with : " + name);
+        return null;
+    }
+
+    /**
+     * Returns the incoming contexts for this intent.
+     *
+     * @return {@link Context} if found then return context otherwise null
+     */
     public List<Context> getContexts() {
+        if (isNull(result.getContexts())) {
+            logger.error("No contexts included in request");
+            return null;
+        }
         return result.getContexts();
+    }
+
+//    getContextArgument
+
+//    public Carousel getIncomingCarousel() {
+//        logger.debug("getIncomingCarousel");
+//        if (isNotNull(result.getFulfillment().getMessages())) {
+//            for (Message message : result.getFulfillment().getMessages()) {
+//
+//            }
+//        }
+//    }
+
+//    getIncomingList
+
+//    getIncomingRichResponse
+
+    /**
+     * Gets type of input used for this request.
+     *
+     * @return {@link String} Null if no input type given.
+     */
+    public String getInputType() {
+        logger.debug("getInputType");
+        if (isNotNull(getOriginalRequest().getData().getInputs())) {
+            for (Input input : getOriginalRequest().getData().getInputs()) {
+                if (isNotNull(input.getRawInputs())) {
+                    for (RawInput rawInput : input.getRawInputs()) {
+                        if (isNotNull(rawInput.getInputType())) {
+                            return rawInput.getInputType();
+                        }
+                    }
+                }
+            }
+        }
+        logger.error("No input type in incoming request");
+        return null;
     }
 
     public boolean isRequestFromApiAi(String key, String value) {
         return false;
-    }
-
-    public Object getContextArgument(String contextName, String argName) {
-        return null;
     }
 
     public RichResponse getIncomingRichResponse() { //line:247
@@ -282,11 +349,6 @@ public class Request {
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
 }
 
 
