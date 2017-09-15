@@ -40,14 +40,30 @@ Just Inject ApiAiApp in the class.
 
 ```java
 @RestController
-@RequestMapping(value = "/tell")
-public class AppTell {
+public class AppAsk {
     @Inject
     ApiAiApp app;
 
-    @PostMapping(value = "/hook")
+    @PostMapping(value = "/webHook")
     public ResponseEntity<Response> tell(@RequestBody Request request) {
-        Response response = app.tell("Hello World!");
+        String action = request.getAction();
+        Response response = new Response();
+        switch (action) {
+            case ("input.ask") :
+                response = app.ask("Hello World!");
+                break;
+            case ("input.ask.rich") :
+                response = app.ask(
+                        app.buildRichResponse()
+                        .addSimpleResponse("Hello World!", "Hello World!")
+                        .addSimpleResponse("Simple response with bubble")
+                        .addSuggestions("Suggestion chip")
+                        .addSuggestions("List", "Carousel")
+                        .addSuggestionLink("Visit me", "http://example.com")
+                );
+                break;
+        }
+        
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
