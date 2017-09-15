@@ -257,10 +257,6 @@ public class Request {
         return sessionId;
     }
 
-    public String getORIntent() {
-        return originalRequest.getData().getInputs().get(0).getIntent();
-    }
-
     public String getIntent() {
         return result.getMetadata().getIntentName();
     }
@@ -349,26 +345,6 @@ public class Request {
             }
         }
         logger.error("No input type in incoming request");
-        return null;
-    }
-
-    public boolean isRequestFromApiAi(String key, String value) {
-        return false;
-    }
-
-    public RichResponse getIncomingRichResponse() { //line:247
-        return null;
-    }
-
-    public Object getIncomingList() {
-        return null;
-    }
-
-    public Object getIncomingCarousel() {
-        return null;
-    }
-
-    public String getSelectedOption() {
         return null;
     }
     

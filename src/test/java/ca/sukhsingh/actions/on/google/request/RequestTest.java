@@ -234,6 +234,24 @@ public class RequestTest {
         assertEquals("Singh", request.getContextParameter("question-followup", "sukh"));
     }
 
+    @Test
+    public void getContextWithNoContext() throws Exception {
+        Request request = prepareRequest("getContext/get_context_withNoContext.json");
+        assertNull(request.getContextParameter("question-followup", "test"));
+    }
+
+    @Test
+    public void getContexts() throws Exception {
+        Request request = prepareRequest("getContext/get_context_parameters.json");
+        assertEquals("google_assistant_input_type_touch", request.getContexts().get(0).getName());
+    }
+
+    @Test
+    public void getContextsWithNoContext() throws Exception {
+        Request request = prepareRequest("getContext/get_context_withNoContext.json");
+        assertNull(request.getContexts());
+    }
+
     private Request prepareRequest(String fileName) {
         ObjectMapper mapper = new ObjectMapper();
         ClassLoader classLoader = getClass().getClassLoader();
