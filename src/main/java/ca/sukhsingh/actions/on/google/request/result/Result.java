@@ -1,9 +1,14 @@
 
 package ca.sukhsingh.actions.on.google.request.result;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sukhSingh on 2017-08-09.
@@ -20,8 +25,6 @@ public class Result {
     private String action;
     @JsonProperty("actionIncomplete")
     private Boolean actionIncomplete;
-    @JsonProperty("resultParameters")
-    private ResultParameters resultParameters;
     @JsonProperty("parameters")
     private Parameters parameters;
     @JsonProperty("contexts")
@@ -32,6 +35,17 @@ public class Result {
     private Fulfillment fulfillment;
     @JsonProperty("score")
     private Double score;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
 
     public String getSource() {
         return source;
@@ -53,10 +67,6 @@ public class Result {
         return actionIncomplete;
     }
 
-    public ResultParameters getResultParameters() {
-        return resultParameters;
-    }
-
     public List<Context> getContexts() {
         return contexts;
     }
@@ -73,7 +83,4 @@ public class Result {
         return score;
     }
 
-    public Parameters getParameters() {
-        return parameters;
-    }
 }
