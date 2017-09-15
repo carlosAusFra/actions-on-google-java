@@ -1,0 +1,81 @@
+{
+  "originalRequest": {
+    "source": "google",
+    "version": "2",
+    "data": {
+      "isInSandbox": true,
+      "surface": {
+        "capabilities": [{
+          "name": "actions.capability.AUDIO_OUTPUT"
+        }, {
+          "name": "actions.capability.SCREEN_OUTPUT"
+        }]
+      },
+      "inputs": [{
+        "rawInputs": [{
+          "query": "repeat",
+          "inputType": "TOUCH"
+        }],
+        "intent": "actions.intent.TEXT"
+      }],
+      "user": {
+        "locale": "en-US",
+        "userId": "APhe68HKD7CWYfeeb0HOZ24I-T44"
+      },
+      "device": {},
+      "conversation": {
+        "conversationId": "1505492606458",
+        "type": "ACTIVE",
+        "conversationToken": "[\"question-followup\"]"
+      }
+    }
+  },
+  "id": "81acffcc-6eac-4b11-995c-92cea13c5950",
+  "timestamp": "2017-09-15T16:23:30.842Z",
+  "lang": "en",
+  "result": {
+    "source": "agent",
+    "resolvedQuery": "repeat",
+    "speech": "",
+    "action": "question.repeat",
+    "actionIncomplete": false,
+    "parameters": {},
+    "contexts": [{
+      "name": "google_assistant_input_type_touch",
+      "parameters": {},
+      "lifespan": 0
+    }, {
+      "name": "question-followup",
+      "parameters": {},
+      "lifespan": 9
+    }, {
+      "name": "actions_capability_screen_output",
+      "parameters": {},
+      "lifespan": 0
+    }, {
+      "name": "actions_capability_audio_output",
+      "parameters": {},
+      "lifespan": 0
+    }],
+    "metadata": {
+      "intentId": "cc924674-d2e6-4d37-8d00-fad5183b7ad0",
+      "webhookUsed": "true",
+      "webhookForSlotFillingUsed": "false",
+      "nluResponseTime": 6,
+      "intentName": "question.repeat"
+    },
+    "fulfillment": {
+      "speech": "",
+      "messages": [{
+        "type": 0,
+        "speech": ""
+      }]
+    },
+    "score": 1.0
+  },
+  "status": {
+    "code": 200,
+    "errorType": "success"
+  },
+  "sessionId": "1505492606458"
+}]

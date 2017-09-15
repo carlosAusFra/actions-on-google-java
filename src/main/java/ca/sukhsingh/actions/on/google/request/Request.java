@@ -3,13 +3,10 @@ package ca.sukhsingh.actions.on.google.request;
 
 import ca.sukhsingh.actions.on.google.request.originalrequest.*;
 import ca.sukhsingh.actions.on.google.request.result.Context;
-import ca.sukhsingh.actions.on.google.request.result.Message;
 import ca.sukhsingh.actions.on.google.request.result.Result;
 import ca.sukhsingh.actions.on.google.request.status.Status;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
-import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.log4j.Logger;
@@ -113,12 +110,58 @@ public class Request {
         if (isNull(argument)) {
             logger.error("Failed to get argument value: " + agrName);
             return null;
-        } else if (isNullOrEmpty(argument.getTextValue())) {
+        } else if (!isNullOrEmpty(argument.getTextValue())) {
             return argument.getTextValue();
         } else {
             return argument;
         }
     }
+
+    /**
+     * Getting all the additional parameter for results
+     * @return {@link Map} map of property with name as key
+     */
+    public Map<String, Object> getResultParameters() {
+        if (isNotNull(getResult().getParameters().getAdditionalProperties())) {
+            return getResult().getParameters().getAdditionalProperties();
+        }
+        logger.error("no parameters found ");
+        return null;
+    }
+
+    public String getResultParameter(String propertyName) {
+        Map<String, Object> additionalProperties = getResultParameters();
+        if (isNotNull(additionalProperties)) {
+            if (additionalProperties.containsKey(propertyName)) {
+                return (String)additionalProperties.get(propertyName);
+            }
+        }
+        logger.error("no parameters with property name found ");
+        return null;
+    }
+
+    public Map<String, Object> getContextParameters(String contextName) {
+        if (isNotNull(getContext(contextName))) {
+            Context context = getContext(contextName);
+            if (isNotNull(context.getAdditionalProperties())) {
+                return context.getContextParameters().getAdditionalProperties();
+            }
+        }
+        logger.error("No contextName found");
+        return null;
+    }
+
+    public String getContextParameter(String contextName, String propertyName) {
+        Map<String, Object> additionalProperties = getContextParameters(contextName);
+        if (isNotNull(additionalProperties)) {
+            if (additionalProperties.containsKey(propertyName)) {
+                return (String) additionalProperties.get(propertyName);
+            }
+        }
+        logger.error("No contextName with property name found");
+        return null;
+    }
+
 
 //    public void getTransactionRequirementsResult() {
 //
@@ -151,9 +194,11 @@ public class Request {
      * @return boolean
      */
     public boolean hasSurfaceCapability(String requestedCapability) {
-        for (Capability capability : getSurfaceCapabilities()) {
-            if (capability.getName().equals(requestedCapability)) {
-                return true;
+        if (isNotNull(getSurfaceCapabilities())) {
+            for (Capability capability : getSurfaceCapabilities()) {
+                if (capability.getName().equals(requestedCapability)) {
+                    return true;
+                }
             }
         }
         return false;

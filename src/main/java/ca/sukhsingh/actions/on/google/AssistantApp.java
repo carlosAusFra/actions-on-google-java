@@ -29,9 +29,16 @@ public class AssistantApp {
         public static final String PERMISSION = "actions.intent.PERMISSION";
     }
 
-    public class InputValueDataTypes_ {
+    public class InputValueDataTypes {
         public static final String OPTION = "type.googleapis.com/google.actions.v2.OptionValueSpec";
         public static final String PERMISSION = "type.googleapis.com/google.actions.v2.PermissionValueSpec";
+    }
+
+    public class InputTypes {
+        public static final String UNSPECIFIED = "UNSPECIFIED";
+        public static final String TOUCH = "TOUCH";
+        public static final String VOICE = "VOICE";
+        public static final String KEYBOARD = "KEYBOARD";
     }
 
     /**
