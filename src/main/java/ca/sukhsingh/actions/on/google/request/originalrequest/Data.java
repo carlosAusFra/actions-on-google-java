@@ -1,9 +1,14 @@
 
 package ca.sukhsingh.actions.on.google.request.originalrequest;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sukhSingh on 2017-08-09.
@@ -22,6 +27,8 @@ public class Data {
     private Device device;
     @JsonProperty("conversation")
     private Conversation conversation;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     public Boolean getInSandbox() {
         return isInSandbox;
@@ -46,28 +53,12 @@ public class Data {
     public Conversation getConversation() {
         return conversation;
     }
-
-    public void setInSandbox(Boolean inSandbox) {
-        isInSandbox = inSandbox;
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
-
-    public void setSurface(Surface surface) {
-        this.surface = surface;
-    }
-
-    public void setInputs(List<Input> inputs) {
-        this.inputs = inputs;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setDevice(Device device) {
-        this.device = device;
-    }
-
-    public void setConversation(Conversation conversation) {
-        this.conversation = conversation;
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
     }
 }

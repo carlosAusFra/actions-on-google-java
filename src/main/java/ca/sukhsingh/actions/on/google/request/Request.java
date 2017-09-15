@@ -6,10 +6,15 @@ import ca.sukhsingh.actions.on.google.request.result.Context;
 import ca.sukhsingh.actions.on.google.request.result.Result;
 import ca.sukhsingh.actions.on.google.request.status.Status;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.log4j.Logger;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static ca.sukhsingh.actions.on.google.Util.*;
 
@@ -18,7 +23,7 @@ import static ca.sukhsingh.actions.on.google.Util.*;
  */
 public class Request {
 
-    @JsonProperty("originalrequest")
+    @JsonProperty("originalRequest")
     private OriginalRequest originalRequest;
     @JsonProperty("id")
     private String id;
@@ -32,6 +37,8 @@ public class Request {
     private Status status;
     @JsonProperty("sessionId")
     private String sessionId;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     Logger logger = Logger.getLogger(Request.class);
 
@@ -112,7 +119,6 @@ public class Request {
         } else {
             return argument;
         }
-        //TODO if (!this.isNotApiVersionOne_()) { 1235
     }
 
 //    public void getTransactionRequirementsResult() {
@@ -270,6 +276,15 @@ public class Request {
             }
         }
         return null;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
     }
 
 }
