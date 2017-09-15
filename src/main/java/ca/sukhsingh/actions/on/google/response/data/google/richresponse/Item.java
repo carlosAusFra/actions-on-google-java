@@ -26,17 +26,17 @@ public class Item {
         this.basicCard = basicCard;
     }
 
-    public Item(StructuredResponse structuredResponse) {
-        this.structuredResponse = structuredResponse;
-    }
+//    public Item(StructuredResponse structuredResponse) {
+//        this.structuredResponse = structuredResponse;
+//    }
 
     public SimpleResponse getSimpleResponse() {
         return simpleResponse;
     }
 
-    public void setSimpleResponse(SimpleResponse simpleResponse) {
-        this.simpleResponse = simpleResponse;
-    }
+//    public void setSimpleResponse(SimpleResponse simpleResponse) {
+//        this.simpleResponse = simpleResponse;
+//    }
 
     public BasicCard getBasicCard() {
         return basicCard;
@@ -46,26 +46,18 @@ public class Item {
         this.basicCard = basicCard;
     }
 
-    public StructuredResponse getStructuredResponse() {
-        return structuredResponse;
-    }
+//    public StructuredResponse getStructuredResponse() {
+//        return structuredResponse;
+//    }
 
-    public void setStructuredResponse(StructuredResponse structuredResponse) {
-        this.structuredResponse = structuredResponse;
-    }
+//    public void setStructuredResponse(StructuredResponse structuredResponse) {
+//        this.structuredResponse = structuredResponse;
+//    }
 
     public class StructuredResponse {
 
         @JsonProperty("orderUpdate")
         private OrderUpdate orderUpdate;
-
-        public OrderUpdate getOrderUpdate() {
-            return orderUpdate;
-        }
-
-        public void setOrderUpdate(OrderUpdate orderUpdate) {
-            this.orderUpdate = orderUpdate;
-        }
     }
 
     //TODO still have to do it
