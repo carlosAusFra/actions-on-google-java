@@ -170,7 +170,7 @@ public class RichResponseTest extends AssertHelper {
                 .setTitle("Title")
                 .setBodyText("BodyText")
                 .setSubtitle("Subtitle")
-                .setImage("url", "accessibility", 9, 6)
+                .setImage("url", "accessibility")
                 .addButton("Visit", "url"));
 
         assertEquals("Basic card title", "Title", richResponse.getItems().get(0).getBasicCard().getTitle());
@@ -186,14 +186,14 @@ public class RichResponseTest extends AssertHelper {
                 .setTitle("Title")
                 .setBodyText("BodyText")
                 .setSubtitle("Subtitle")
-                .setImage("url", "accessibility", 9, 6)
+                .setImage("url", "accessibility")
                 .addButton("Visit", "url"));
 
         richResponse.addBasicCard(new BasicCard()
                 .setTitle("Title2")
                 .setBodyText("BodyText2")
                 .setSubtitle("Subtitle2")
-                .setImage("url2", "accessibility2", 9, 6)
+                .setImage("url2", "accessibility2")
                 .addButton("Visit2", "url2"));
 
         assertEquals("Item size should be 1",1, richResponse.getItems().size());

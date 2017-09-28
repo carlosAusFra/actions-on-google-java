@@ -120,11 +120,9 @@ public class BasicCard {
      * @param url {@link String} url Image source URL.
      * @param accessibilityText {@link String} accessibilityText Text to replace for image for
      *     accessibility.
-     * @param width int width Width of the image.
-     * @param height height Height of the image.
      * @return {BasicCard} Returns current constructed BasicCard.
      */
-    public BasicCard setImage (String url, String accessibilityText, int width, int height) {
+    public BasicCard setImage (String url, String accessibilityText) {
         if (isNullOrEmpty(url)) {
             logger.error("url cannot be empty or null");
             return this;
@@ -136,12 +134,12 @@ public class BasicCard {
         }
         this.image.accessibilityText = accessibilityText;
 
-        if (isNotNull(width)) {
-            this.image.width = width;
-        }
-        if (isNotNull(height)) {
-            this.image.height = height;
-        }
+//        if (isNotNull(width)) {
+//            this.image.width = width;
+//        }
+//        if (isNotNull(height)) {
+//            this.image.height = height;
+//        }
 
         return this;
     }
@@ -190,6 +188,7 @@ public class BasicCard {
 
         @JsonProperty("title")
         private String title;
+
         @JsonProperty("openUrlAction")
         private OpenUrlAction openUrlAction;
 
@@ -202,8 +201,8 @@ public class BasicCard {
             return title;
         }
 
-        public String getOpenUrlAction() {
-            return openUrlAction.getUrl();
+        public OpenUrlAction getOpenUrlAction() {
+            return openUrlAction;
         }
     }
 
@@ -212,10 +211,10 @@ public class BasicCard {
         private String url;
         @JsonProperty("accessibilityText")
         private String accessibilityText;
-        @JsonProperty("height")
-        private Integer height;
-        @JsonProperty("width")
-        private Integer width;
+//        @JsonProperty("height")
+//        private Integer height;
+//        @JsonProperty("width")
+//        private Integer width;
 
         public String getUrl() {
             return url;

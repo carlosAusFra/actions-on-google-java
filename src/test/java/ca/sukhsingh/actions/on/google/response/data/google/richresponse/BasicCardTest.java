@@ -23,7 +23,7 @@ public class BasicCardTest {
         BasicCard basicCard = new BasicCard(app.buildBasicCard("test").
                 setTitle("title").
                 setSubtitle("subtitle").
-                setImage("url", "test", 0 ,0));
+                setImage("url", "test"));
 
         Assert.assertEquals("test", basicCard.getFormattedText());
         Assert.assertEquals("title", basicCard.getTitle());
@@ -55,14 +55,14 @@ public class BasicCardTest {
     @Test
     public void setImageNullUrl() throws Exception {
         BasicCard basicCard = new BasicCard();
-        basicCard.setImage(null, "test", 0,0);
+        basicCard.setImage(null, "test");
         Assert.assertNull(basicCard.getImage().getUrl());
     }
 
     @Test
     public void setImageNullAccessibility() throws Exception {
         BasicCard basicCard = new BasicCard();
-        basicCard.setImage("test", null, 0,0);
+        basicCard.setImage("test", null);
         Assert.assertNull(basicCard.getImage().getAccessibilityText());
     }
 
@@ -85,7 +85,7 @@ public class BasicCardTest {
         BasicCard basicCard = new BasicCard();
         basicCard.addButton("test","test-url");
         Assert.assertEquals("button text", "test", basicCard.getButtons().get(0).getTitle());
-        Assert.assertEquals("button text", "test-url", basicCard.getButtons().get(0).getOpenUrlAction());
+        Assert.assertEquals("button text", "test-url", basicCard.getButtons().get(0).getOpenUrlAction().getUrl());
 
     }
 }
