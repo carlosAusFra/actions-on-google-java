@@ -208,9 +208,9 @@ public class RichResponseTest extends AssertHelper {
     addSuggestions(object)
         1. object null
         2. object os ArrayList
-        3. object is List
-            a. List<String>
-            b. List<Suggestion>
+        3. object is ListSelect
+            a. ListSelect<String>
+            b. ListSelect<Suggestion>
             c. Invalid list
         4. object as String[]
         5. object as String

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static ca.sukhsingh.actions.on.google.Util.*;
 
@@ -17,35 +18,35 @@ import static ca.sukhsingh.actions.on.google.Util.*;
         "title",
         "items"
 })
-public class List {
+public class ListSelect {
 
-    Logger logger = Logger.getLogger(List.class);
+    Logger logger = Logger.getLogger(ListSelect.class);
 
     @JsonProperty("title")
     private String title;
 
     @JsonProperty("items")
-    private java.util.List<Item> items = null;
+    private List<Item> items = null;
 
-    public List(Object list) {
+    public ListSelect(Object list) {
         this.items = new ArrayList<>();
         if (isNotNull(list)) {
             if (list instanceof String) {
                 this.title = (String) list;
             } else if (list instanceof ArrayList) {
                 this.items = (ArrayList)list;
-            } else if (list instanceof List) {
+            } else if (list instanceof ListSelect) {
                 //TODO null check
-                this.title = ((List) list).title;
+                this.title = ((ListSelect) list).title;
                 //TODO items remaining
             }
         }
     }
 
-    public List() {
+    public ListSelect() {
     }
 
-    public List setTitle(String title) {
+    public ListSelect setTitle(String title) {
         if (isNullOrEmpty(title)) {
             logger.error("title cannot be empty");
         }
@@ -53,12 +54,12 @@ public class List {
         return this;
     }
 
-    public List setItems(java.util.List<Item> items) {
+    public ListSelect setItems(List<Item> items) {
         this.items = items;
         return this;
     }
 
-    public List addItems(Object optionItems) {
+    public ListSelect addItems(Object optionItems) {
         if (isNull(optionItems)) {
             logger.error("optionItems cannot be empty");
         } else if (optionItems instanceof ArrayList) {
@@ -78,7 +79,7 @@ public class List {
         return title;
     }
 
-    public java.util.List<Item> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 }

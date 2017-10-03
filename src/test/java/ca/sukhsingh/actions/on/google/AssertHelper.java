@@ -4,6 +4,7 @@ import ca.sukhsingh.actions.on.google.response.Response;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.Suggestion;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.ListSelect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,19 +100,19 @@ public class AssertHelper {
         assertEquals("System Intent Data type", AssistantApp.InputValueDataTypes.PERMISSION, response.getData().getGoogle().getSystemIntent().getData().getType());
     }
 
-    protected void assertListSelect(Response response, ca.sukhsingh.actions.on.google.response.data.google.systemintent.List list) {
+    protected void assertListSelect(Response response, ListSelect listSelect) {
 
-        ca.sukhsingh.actions.on.google.response.data.google.systemintent.List responseList = response.getData().getGoogle().getSystemIntent().getData().getListSelect();
+        ListSelect responseList = response.getData().getGoogle().getSystemIntent().getData().getListSelect();
         assertNotNull(responseList);
         assertNotNull(responseList);
-        assertEquals("List Select title", list.getTitle(), responseList.getTitle());
+        assertEquals("ListSelect Select title", listSelect.getTitle(), responseList.getTitle());
         for (int i=0; i<responseList.getItems().size(); i++) {
-            assertEquals("List Select Item title", list.getItems().get(i).getTitle(), responseList.getItems().get(i).getTitle());
-            assertEquals("List Select Item Description", list.getItems().get(i).getDescription(), responseList.getItems().get(i).getDescription());
-            assertEquals("List Select Item Image url", list.getItems().get(i).getImage().getUrl(), responseList.getItems().get(i).getImage().getUrl());
-            assertEquals("List Select Item Image AccessibilityText", list.getItems().get(i).getImage().getAccessibilityText(), responseList.getItems().get(i).getImage().getAccessibilityText());
-            assertEquals("List Select Item OptionInfo key", list.getItems().get(i).getOptionInfo().getKey(), responseList.getItems().get(i).getOptionInfo().getKey());
-            assertEquals("List Select Item OptionInfo Synonyms", list.getItems().get(i).getOptionInfo().getSynonyms(), responseList.getItems().get(i).getOptionInfo().getSynonyms());
+            assertEquals("ListSelect Select Item title", listSelect.getItems().get(i).getTitle(), responseList.getItems().get(i).getTitle());
+            assertEquals("ListSelect Select Item Description", listSelect.getItems().get(i).getDescription(), responseList.getItems().get(i).getDescription());
+            assertEquals("ListSelect Select Item Image url", listSelect.getItems().get(i).getImage().getUrl(), responseList.getItems().get(i).getImage().getUrl());
+            assertEquals("ListSelect Select Item Image AccessibilityText", listSelect.getItems().get(i).getImage().getAccessibilityText(), responseList.getItems().get(i).getImage().getAccessibilityText());
+            assertEquals("ListSelect Select Item OptionInfo key", listSelect.getItems().get(i).getOptionInfo().getKey(), responseList.getItems().get(i).getOptionInfo().getKey());
+            assertEquals("ListSelect Select Item OptionInfo Synonyms", listSelect.getItems().get(i).getOptionInfo().getSynonyms(), responseList.getItems().get(i).getOptionInfo().getSynonyms());
         }
     }
 

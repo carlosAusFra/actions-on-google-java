@@ -6,6 +6,7 @@ import ca.sukhsingh.actions.on.google.response.data.google.Google;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.SimpleResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.ListSelect;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntent;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntentData;
 import org.apache.log4j.Logger;
@@ -170,25 +171,25 @@ public class ApiAiApp extends AssistantApp{
 
 
     /**
-     * Asks to collect the user's input with a list.
+     * Asks to collect the user's input with a listSelect.
      *
      * @param inputPrompt {@link String}|{@link RichResponse}|{@link SimpleResponse} inputPrompt
-     * @param list {@link ca.sukhsingh.actions.on.google.response.data.google.systemintent.List} list
+     * @param listSelect {@link ListSelect} listSelect
      * @return {@link Response}
      */
-    public Response askWithList(Object inputPrompt, ca.sukhsingh.actions.on.google.response.data.google.systemintent.List list) {
+    public Response askWithList(Object inputPrompt, ListSelect listSelect) {
         if (Util.isNull(inputPrompt)) {
             logger.error("Invalid inputpromt");
             return null;
         }
 
-        if (Util.isNull(list)) {
-            logger.error("Invalid list");
+        if (Util.isNull(listSelect)) {
+            logger.error("Invalid listSelect");
             return null;
         }
 
-        if (list.getItems().size() < 2) {
-            logger.error("List requires at least 2 items");
+        if (listSelect.getItems().size() < 2) {
+            logger.error("ListSelect requires at least 2 items");
             return null;
         }
 
@@ -204,7 +205,7 @@ public class ApiAiApp extends AssistantApp{
         //TODO if(this.isNotApiVersionOne_()) {
         SystemIntentData data = new SystemIntentData();
         data.setType(InputValueDataTypes.OPTION);
-        data.setListSelect(list);
+        data.setListSelect(listSelect);
         systemIntent.setData(data);
         Data responseData = response.getData();
         responseData.getGoogle().setSystemIntent(systemIntent);
@@ -233,7 +234,7 @@ public class ApiAiApp extends AssistantApp{
         }
 
         if (carousel.getItems().size() < 2) {
-            logger.error("List requires at least 2 items");
+            logger.error("ListSelect requires at least 2 items");
             return null;
         }
 
