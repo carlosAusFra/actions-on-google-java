@@ -33,7 +33,7 @@ public class ActionExecutor {
      * @param request {@link Request} a request object
      * @return {@link Response} a user constructed response object
      */
-    public Response getResponse(Request request) {
+    public Object getResponse(Request request) {
         Method m = null;
         try {
             m = actionRepository.getClass().getMethod(request.getAction(),Request.class);
@@ -41,7 +41,7 @@ public class ActionExecutor {
             e.printStackTrace();
         }
         try {
-            return (Response)m.invoke(actionRepository, request);
+            return m.invoke(actionRepository, request);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {

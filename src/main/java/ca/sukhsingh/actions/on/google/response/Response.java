@@ -51,8 +51,15 @@ public class Response {
         }
     }
 
-    public void addContextOut(ContextOut contextOut) {
+    public Response addContextOut(ContextOut contextOut) {
         this.contextOut.add(contextOut);
+        return this;
+    }
+
+    public Response addContextOut(String context, int lifeSpan) {
+        ContextOut contextOut = new ContextOut(context, lifeSpan, null);
+        this.contextOut.add(contextOut);
+        return this;
     }
 
     public String getSpeech() {
@@ -67,8 +74,9 @@ public class Response {
         return contextOut;
     }
 
-    public void addContextOuts(List<ContextOut> contextOut) {
+    public Response addContextOuts(List<ContextOut> contextOut) {
         this.contextOut = contextOut;
+        return this;
     }
 
     public Data getData() {
