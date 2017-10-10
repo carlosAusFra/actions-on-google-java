@@ -5,7 +5,6 @@ import ca.sukhsingh.actions.on.google.request.originalrequest.*;
 import ca.sukhsingh.actions.on.google.request.result.Context;
 import ca.sukhsingh.actions.on.google.request.result.Result;
 import ca.sukhsingh.actions.on.google.request.status.Status;
-import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -151,11 +150,11 @@ public class Request {
         return null;
     }
 
-    public String getContextParameter(String contextName, String propertyName) {
+    public Object getContextParameter(String contextName, String propertyName) {
         Map<String, Object> additionalProperties = getContextParameters(contextName);
         if (isNotNull(additionalProperties)) {
             if (additionalProperties.containsKey(propertyName)) {
-                return (String) additionalProperties.get(propertyName);
+                return additionalProperties.get(propertyName);
             }
         }
         logger.error("No contextName with property name found");
@@ -187,6 +186,14 @@ public class Request {
 //
 //    }
 
+    public boolean isPermissionGranted() {
+        String grant = (String) this.getContextParameter("actions_intent_permission", "PERMISSION");
+        if (grant.equalsIgnoreCase("false")) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Returns true if user device has a given surface capability.
      *
@@ -202,6 +209,10 @@ public class Request {
             }
         }
         return false;
+    }
+
+    public boolean hasScreenCapability() {
+        return hasSurfaceCapability(Request.SurfaceCapabilities.SCREEN_OUTPUT);
     }
 
     /**

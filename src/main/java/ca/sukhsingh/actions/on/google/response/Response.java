@@ -62,6 +62,38 @@ public class Response {
         return this;
     }
 
+    public Response addContextOut(String context, int lifeSpan, Parameters parameters) {
+        ContextOut contextOut = new ContextOut(context, lifeSpan, parameters);
+        this.contextOut.add(contextOut);
+        return this;
+    }
+
+    public Response addContextOut(String context, int lifeSpan, String key, String value) {
+        if (Util.isNullOrEmpty(key)) {
+            return null;
+        }
+        if (Util.isNullOrEmpty(value)) {
+            return null;
+        }
+        Parameters parameters = new Parameters(key,value);
+        ContextOut contextOut = new ContextOut(context, lifeSpan, parameters);
+        this.contextOut.add(contextOut);
+        return this;
+    }
+
+    public Response addContextOut(String context, int lifeSpan, String key, Object value) {
+        if (Util.isNullOrEmpty(key)) {
+            return null;
+        }
+        if (Util.isNull(value)) {
+            return null;
+        }
+        Parameters parameters = new Parameters(key,value);
+        ContextOut contextOut = new ContextOut(context, lifeSpan, parameters);
+        this.contextOut.add(contextOut);
+        return this;
+    }
+
     public String getSpeech() {
         return speech;
     }
