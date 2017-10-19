@@ -104,6 +104,36 @@ public class ApiAiApp extends AssistantApp{
      * @param noInputPrompts string array of no input prompts
      * @return {@link Response}
      */
+    public Response ask(String textToSpeech, Object noInputPrompts) {
+        if (Util.isNullOrEmpty(textToSpeech)) {
+            return null;
+        }
+
+        if (Util.isNull(noInputPrompts)) {
+            return null;
+        }
+        String [] noInputPrompts_ = {};
+        if (noInputPrompts instanceof List) {
+            List<String> noInputPromptsList = (List) noInputPrompts;
+            for (int i =0; i<noInputPromptsList.size(); i++) {
+                noInputPrompts_[i] = noInputPromptsList.get(i);
+            }
+            return buildResponse(textToSpeech, true, noInputPrompts_);
+        }
+        return buildResponse(textToSpeech, true, (String[]) noInputPrompts);
+    }
+
+    /**
+     * Asks to collect the user's input.
+     *
+     * NOTE: Due to a bug, if you specify the no-input prompts,
+     * the mic is closed after the 3rd prompt, so you should use the 3rd prompt
+     * for a bye message until the bug is fixed.
+     *
+     * @param textToSpeech text to speech as string
+     * @param noInputPrompts string array of no input prompts
+     * @return {@link Response}
+     */
     public Response ask(String textToSpeech, String [] noInputPrompts) {
         if (Util.isNullOrEmpty(textToSpeech)) {
             return null;
