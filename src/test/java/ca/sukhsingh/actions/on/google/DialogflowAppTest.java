@@ -25,10 +25,10 @@ import static org.junit.Assert.assertNull;
  * Created by sukhsingh on 2017-08-29.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ApiAiAppTest extends AssertHelper {
+public class DialogflowAppTest extends AssertHelper {
 
     @InjectMocks
-    private ApiAiApp app;
+    private DialogflowApp app;
 
 
     @Test
@@ -826,15 +826,15 @@ public class ApiAiAppTest extends AssertHelper {
     public void askForPermissionsWithInvalidAndValidPermissionType() throws Exception {
         List<String> list = new ArrayList<>();
         list.add("Invalid");
-        list.add(ApiAiApp.SupportedPermissions.DEVICE_PRECISE_LOCATION);
+        list.add(DialogflowApp.SupportedPermissions.DEVICE_PRECISE_LOCATION);
         assertNull(app.askForPermissions("String", list));
     }
 
     @Test
     public void askForPermissionsHappyPath() throws Exception {
         List<String> list = new ArrayList<>();
-        list.add(ApiAiApp.SupportedPermissions.DEVICE_PRECISE_LOCATION);
-        list.add(ApiAiApp.SupportedPermissions.NAME);
+        list.add(DialogflowApp.SupportedPermissions.DEVICE_PRECISE_LOCATION);
+        list.add(DialogflowApp.SupportedPermissions.NAME);
         Response response = app.askForPermissions("To do this", list);
         assertNotNull(response);
         assertSpeech(response,"PLACEHOLDER_FOR_PERMISSION");

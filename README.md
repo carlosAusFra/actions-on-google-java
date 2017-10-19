@@ -30,7 +30,7 @@ __Gradle:__
 
 ## Spring boot example
     
-    import ca.sukhsingh.actions.on.google.ApiAiApp;
+    import ca.sukhsingh.actions.on.google.DialogflowApp;
     import ca.sukhsingh.actions.on.google.request.Request;
     import ca.sukhsingh.actions.on.google.response.Response;
     import ca.sukhsingh.actions.on.google.response.data.google.richresponse.SimpleResponse;

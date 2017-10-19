@@ -18,11 +18,11 @@ import java.util.List;
  * Created by sukhsingh on 2017-08-28.
  */
 /**
- * This is the class that handles the communication with API.AI's fulfillment API.
+ * This is the class that handles the communication with Dialogflow's fulfillment API.
  */
-public class ApiAiApp extends AssistantApp{
+public class DialogflowApp extends AssistantApp{
 
-    Logger logger = Logger.getLogger(ApiAiApp.class);
+    Logger logger = Logger.getLogger(DialogflowApp.class);
 
     /**
      * Tells the Assistant to render the speech response and close the mic.
@@ -306,7 +306,7 @@ public class ApiAiApp extends AssistantApp{
     // ---------------------------------------------------------------------------
 
     /**
-     * Builds a response for API.AI to send back to the Assistant.
+     * Builds a response for Dialogflow to send back to the Assistant.
      *
      * @param inputPrompt
      * @param expectUserResponse
