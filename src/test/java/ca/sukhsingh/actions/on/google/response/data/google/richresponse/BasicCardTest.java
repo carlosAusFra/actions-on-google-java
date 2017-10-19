@@ -1,6 +1,6 @@
 package ca.sukhsingh.actions.on.google.response.data.google.richresponse;
 
-import ca.sukhsingh.actions.on.google.ApiAiApp;
+import ca.sukhsingh.actions.on.google.DialogflowApp;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class BasicCardTest {
 
     @InjectMocks
-    ApiAiApp app;
+    DialogflowApp app;
 
 
     @Test

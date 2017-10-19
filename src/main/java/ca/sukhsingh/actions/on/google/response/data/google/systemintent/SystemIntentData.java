@@ -19,7 +19,7 @@ public class SystemIntentData {
     @JsonProperty("permissions")
     private List<String> permissions ;
     @JsonProperty("listSelect")
-    private ca.sukhsingh.actions.on.google.response.data.google.systemintent.List listSelect;
+    private ListSelect listSelect;
     @JsonProperty("carouselSelect")
     private Carousel carousel;
 
@@ -47,11 +47,11 @@ public class SystemIntentData {
         return permissions;
     }
 
-    public ca.sukhsingh.actions.on.google.response.data.google.systemintent.List getListSelect() {
+    public ListSelect getListSelect() {
         return listSelect;
     }
 
-    public void setListSelect(ca.sukhsingh.actions.on.google.response.data.google.systemintent.List listSelect) {
+    public void setListSelect(ListSelect listSelect) {
         this.listSelect = listSelect;
     }
 

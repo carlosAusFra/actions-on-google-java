@@ -6,7 +6,7 @@ import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResp
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.SimpleResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Item;
-import ca.sukhsingh.actions.on.google.response.data.google.systemintent.List;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.ListSelect;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntentData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +15,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -24,10 +25,10 @@ import static org.junit.Assert.assertNull;
  * Created by sukhsingh on 2017-08-29.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ApiAiAppTest extends AssertHelper {
+public class DialogflowAppTest extends AssertHelper {
 
     @InjectMocks
-    private ApiAiApp app;
+    private DialogflowApp app;
 
 
     @Test
@@ -508,7 +509,7 @@ public class ApiAiAppTest extends AssertHelper {
 
     @Test
     public void askWithListNullInputPrompt() throws Exception {
-        Response response = app.askWithList(null, new List());
+        Response response = app.askWithList(null, new ListSelect());
         assertNull(response);
     }
 
@@ -520,11 +521,11 @@ public class ApiAiAppTest extends AssertHelper {
 
     @Test
     public void askWithListWithListSizeInvalid() throws Exception {
-        List list = new List();
-        java.util.List<Item> itemList = new ArrayList<>();
+        ListSelect listSelect = new ListSelect();
+        List<Item> itemList = new ArrayList<>();
         itemList.add(new Item());
-        list.setItems(itemList);
-        Response response = app.askWithList(new Object(), list);
+        listSelect.setItems(itemList);
+        Response response = app.askWithList(new Object(), listSelect);
         assertNull(response);
     }
 
@@ -649,7 +650,7 @@ public class ApiAiAppTest extends AssertHelper {
     @Test
     public void askWithCarouselWithInvalidListSize() throws Exception {
         Carousel carousel = new Carousel();
-        java.util.List<Item> itemList = new ArrayList<>();
+        List<Item> itemList = new ArrayList<>();
         itemList.add(new Item());
         carousel.setItems(itemList);
         assertNull(app.askWithCarousel(new Object(), carousel));
@@ -791,10 +792,10 @@ public class ApiAiAppTest extends AssertHelper {
     // *********** askForPermissions **********
 
     /*
-    askForPermissions(string, List<String>
+    askForPermissions(string, ListSelect<String>
         1. Null context
         2. Null list
-        3. Empty List
+        3. Empty ListSelect
         4. Invalid Permission Type
         5. HappyPath
      */
@@ -816,24 +817,24 @@ public class ApiAiAppTest extends AssertHelper {
 
     @Test
     public void askForPermissionsWithInvalidPermissionType() throws Exception {
-        java.util.List<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
         list.add("Invalid");
         assertNull(app.askForPermissions("String", list));
     }
 
     @Test
     public void askForPermissionsWithInvalidAndValidPermissionType() throws Exception {
-        java.util.List<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
         list.add("Invalid");
-        list.add(ApiAiApp.SupportedPermissions.DEVICE_PRECISE_LOCATION);
+        list.add(DialogflowApp.SupportedPermissions.DEVICE_PRECISE_LOCATION);
         assertNull(app.askForPermissions("String", list));
     }
 
     @Test
     public void askForPermissionsHappyPath() throws Exception {
-        java.util.List<String> list = new ArrayList<>();
-        list.add(ApiAiApp.SupportedPermissions.DEVICE_PRECISE_LOCATION);
-        list.add(ApiAiApp.SupportedPermissions.NAME);
+        List<String> list = new ArrayList<>();
+        list.add(DialogflowApp.SupportedPermissions.DEVICE_PRECISE_LOCATION);
+        list.add(DialogflowApp.SupportedPermissions.NAME);
         Response response = app.askForPermissions("To do this", list);
         assertNotNull(response);
         assertSpeech(response,"PLACEHOLDER_FOR_PERMISSION");
@@ -887,7 +888,7 @@ public class ApiAiAppTest extends AssertHelper {
         assertNull(assistantApp.fulfillPermissionsRequest(new SystemIntentData()));
     }
 
-    private List getListSelect() {
+    private ListSelect getListSelect() {
         return app.buildList("Test Title")
                 .addItems(
                         app.buildOptionItem("Test 1",

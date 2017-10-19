@@ -6,6 +6,7 @@ import ca.sukhsingh.actions.on.google.response.data.google.Google;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.SimpleResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.ListSelect;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntent;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntentData;
 import org.apache.log4j.Logger;
@@ -17,11 +18,11 @@ import java.util.List;
  * Created by sukhsingh on 2017-08-28.
  */
 /**
- * This is the class that handles the communication with API.AI's fulfillment API.
+ * This is the class that handles the communication with Dialogflow's fulfillment API.
  */
-public class ApiAiApp extends AssistantApp{
+public class DialogflowApp extends AssistantApp{
 
-    Logger logger = Logger.getLogger(ApiAiApp.class);
+    Logger logger = Logger.getLogger(DialogflowApp.class);
 
     /**
      * Tells the Assistant to render the speech response and close the mic.
@@ -103,6 +104,36 @@ public class ApiAiApp extends AssistantApp{
      * @param noInputPrompts string array of no input prompts
      * @return {@link Response}
      */
+    public Response ask(String textToSpeech, Object noInputPrompts) {
+        if (Util.isNullOrEmpty(textToSpeech)) {
+            return null;
+        }
+
+        if (Util.isNull(noInputPrompts)) {
+            return null;
+        }
+        String [] noInputPrompts_ = {};
+        if (noInputPrompts instanceof List) {
+            List<String> noInputPromptsList = (List) noInputPrompts;
+            for (int i =0; i<noInputPromptsList.size(); i++) {
+                noInputPrompts_[i] = noInputPromptsList.get(i);
+            }
+            return buildResponse(textToSpeech, true, noInputPrompts_);
+        }
+        return buildResponse(textToSpeech, true, (String[]) noInputPrompts);
+    }
+
+    /**
+     * Asks to collect the user's input.
+     *
+     * NOTE: Due to a bug, if you specify the no-input prompts,
+     * the mic is closed after the 3rd prompt, so you should use the 3rd prompt
+     * for a bye message until the bug is fixed.
+     *
+     * @param textToSpeech text to speech as string
+     * @param noInputPrompts string array of no input prompts
+     * @return {@link Response}
+     */
     public Response ask(String textToSpeech, String [] noInputPrompts) {
         if (Util.isNullOrEmpty(textToSpeech)) {
             return null;
@@ -170,25 +201,25 @@ public class ApiAiApp extends AssistantApp{
 
 
     /**
-     * Asks to collect the user's input with a list.
+     * Asks to collect the user's input with a listSelect.
      *
      * @param inputPrompt {@link String}|{@link RichResponse}|{@link SimpleResponse} inputPrompt
-     * @param list {@link ca.sukhsingh.actions.on.google.response.data.google.systemintent.List} list
+     * @param listSelect {@link ListSelect} listSelect
      * @return {@link Response}
      */
-    public Response askWithList(Object inputPrompt, ca.sukhsingh.actions.on.google.response.data.google.systemintent.List list) {
+    public Response askWithList(Object inputPrompt, ListSelect listSelect) {
         if (Util.isNull(inputPrompt)) {
             logger.error("Invalid inputpromt");
             return null;
         }
 
-        if (Util.isNull(list)) {
-            logger.error("Invalid list");
+        if (Util.isNull(listSelect)) {
+            logger.error("Invalid listSelect");
             return null;
         }
 
-        if (list.getItems().size() < 2) {
-            logger.error("List requires at least 2 items");
+        if (listSelect.getItems().size() < 2) {
+            logger.error("ListSelect requires at least 2 items");
             return null;
         }
 
@@ -204,7 +235,7 @@ public class ApiAiApp extends AssistantApp{
         //TODO if(this.isNotApiVersionOne_()) {
         SystemIntentData data = new SystemIntentData();
         data.setType(InputValueDataTypes.OPTION);
-        data.setListSelect(list);
+        data.setListSelect(listSelect);
         systemIntent.setData(data);
         Data responseData = response.getData();
         responseData.getGoogle().setSystemIntent(systemIntent);
@@ -233,7 +264,7 @@ public class ApiAiApp extends AssistantApp{
         }
 
         if (carousel.getItems().size() < 2) {
-            logger.error("List requires at least 2 items");
+            logger.error("ListSelect requires at least 2 items");
             return null;
         }
 
@@ -275,7 +306,7 @@ public class ApiAiApp extends AssistantApp{
     // ---------------------------------------------------------------------------
 
     /**
-     * Builds a response for API.AI to send back to the Assistant.
+     * Builds a response for Dialogflow to send back to the Assistant.
      *
      * @param inputPrompt
      * @param expectUserResponse
