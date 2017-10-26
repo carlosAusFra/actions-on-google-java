@@ -130,4 +130,9 @@ public class AssertHelper {
             assertEquals("Carousel Item OptionInfo Synonyms", carousel.getItems().get(i).getOptionInfo().getSynonyms(), responseCarousel.getItems().get(i).getOptionInfo().getSynonyms());
         }
     }
+
+    protected void assertNoInputPromptTexttoSpeech(Response response, String [] noInputPrompt) {
+        assertEquals(response.getData().getGoogle().getNoInputPrompts().get(0).getTextToSpeech(),noInputPrompt[0]);
+        assertEquals(response.getData().getGoogle().getNoInputPrompts().get(1).getTextToSpeech(),noInputPrompt[1]);
+    }
 }

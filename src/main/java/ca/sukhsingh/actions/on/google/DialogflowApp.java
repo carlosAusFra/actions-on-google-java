@@ -120,6 +120,10 @@ public class DialogflowApp extends AssistantApp{
             }
             return buildResponse(textToSpeech, true, noInputPrompts_);
         }
+        if (noInputPrompts instanceof String) {
+            noInputPrompts_[0] = (String) noInputPrompts;
+            return buildResponse(textToSpeech, true, noInputPrompts_);
+        }
         return buildResponse(textToSpeech, true, (String[]) noInputPrompts);
     }
 
@@ -192,6 +196,16 @@ public class DialogflowApp extends AssistantApp{
     /**
      * Asks to collect the user's input.
      *
+     * @param simpleResponse inputPrompt of {@link SimpleResponse} type
+     * @return Response
+     */
+    public Response ask(SimpleResponse simpleResponse, String [] noInputPrompt) {
+        return buildResponse(new RichResponse().addSimpleResponse(simpleResponse), true, noInputPrompt);
+    }
+
+    /**
+     * Asks to collect the user's input.
+     *
      * @param inputPrompt inputPrompt of {@link RichResponse} type
      * @return {@link Response}
      */
@@ -199,6 +213,15 @@ public class DialogflowApp extends AssistantApp{
         return buildResponse(inputPrompt, true, null);
     }
 
+    /**
+     * Asks to collect the user's input.
+     *
+     * @param inputPrompt inputPrompt of {@link RichResponse} type
+     * @return {@link Response}
+     */
+    public Response ask(RichResponse inputPrompt,  String [] noInputPrompts) {
+        return buildResponse(inputPrompt, true, noInputPrompts);
+    }
 
     /**
      * Asks to collect the user's input with a listSelect.
@@ -331,27 +354,7 @@ public class DialogflowApp extends AssistantApp{
             response.addContextOuts(new ArrayList<>());
             google.setExpectUserResponse(expectUserResponse);
 
-            if (Util.isSsml(textToSpeech)) {
-                google.setSsml(true);
-                List<SimpleResponse> finalNoInputPrompts = new ArrayList<>();
-                if (!Util.isNull(noInputPrompts)){
-                    for (String prompt: noInputPrompts) {
-                        finalNoInputPrompts.add(new SimpleResponse(prompt, null));
-                    }
-                }
-                google.setNoInputPrompts(finalNoInputPrompts);
-            } else if (!Util.isNull(noInputPrompts)) {
-                List<SimpleResponse> finalNoInputPrompts = new ArrayList<>();
-                for (String prompt: noInputPrompts) {
-                    finalNoInputPrompts.add(new SimpleResponse(prompt, null));
-                }
-                google.setNoInputPrompts(finalNoInputPrompts);
-                google.setSsml(false);
-            } else {
-                google.setSsml(false);
-                google.setNoInputPrompts(new ArrayList<>());
-            }
-            data.setGoogle(google);
+            data.setGoogle(setNoInputPrompt(google,textToSpeech,noInputPrompts));
             response.setData(data);
 
             return response;
@@ -359,7 +362,7 @@ public class DialogflowApp extends AssistantApp{
         } else if (inputPrompt instanceof SimpleResponse) {
             SimpleResponse simpleResponse = (SimpleResponse) inputPrompt;
             RichResponse richResponse = new RichResponse().addSimpleResponse(simpleResponse);
-            return buildResponse(richResponse, expectUserResponse, null);
+            return buildResponse(richResponse, expectUserResponse, noInputPrompts);
 
         } else if (inputPrompt instanceof RichResponse) {
             RichResponse richResponse = (RichResponse) inputPrompt;
@@ -372,13 +375,46 @@ public class DialogflowApp extends AssistantApp{
 
             google.setExpectUserResponse(expectUserResponse);
             google.setRichResponse(richResponse);
+            String textToSpeech;
+            if (richResponse.getItems().get(0).getSimpleResponse().getTextToSpeech()!=null) {
+                textToSpeech = richResponse.getItems().get(0).getSimpleResponse().getTextToSpeech();
+            } else if (richResponse.getItems().get(0).getSimpleResponse().getSsml()!=null) {
+                textToSpeech = richResponse.getItems().get(0).getSimpleResponse().getSsml();
+            } else {
+                textToSpeech = richResponse.getItems().get(0).getSimpleResponse().getDisplayText();
+            }
 
-            data.setGoogle(google);
+            data.setGoogle(setNoInputPrompt(google,textToSpeech,noInputPrompts));
             response.setData(data);
             return response;
         }
 
         return null;
+    }
+
+    private Google setNoInputPrompt(Google google, String textToSpeech, String [] noInputPrompts) {
+        if (Util.isSsml(textToSpeech)) {
+            google.setSsml(true);
+            List<SimpleResponse> finalNoInputPrompts = new ArrayList<>();
+            if (!Util.isNull(noInputPrompts)){
+                for (String prompt: noInputPrompts) {
+                    finalNoInputPrompts.add(new SimpleResponse(prompt, null));
+                }
+            }
+            google.setNoInputPrompts(finalNoInputPrompts);
+        } else if (!Util.isNull(noInputPrompts)) {
+            List<SimpleResponse> finalNoInputPrompts = new ArrayList<>();
+            for (String prompt: noInputPrompts) {
+                finalNoInputPrompts.add(new SimpleResponse(prompt, null));
+            }
+            google.setNoInputPrompts(finalNoInputPrompts);
+            google.setSsml(false);
+        } else {
+            google.setSsml(false);
+            google.setNoInputPrompts(null);
+        }
+
+        return google;
     }
 
     /**

@@ -358,6 +358,10 @@ public class Request {
         logger.error("No input type in incoming request");
         return null;
     }
+
+    public String getConversationType() {
+        return this.getOriginalRequest().getData().getConversation().getType();
+    }
     
     private Argument findArgument(String...targets) {
        // Argument argument = new Argument();

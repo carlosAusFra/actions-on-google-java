@@ -51,7 +51,7 @@ public class DialogflowAppTest extends AssertHelper {
         assertNotNull(response.getData().getGoogle());
         assertExpectUserResponseFalse(response);
         assertIsSsmlFalse(response);
-        assertNotNull(response.getData().getGoogle().noInputPrompts);
+//        assertNotNull(response.getData().getGoogle().noInputPrompts);
         assertNotNull(response.getContextOut());
 
     }
@@ -336,7 +336,8 @@ public class DialogflowAppTest extends AssertHelper {
 
     @Test
     public void appAskWithNullTextToSpeechAndNoInputPrompts() throws Exception {
-        Response response = app.ask(null, new String[] {"Can you say that again ?", "What ?"});
+        String textToSpeech = null;
+        Response response = app.ask(textToSpeech, new String[] {"Can you say that again ?", "What ?"});
         assertNull(response);
     }
 
@@ -416,7 +417,20 @@ public class DialogflowAppTest extends AssertHelper {
         assertTextToSpeech(response, SPEECH);
         assertDisplayText(response, DISPLAYTEXT);
         assertExpectUserResponseTrue(response);
+    }
 
+    @Test
+    public void appAskWithSimpleResponseWithNoInputPrompt()throws Exception {
+        final String SPEECH = "Hello";
+        final String DISPLAYTEXT = "Hi";
+        String [] noInputPrompt = {"Say again", "one more time"};
+        SimpleResponse simpleResponse = new SimpleResponse(SPEECH, DISPLAYTEXT);
+        Response response = app.ask(simpleResponse,noInputPrompt);
+        assertNotNull(response);
+        assertTextToSpeech(response, SPEECH);
+        assertDisplayText(response, DISPLAYTEXT);
+        assertExpectUserResponseTrue(response);
+        assertNoInputPromptTexttoSpeech(response,noInputPrompt);
     }
 
     @Test
@@ -468,6 +482,23 @@ public class DialogflowAppTest extends AssertHelper {
         assertDisplayText(response, "hi");
         assertSuggestions(response, "say this", "or this");
 
+    }
+
+    @Test
+    public void appAskWithRichResponseWithNoInputPrompt()throws Exception {
+        RichResponse richResponse = app.buildRichResponse()
+                .addSimpleResponse(new SimpleResponse("hello", "hi"))
+                .addSuggestions(Arrays.asList("say this", "or this"));
+        String [] noInputPrompt = {"Say again", "one more time"};
+        Response response = app.ask(richResponse, noInputPrompt);
+        assertNotNull(response);
+        assertSpeech(response, "hello");
+        assertExpectUserResponseTrue(response);
+        assertNotNullRichResponse(response);
+        assertTextToSpeech(response,"hello");
+        assertDisplayText(response, "hi");
+        assertSuggestions(response, "say this", "or this");
+        assertNoInputPromptTexttoSpeech(response,noInputPrompt);
     }
 
     @Test
