@@ -1,6 +1,8 @@
 
 package ca.sukhsingh.actions.on.google.request;
 
+import ca.sukhsingh.actions.on.google.AssistantApp;
+import ca.sukhsingh.actions.on.google.DialogflowApp;
 import ca.sukhsingh.actions.on.google.request.originalrequest.*;
 import ca.sukhsingh.actions.on.google.request.result.Context;
 import ca.sukhsingh.actions.on.google.request.result.Result;
@@ -173,10 +175,22 @@ public class Request {
 //    public void getTransactionDecision() {
 //
 //    }
-//
-//    public void getUserConfirmation() {
-//
-//    }
+
+    /**
+     * Gets confirmation decision. Use after askForConfirmation.
+     *
+     * @return {@link Object} False if user replied with negative response. Null if no user
+     *     confirmation decision given.
+     */
+    public Object getUserConfirmation() {
+        debug("getUserConfirmation");
+        Argument argument = findArgument(DialogflowApp.BuiltInArgNames.CONFIRMATION);
+        if (isNotNull(argument)) {
+            return argument.getBoolValue();
+        }
+        debug("Failed to get confirmation decision information");
+        return null;
+    }
 //
 //    public void getDateTime() {
 //
@@ -384,6 +398,10 @@ public class Request {
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
+    }
+
+    private void debug(String message) {
+        logger.debug(message);
     }
 }
 
