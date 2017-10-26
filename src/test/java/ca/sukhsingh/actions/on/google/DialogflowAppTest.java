@@ -51,7 +51,7 @@ public class DialogflowAppTest extends AssertHelper {
         assertNotNull(response.getData().getGoogle());
         assertExpectUserResponseFalse(response);
         assertIsSsmlFalse(response);
-//        assertNotNull(response.getData().getGoogle().noInputPrompts);
+        assertNotNull(response.getData().getGoogle().noInputPrompts);
         assertNotNull(response.getContextOut());
 
     }
@@ -873,7 +873,7 @@ public class DialogflowAppTest extends AssertHelper {
         assertIsSsmlFalse(response);
         assertPermissionIntent(response);
         assertNotNull(response.getData().getGoogle().getSystemIntent());
-        assertPermissionystemIntentData(response);
+        assertPermissionSystemIntentData(response);
         assertEquals("Permissions", response.getData().getGoogle().getSystemIntent().getData().getPermissions(), list);
         assertEquals("Opt Context", response.getData().getGoogle().getSystemIntent().getData().getOptContext(), "To do this");
     }
@@ -908,7 +908,7 @@ public class DialogflowAppTest extends AssertHelper {
         assertIsSsmlFalse(response);
         assertPermissionIntent(response);
         assertNotNull(response.getData().getGoogle().getSystemIntent());
-        assertPermissionystemIntentData(response);
+        assertPermissionSystemIntentData(response);
         assertEquals("Permissions", response.getData().getGoogle().getSystemIntent().getData().getPermissions().get(0), AssistantApp.SupportedPermissions.NAME);
         assertEquals("Opt Context", response.getData().getGoogle().getSystemIntent().getData().getOptContext(), "To do this");
     }
@@ -917,6 +917,25 @@ public class DialogflowAppTest extends AssertHelper {
     public void fulfillPermissionsRequestTest() throws Exception {
         AssistantApp assistantApp = new AssistantApp();
         assertNull(assistantApp.fulfillPermissionsRequest(new SystemIntentData()));
+    }
+
+    @Test
+    public void askForConfirmation() throws Exception {
+        Response response = app.askForConfirmation("Hello", null);
+        assertNotNull(response);
+        assertSpeech(response,"PLACEHOLDER_FOR_CONFIRMATION");
+        assertExpectUserResponseTrue(response);
+        assertIsSsmlFalse(response);
+        assertConfirmationIntent(response);
+        assertNotNull(response.getData().getGoogle().getSystemIntent());
+        assertConfirmationSystemIntentData(response);
+        assertEquals(response.getData().getGoogle().getSystemIntent().getData().getDialogSpec().getRequestConfirmationText(), "Hello");
+    }
+
+    @Test
+    public void askForConfirmationWithNullPrompt() throws Exception {
+        Response response = app.askForConfirmation(null, null);
+        assertNull(response);
     }
 
     private ListSelect getListSelect() {

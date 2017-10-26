@@ -22,6 +22,8 @@ public class SystemIntentData {
     private ListSelect listSelect;
     @JsonProperty("carouselSelect")
     private Carousel carousel;
+    @JsonProperty("dialogSpec")
+    private DialogSpec dialogSpec;
 
     public SystemIntentData() {
     }
@@ -61,5 +63,13 @@ public class SystemIntentData {
 
     public void setCarousel(Carousel carousel) {
         this.carousel = carousel;
+    }
+
+    public DialogSpec getDialogSpec() {
+        return dialogSpec;
+    }
+
+    public void setDialogSpec(DialogSpec dialogSpec) {
+        this.dialogSpec = dialogSpec;
     }
 }

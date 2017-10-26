@@ -92,12 +92,20 @@ public class AssertHelper {
         assertEquals("System Intent : PERMISSION",AssistantApp.StandardIntents.PERMISSION, response.getData().getGoogle().getSystemIntent().getIntent());
     }
 
+    protected void assertConfirmationIntent(Response response) {
+        assertEquals("System Intent : CONFIRMATION",AssistantApp.StandardIntents.CONFIRMATION, response.getData().getGoogle().getSystemIntent().getIntent());
+    }
+
     protected void assertOptionSystemIntentData(Response response) {
         assertEquals("System Intent Data type", AssistantApp.InputValueDataTypes.OPTION, response.getData().getGoogle().getSystemIntent().getData().getType());
     }
 
-    protected void assertPermissionystemIntentData(Response response) {
+    protected void assertPermissionSystemIntentData(Response response) {
         assertEquals("System Intent Data type", AssistantApp.InputValueDataTypes.PERMISSION, response.getData().getGoogle().getSystemIntent().getData().getType());
+    }
+
+    protected void assertConfirmationSystemIntentData(Response response) {
+        assertEquals("System Intent Data type", AssistantApp.InputValueDataTypes.CONFIRMATION, response.getData().getGoogle().getSystemIntent().getData().getType());
     }
 
     protected void assertListSelect(Response response, ListSelect listSelect) {

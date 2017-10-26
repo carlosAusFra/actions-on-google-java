@@ -5,10 +5,7 @@ import ca.sukhsingh.actions.on.google.response.data.google.Data;
 import ca.sukhsingh.actions.on.google.response.data.google.Google;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.SimpleResponse;
-import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
-import ca.sukhsingh.actions.on.google.response.data.google.systemintent.ListSelect;
-import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntent;
-import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntentData;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.*;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -411,9 +408,8 @@ public class DialogflowApp extends AssistantApp{
             google.setSsml(false);
         } else {
             google.setSsml(false);
-            google.setNoInputPrompts(null);
+            google.setNoInputPrompts(new ArrayList<>());
         }
-
         return google;
     }
 
@@ -426,7 +422,7 @@ public class DialogflowApp extends AssistantApp{
      */
     @Override
     Response fulfillPermissionsRequest(SystemIntentData systemIntentData) {
-        Response response = new Response();
+        Response response;
         Data data = new Data();
         Google google;
         SystemIntent systemIntent = new SystemIntent();
@@ -443,4 +439,27 @@ public class DialogflowApp extends AssistantApp{
         response.setData(data);
         return response;
     }
+
+    @Override
+    Response fulfillSystemIntent(String intent, String specType, DialogSpec intentSpec, String promptPlaceholder, Object dialogState) {
+        Response response;
+        Data data = new Data();
+        Google google;
+        SystemIntent systemIntent = new SystemIntent();
+        response = buildResponse(promptPlaceholder,true,null);
+        response.setSpeech(promptPlaceholder);
+        systemIntent.setIntent(intent);
+
+        SystemIntentData systemIntentData = new SystemIntentData();
+        systemIntentData.setType(specType);
+        systemIntentData.setDialogSpec(intentSpec);
+
+        systemIntent.setData(systemIntentData);
+        google = response.getData().getGoogle();
+        google.setSystemIntent(systemIntent);
+        data.setGoogle(google);
+        response.setData(data);
+        return response;
+    }
+
 }

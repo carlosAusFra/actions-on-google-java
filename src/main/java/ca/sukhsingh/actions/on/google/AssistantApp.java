@@ -1,10 +1,7 @@
 package ca.sukhsingh.actions.on.google;
 
 import ca.sukhsingh.actions.on.google.response.Response;
-import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
-import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Item;
-import ca.sukhsingh.actions.on.google.response.data.google.systemintent.ListSelect;
-import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntentData;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.*;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.BasicCard;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import org.apache.log4j.Logger;
@@ -249,9 +246,44 @@ public class AssistantApp {
     }
 
     /**
-     * askForConfirmation
+     * Asks user for a confirmation.
+     *
+     * @param prompt {@link String} prompt The confirmation prompt presented to the user to
+     *     query for an affirmative or negative response. If undefined or null,
+     *     Google will use a generic yes/no prompt.
+     * @param dialogState {@link Object} JSON object the app uses to hold dialog state that
+     *     will be circulated back by Assistant.
+     * @return Response {@link Response} DialogFlowResponse Object or null
      */
+    public Response askForConfirmation(String prompt, Object dialogState) {
+        DialogSpec confirmationValueSpec = new DialogSpec();
+        if (Util.isNull(prompt)) {
+            return null;
+        }
+        confirmationValueSpec.setRequestConfirmationText(prompt);
+        return fulfillSystemIntent(
+                StandardIntents.CONFIRMATION,
+                InputValueDataTypes.CONFIRMATION,
+                confirmationValueSpec,
+                "PLACEHOLDER_FOR_CONFIRMATION",
+                dialogState);
+    }
+
+    /**
+     * Asks user for a confirmation.
+     *
+     * Example
+     * app.askForConfirmation("Would you like to do this ?");
+     *
+     * @param prompt {@link String} prompt The confirmation prompt presented to the user to
+     *     query for an affirmative or negative response. If undefined or null,
+     *     Google will use a generic yes/no prompt.
+     * @return Response {@link Response} DialogFlowResponse Object or null
+     */
+    public Response askForConfirmation(String prompt) {
+        return askForConfirmation(prompt,null);
+    }
 
     Response fulfillPermissionsRequest(SystemIntentData systemIntentData) {return null;}
-    Response fulfillSystemIntent(SystemIntentData systemIntentData) {return null;}
+    Response fulfillSystemIntent(String intent, String specType, DialogSpec intentSpec, String promptPlaceholder, Object dialogState) {return null;}
 }
