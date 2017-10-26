@@ -256,6 +256,7 @@ public class AssistantApp {
      * @return Response {@link Response} DialogFlowResponse Object or null
      */
     public Response askForConfirmation(String prompt, Object dialogState) {
+        debug("askForConfirmation: prompt=%s & dialogState="+prompt);
         DialogSpec confirmationValueSpec = new DialogSpec();
         if (Util.isNull(prompt)) {
             return null;
@@ -281,9 +282,14 @@ public class AssistantApp {
      * @return Response {@link Response} DialogFlowResponse Object or null
      */
     public Response askForConfirmation(String prompt) {
+        debug("askForConfirmation: prompt=%s"+prompt);
         return askForConfirmation(prompt,null);
     }
 
     Response fulfillPermissionsRequest(SystemIntentData systemIntentData) {return null;}
     Response fulfillSystemIntent(String intent, String specType, DialogSpec intentSpec, String promptPlaceholder, Object dialogState) {return null;}
+
+    private void debug(String message) {
+        logger.debug(message);
+    }
 }

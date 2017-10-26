@@ -442,6 +442,8 @@ public class DialogflowApp extends AssistantApp{
 
     @Override
     Response fulfillSystemIntent(String intent, String specType, DialogSpec intentSpec, String promptPlaceholder, Object dialogState) {
+        debug(String.format("fulfillSystemIntent_: intent=%s, specType=%s, intentSpec=%s, promptPlaceholder=%s dialogState=",
+                            intent, specType, intentSpec.toString(), promptPlaceholder));
         Response response;
         Data data = new Data();
         Google google;
@@ -462,4 +464,7 @@ public class DialogflowApp extends AssistantApp{
         return response;
     }
 
+    private void debug(String message) {
+        logger.debug(message);
+    }
 }

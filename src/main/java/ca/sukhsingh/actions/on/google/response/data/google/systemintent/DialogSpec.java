@@ -13,4 +13,11 @@ public class DialogSpec {
     public void setRequestConfirmationText(String requestConfirmationText) {
         this.requestConfirmationText = requestConfirmationText;
     }
+
+    @Override
+    public String toString() {
+        return "DialogSpec{" +
+                "requestConfirmationText='" + requestConfirmationText + '\'' +
+                '}';
+    }
 }
