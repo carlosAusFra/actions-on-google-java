@@ -921,7 +921,7 @@ public class DialogflowAppTest extends AssertHelper {
 
     @Test
     public void askForConfirmation() throws Exception {
-        Response response = app.askForConfirmation("Hello", null);
+        Response response = app.askForConfirmation("Hello");
         assertNotNull(response);
         assertSpeech(response,"PLACEHOLDER_FOR_CONFIRMATION");
         assertExpectUserResponseTrue(response);
