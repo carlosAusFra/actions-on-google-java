@@ -5,10 +5,7 @@ import ca.sukhsingh.actions.on.google.response.data.google.Data;
 import ca.sukhsingh.actions.on.google.response.data.google.Google;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.SimpleResponse;
-import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
-import ca.sukhsingh.actions.on.google.response.data.google.systemintent.ListSelect;
-import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntent;
-import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntentData;
+import ca.sukhsingh.actions.on.google.response.data.google.systemintent.*;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -120,6 +117,10 @@ public class DialogflowApp extends AssistantApp{
             }
             return buildResponse(textToSpeech, true, noInputPrompts_);
         }
+        if (noInputPrompts instanceof String) {
+            noInputPrompts_[0] = (String) noInputPrompts;
+            return buildResponse(textToSpeech, true, noInputPrompts_);
+        }
         return buildResponse(textToSpeech, true, (String[]) noInputPrompts);
     }
 
@@ -192,6 +193,16 @@ public class DialogflowApp extends AssistantApp{
     /**
      * Asks to collect the user's input.
      *
+     * @param simpleResponse inputPrompt of {@link SimpleResponse} type
+     * @return Response
+     */
+    public Response ask(SimpleResponse simpleResponse, String [] noInputPrompt) {
+        return buildResponse(new RichResponse().addSimpleResponse(simpleResponse), true, noInputPrompt);
+    }
+
+    /**
+     * Asks to collect the user's input.
+     *
      * @param inputPrompt inputPrompt of {@link RichResponse} type
      * @return {@link Response}
      */
@@ -199,6 +210,15 @@ public class DialogflowApp extends AssistantApp{
         return buildResponse(inputPrompt, true, null);
     }
 
+    /**
+     * Asks to collect the user's input.
+     *
+     * @param inputPrompt inputPrompt of {@link RichResponse} type
+     * @return {@link Response}
+     */
+    public Response ask(RichResponse inputPrompt,  String [] noInputPrompts) {
+        return buildResponse(inputPrompt, true, noInputPrompts);
+    }
 
     /**
      * Asks to collect the user's input with a listSelect.
@@ -331,27 +351,7 @@ public class DialogflowApp extends AssistantApp{
             response.addContextOuts(new ArrayList<>());
             google.setExpectUserResponse(expectUserResponse);
 
-            if (Util.isSsml(textToSpeech)) {
-                google.setSsml(true);
-                List<SimpleResponse> finalNoInputPrompts = new ArrayList<>();
-                if (!Util.isNull(noInputPrompts)){
-                    for (String prompt: noInputPrompts) {
-                        finalNoInputPrompts.add(new SimpleResponse(prompt, null));
-                    }
-                }
-                google.setNoInputPrompts(finalNoInputPrompts);
-            } else if (!Util.isNull(noInputPrompts)) {
-                List<SimpleResponse> finalNoInputPrompts = new ArrayList<>();
-                for (String prompt: noInputPrompts) {
-                    finalNoInputPrompts.add(new SimpleResponse(prompt, null));
-                }
-                google.setNoInputPrompts(finalNoInputPrompts);
-                google.setSsml(false);
-            } else {
-                google.setSsml(false);
-                google.setNoInputPrompts(new ArrayList<>());
-            }
-            data.setGoogle(google);
+            data.setGoogle(setNoInputPrompt(google,textToSpeech,noInputPrompts));
             response.setData(data);
 
             return response;
@@ -359,7 +359,7 @@ public class DialogflowApp extends AssistantApp{
         } else if (inputPrompt instanceof SimpleResponse) {
             SimpleResponse simpleResponse = (SimpleResponse) inputPrompt;
             RichResponse richResponse = new RichResponse().addSimpleResponse(simpleResponse);
-            return buildResponse(richResponse, expectUserResponse, null);
+            return buildResponse(richResponse, expectUserResponse, noInputPrompts);
 
         } else if (inputPrompt instanceof RichResponse) {
             RichResponse richResponse = (RichResponse) inputPrompt;
@@ -372,13 +372,45 @@ public class DialogflowApp extends AssistantApp{
 
             google.setExpectUserResponse(expectUserResponse);
             google.setRichResponse(richResponse);
+            String textToSpeech;
+            if (richResponse.getItems().get(0).getSimpleResponse().getTextToSpeech()!=null) {
+                textToSpeech = richResponse.getItems().get(0).getSimpleResponse().getTextToSpeech();
+            } else if (richResponse.getItems().get(0).getSimpleResponse().getSsml()!=null) {
+                textToSpeech = richResponse.getItems().get(0).getSimpleResponse().getSsml();
+            } else {
+                textToSpeech = richResponse.getItems().get(0).getSimpleResponse().getDisplayText();
+            }
 
-            data.setGoogle(google);
+            data.setGoogle(setNoInputPrompt(google,textToSpeech,noInputPrompts));
             response.setData(data);
             return response;
         }
 
         return null;
+    }
+
+    private Google setNoInputPrompt(Google google, String textToSpeech, String [] noInputPrompts) {
+        if (Util.isSsml(textToSpeech)) {
+            google.setSsml(true);
+            List<SimpleResponse> finalNoInputPrompts = new ArrayList<>();
+            if (!Util.isNull(noInputPrompts)){
+                for (String prompt: noInputPrompts) {
+                    finalNoInputPrompts.add(new SimpleResponse(prompt, null));
+                }
+            }
+            google.setNoInputPrompts(finalNoInputPrompts);
+        } else if (!Util.isNull(noInputPrompts)) {
+            List<SimpleResponse> finalNoInputPrompts = new ArrayList<>();
+            for (String prompt: noInputPrompts) {
+                finalNoInputPrompts.add(new SimpleResponse(prompt, null));
+            }
+            google.setNoInputPrompts(finalNoInputPrompts);
+            google.setSsml(false);
+        } else {
+            google.setSsml(false);
+            google.setNoInputPrompts(new ArrayList<>());
+        }
+        return google;
     }
 
     /**
@@ -390,7 +422,7 @@ public class DialogflowApp extends AssistantApp{
      */
     @Override
     Response fulfillPermissionsRequest(SystemIntentData systemIntentData) {
-        Response response = new Response();
+        Response response;
         Data data = new Data();
         Google google;
         SystemIntent systemIntent = new SystemIntent();
@@ -406,5 +438,33 @@ public class DialogflowApp extends AssistantApp{
         data.setGoogle(google);
         response.setData(data);
         return response;
+    }
+
+    @Override
+    Response fulfillSystemIntent(String intent, String specType, DialogSpec intentSpec, String promptPlaceholder, Object dialogState) {
+        debug(String.format("fulfillSystemIntent_: intent=%s, specType=%s, intentSpec=%s, promptPlaceholder=%s dialogState=",
+                            intent, specType, intentSpec.toString(), promptPlaceholder));
+        Response response;
+        Data data = new Data();
+        Google google;
+        SystemIntent systemIntent = new SystemIntent();
+        response = buildResponse(promptPlaceholder,true,null);
+        response.setSpeech(promptPlaceholder);
+        systemIntent.setIntent(intent);
+
+        SystemIntentData systemIntentData = new SystemIntentData();
+        systemIntentData.setType(specType);
+        systemIntentData.setDialogSpec(intentSpec);
+
+        systemIntent.setData(systemIntentData);
+        google = response.getData().getGoogle();
+        google.setSystemIntent(systemIntent);
+        data.setGoogle(google);
+        response.setData(data);
+        return response;
+    }
+
+    private void debug(String message) {
+        logger.debug(message);
     }
 }

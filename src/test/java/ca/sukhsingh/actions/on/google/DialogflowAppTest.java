@@ -368,7 +368,8 @@ public class DialogflowAppTest extends AssertHelper {
 
     @Test
     public void appAskWithNullTextToSpeechAndNoInputPrompts() throws Exception {
-        Response response = app.ask(null, new String[] {"Can you say that again ?", "What ?"});
+        String textToSpeech = null;
+        Response response = app.ask(textToSpeech, new String[] {"Can you say that again ?", "What ?"});
         assertNull(response);
     }
 
@@ -448,7 +449,20 @@ public class DialogflowAppTest extends AssertHelper {
         assertTextToSpeech(response, SPEECH);
         assertDisplayText(response, DISPLAYTEXT);
         assertExpectUserResponseTrue(response);
+    }
 
+    @Test
+    public void appAskWithSimpleResponseWithNoInputPrompt()throws Exception {
+        final String SPEECH = "Hello";
+        final String DISPLAYTEXT = "Hi";
+        String [] noInputPrompt = {"Say again", "one more time"};
+        SimpleResponse simpleResponse = new SimpleResponse(SPEECH, DISPLAYTEXT);
+        Response response = app.ask(simpleResponse,noInputPrompt);
+        assertNotNull(response);
+        assertTextToSpeech(response, SPEECH);
+        assertDisplayText(response, DISPLAYTEXT);
+        assertExpectUserResponseTrue(response);
+        assertNoInputPromptTexttoSpeech(response,noInputPrompt);
     }
 
     @Test
@@ -500,6 +514,23 @@ public class DialogflowAppTest extends AssertHelper {
         assertDisplayText(response, "hi");
         assertSuggestions(response, "say this", "or this");
 
+    }
+
+    @Test
+    public void appAskWithRichResponseWithNoInputPrompt()throws Exception {
+        RichResponse richResponse = app.buildRichResponse()
+                .addSimpleResponse(new SimpleResponse("hello", "hi"))
+                .addSuggestions(Arrays.asList("say this", "or this"));
+        String [] noInputPrompt = {"Say again", "one more time"};
+        Response response = app.ask(richResponse, noInputPrompt);
+        assertNotNull(response);
+        assertSpeech(response, "hello");
+        assertExpectUserResponseTrue(response);
+        assertNotNullRichResponse(response);
+        assertTextToSpeech(response,"hello");
+        assertDisplayText(response, "hi");
+        assertSuggestions(response, "say this", "or this");
+        assertNoInputPromptTexttoSpeech(response,noInputPrompt);
     }
 
     @Test
@@ -874,7 +905,7 @@ public class DialogflowAppTest extends AssertHelper {
         assertIsSsmlFalse(response);
         assertPermissionIntent(response);
         assertNotNull(response.getData().getGoogle().getSystemIntent());
-        assertPermissionystemIntentData(response);
+        assertPermissionSystemIntentData(response);
         assertEquals("Permissions", response.getData().getGoogle().getSystemIntent().getData().getPermissions(), list);
         assertEquals("Opt Context", response.getData().getGoogle().getSystemIntent().getData().getOptContext(), "To do this");
     }
@@ -909,7 +940,7 @@ public class DialogflowAppTest extends AssertHelper {
         assertIsSsmlFalse(response);
         assertPermissionIntent(response);
         assertNotNull(response.getData().getGoogle().getSystemIntent());
-        assertPermissionystemIntentData(response);
+        assertPermissionSystemIntentData(response);
         assertEquals("Permissions", response.getData().getGoogle().getSystemIntent().getData().getPermissions().get(0), AssistantApp.SupportedPermissions.NAME);
         assertEquals("Opt Context", response.getData().getGoogle().getSystemIntent().getData().getOptContext(), "To do this");
     }
@@ -918,6 +949,25 @@ public class DialogflowAppTest extends AssertHelper {
     public void fulfillPermissionsRequestTest() throws Exception {
         AssistantApp assistantApp = new AssistantApp();
         assertNull(assistantApp.fulfillPermissionsRequest(new SystemIntentData()));
+    }
+
+    @Test
+    public void askForConfirmation() throws Exception {
+        Response response = app.askForConfirmation("Hello");
+        assertNotNull(response);
+        assertSpeech(response,"PLACEHOLDER_FOR_CONFIRMATION");
+        assertExpectUserResponseTrue(response);
+        assertIsSsmlFalse(response);
+        assertConfirmationIntent(response);
+        assertNotNull(response.getData().getGoogle().getSystemIntent());
+        assertConfirmationSystemIntentData(response);
+        assertEquals(response.getData().getGoogle().getSystemIntent().getData().getDialogSpec().getRequestConfirmationText(), "Hello");
+    }
+
+    @Test
+    public void askForConfirmationWithNullPrompt() throws Exception {
+        Response response = app.askForConfirmation(null, null);
+        assertNull(response);
     }
 
     private ListSelect getListSelect() {

@@ -34,9 +34,9 @@ public class Item {
         return simpleResponse;
     }
 
-//    public void setSimpleResponse(SimpleResponse simpleResponse) {
-//        this.simpleResponse = simpleResponse;
-//    }
+    public void setSimpleResponse(SimpleResponse simpleResponse) {
+        this.simpleResponse = simpleResponse;
+    }
 
     public BasicCard getBasicCard() {
         return basicCard;

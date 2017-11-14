@@ -1,6 +1,8 @@
 
 package ca.sukhsingh.actions.on.google.request;
 
+import ca.sukhsingh.actions.on.google.AssistantApp;
+import ca.sukhsingh.actions.on.google.DialogflowApp;
 import ca.sukhsingh.actions.on.google.request.originalrequest.*;
 import ca.sukhsingh.actions.on.google.request.result.Context;
 import ca.sukhsingh.actions.on.google.request.result.Result;
@@ -173,14 +175,37 @@ public class Request {
 //    public void getTransactionDecision() {
 //
 //    }
-//
-//    public void getUserConfirmation() {
-//
-//    }
-//
-//    public void getDateTime() {
-//
-//    }
+
+    /**
+     * Gets confirmation decision. Use after askForConfirmation.
+     *
+     * @return {@link Object} False if user replied with negative response. Null if no user
+     *     confirmation decision given.
+     */
+    public Object getUserConfirmation() {
+        debug("getUserConfirmation");
+        Argument argument = findArgument(DialogflowApp.BuiltInArgNames.CONFIRMATION);
+        if (isNotNull(argument)) {
+            return argument.getBoolValue();
+        }
+        debug("Failed to get confirmation decision information");
+        return null;
+    }
+
+    /**
+     * Gets user provided date and time. Use after askForDateTime.
+     *
+     * @return {@link DatetimeValue} Date and time given by the user. Null if no user
+     *     date and time given.
+     */
+    public DatetimeValue getDateTime() {
+        Argument argument = findArgument(DialogflowApp.BuiltInArgNames.DATETIME);
+        if (isNotNull(argument)) {
+            return argument.getDatetimeValue();
+        }
+        debug("Failed to get date/time information");
+        return null;
+    }
 //
 //    public void getSignInStatus() {
 //
@@ -358,6 +383,10 @@ public class Request {
         logger.error("No input type in incoming request");
         return null;
     }
+
+    public String getConversationType() {
+        return this.getOriginalRequest().getData().getConversation().getType();
+    }
     
     private Argument findArgument(String...targets) {
        // Argument argument = new Argument();
@@ -380,6 +409,10 @@ public class Request {
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
+    }
+
+    private void debug(String message) {
+        logger.debug(message);
     }
 }
 
