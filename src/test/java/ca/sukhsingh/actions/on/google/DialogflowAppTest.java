@@ -8,9 +8,17 @@ import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Item;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.ListSelect;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntentData;
-import org.junit.Test;
+import name.falgout.jeffrey.testing.junit5.MockitoExtension;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -24,18 +32,36 @@ import static org.junit.Assert.assertNull;
 /**
  * Created by sukhsingh on 2017-08-29.
  */
-@RunWith(MockitoJUnitRunner.class)
 public class DialogflowAppTest extends AssertHelper {
 
-    @InjectMocks
-    private DialogflowApp app;
+    private DialogflowApp app ;//= new DialogflowApp();
 
+    @BeforeEach
+    public void beforeEach() {
+        app = new DialogflowApp();
+    }
+
+    @ParameterizedTest
+    @DisplayName("App Tell")
+    @ValueSource(strings = {"hello","<speak>hello</speak>"})
+    public void appTell(String prompt) throws Exception {
+        Response response = app.tell(prompt);
+        assertSpeech(response, prompt);
+        assertNotNull(response.getData());
+        assertNotNull(response.getData().getGoogle());
+        assertExpectUserResponseFalse(response);
+//        assertIsSsmlFalse(response);
+        assertNotNull(response.getData().getGoogle().noInputPrompts);
+        assertNotNull(response.getContextOut());
+    }
 
     @Test
     public void appTellWithString()throws Exception {
         Response response = app.tell("hello");
         assertNotNull(response);
 //        {
+
+
 //            "speech": "hello",
 //            "data": {
 //                "google": {
@@ -61,6 +87,7 @@ public class DialogflowAppTest extends AssertHelper {
         final String SPEECH = "<speak>hello</speak>";
         Response response = app.tell(SPEECH);
         assertNotNull(response);
+        assertIsSsmlTrue(response);
         assertSpeech(response, SPEECH);
         assertIsSsmlTrue(response);
     }
