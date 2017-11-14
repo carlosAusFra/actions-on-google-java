@@ -56,6 +56,7 @@ public class DialogflowAppTest extends AssertHelper {
     }
 
     @Test
+    @DisplayName("App Tell : Where input param is string")
     public void appTellWithString()throws Exception {
         Response response = app.tell("hello");
         assertNotNull(response);
@@ -83,6 +84,7 @@ public class DialogflowAppTest extends AssertHelper {
     }
 
     @Test
+    @DisplayName("App Tell : Where input param is ssml string")
     public void appTellWithSSMLString()throws Exception {
         final String SPEECH = "<speak>hello</speak>";
         Response response = app.tell(SPEECH);
@@ -93,6 +95,7 @@ public class DialogflowAppTest extends AssertHelper {
     }
 
     @Test
+    @DisplayName("App Tell : With TTS and display text")
     public void appTellWithTextToSpeechAndDisplayText()throws Exception {
         Response response = app.tell("hello", "hi");
 
@@ -127,6 +130,7 @@ public class DialogflowAppTest extends AssertHelper {
     }
 
     @Test
+    @DisplayName("App Tell : With SSML and display text")
     public void appTellWithTextToSpeechSSMLAndDisplayText()throws Exception {
         final String SPEECH = "<speak>Hello</speak>";
         final String DISPLAYTEXT = "Hi";
@@ -156,6 +160,7 @@ public class DialogflowAppTest extends AssertHelper {
     }
 
     @Test
+    @DisplayName("App Tell : With Simple Response")
     public void appTellWithSimpleResponse()throws Exception {
         final String SPEECH = "Hello";
         final String DISPLAYTEXT = "Hi";
