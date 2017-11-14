@@ -5,6 +5,7 @@ import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResp
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.Suggestion;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.ListSelect;
+import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,5 +143,22 @@ public class AssertHelper {
     protected void assertNoInputPromptTexttoSpeech(Response response, String [] noInputPrompt) {
         assertEquals(response.getData().getGoogle().getNoInputPrompts().get(0).getTextToSpeech(),noInputPrompt[0]);
         assertEquals(response.getData().getGoogle().getNoInputPrompts().get(1).getTextToSpeech(),noInputPrompt[1]);
+    }
+
+    protected void assertInitialPrompt(String initialPrompt, Response response) {
+        Assert.assertEquals(initialPrompt,response.getData().getGoogle().getSystemIntent().getData().getDialogSpec().getRequestDatetimeText());
+    }
+
+    protected void assertDatePrompt(String datePrompt, Response response) {
+        Assert.assertEquals(datePrompt, response.getData().getGoogle().getSystemIntent().getData().getDialogSpec().getRequestDateText());
+    }
+
+    protected void assertTimePrompt(String timePrompt, Response response) {
+        Assert.assertEquals(timePrompt, response.getData().getGoogle().getSystemIntent().getData().getDialogSpec().getRequestTimeText());
+    }
+
+    protected void assertSystemIntent(Response response) {
+        Assert.assertEquals(DialogflowApp.StandardIntents.DATETIME,response.getData().getGoogle().getSystemIntent().getIntent());
+        Assert.assertEquals(DialogflowApp.InputValueDataTypes.DATETIME,response.getData().getGoogle().getSystemIntent().getData().getType());
     }
 }

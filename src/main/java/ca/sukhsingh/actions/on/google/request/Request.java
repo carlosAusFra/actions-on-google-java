@@ -1,7 +1,6 @@
 
 package ca.sukhsingh.actions.on.google.request;
 
-import ca.sukhsingh.actions.on.google.AssistantApp;
 import ca.sukhsingh.actions.on.google.DialogflowApp;
 import ca.sukhsingh.actions.on.google.request.originalrequest.*;
 import ca.sukhsingh.actions.on.google.request.result.Context;
