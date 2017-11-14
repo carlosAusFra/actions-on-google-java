@@ -191,10 +191,21 @@ public class Request {
         debug("Failed to get confirmation decision information");
         return null;
     }
-//
-//    public void getDateTime() {
-//
-//    }
+
+    /**
+     * Gets user provided date and time. Use after askForDateTime.
+     *
+     * @return {@link DatetimeValue} Date and time given by the user. Null if no user
+     *     date and time given.
+     */
+    public DatetimeValue getDateTime() {
+        Argument argument = findArgument(DialogflowApp.BuiltInArgNames.DATETIME);
+        if (isNotNull(argument)) {
+            return argument.getDatetimeValue();
+        }
+        debug("Failed to get date/time information");
+        return null;
+    }
 //
 //    public void getSignInStatus() {
 //

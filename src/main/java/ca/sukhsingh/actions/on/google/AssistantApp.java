@@ -286,6 +286,35 @@ public class AssistantApp {
         return askForConfirmation(prompt,null);
     }
 
+    /**
+     * Asks user for a timezone-agnostic date and time.
+     *
+     * @param initialPrompt {@link String} The initial prompt used to ask for a
+     *     date and time. If undefined or null, Google will use a generic
+     *     prompt.
+     * @param datePrompt {@link String} The prompt used to specifically ask for the
+     *     date if not provided by user. If undefined or null, Google will use a
+     *     generic prompt.
+     * @param timePrompt {@link String} The prompt used to specifically ask for the
+     *     time if not provided by user. If undefined or null, Google will use a
+     *     generic prompt.
+     * @param dialogState {@link Object} JSON object the app uses to hold dialog state that
+     *     will be circulated back by Assistant.
+     * @return {@link Response} DialogFlowResponse Object or null
+     */
+    public Response askForDateTime(String initialPrompt,String datePrompt,String timePrompt,Object dialogState) {
+        DialogSpec confirmationValueSpec = new DialogSpec();
+        confirmationValueSpec.setRequestDatetimeText(initialPrompt);
+        confirmationValueSpec.setRequestDateText(datePrompt);
+        confirmationValueSpec.setRequestTimeText(timePrompt);
+        return fulfillSystemIntent(
+                StandardIntents.DATETIME,
+                InputValueDataTypes.DATETIME,
+                confirmationValueSpec,
+                "PLACEHOLDER_FOR_CONFIRMATION",
+                dialogState);
+    }
+
     Response fulfillPermissionsRequest(SystemIntentData systemIntentData) {return null;}
     Response fulfillSystemIntent(String intent, String specType, DialogSpec intentSpec, String promptPlaceholder, Object dialogState) {return null;}
 

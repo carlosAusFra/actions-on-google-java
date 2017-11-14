@@ -21,6 +21,14 @@ public class Coordinates {
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
+    public Coordinates() {
+    }
+
+    public Coordinates(Double latitude,Double longitude) {
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
+
     public Double getLatitude() {
         return latitude;
     }
