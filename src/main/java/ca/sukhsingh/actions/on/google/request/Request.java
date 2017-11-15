@@ -1,6 +1,7 @@
 
 package ca.sukhsingh.actions.on.google.request;
 
+import ca.sukhsingh.actions.on.google.AssistantApp;
 import ca.sukhsingh.actions.on.google.DialogflowApp;
 import ca.sukhsingh.actions.on.google.request.originalrequest.*;
 import ca.sukhsingh.actions.on.google.request.result.Context;
@@ -251,6 +252,40 @@ public class Request {
         }
         logger.error("No capabilities found");
         return null;
+    }
+
+    /**
+     * Returns true if user has an available surface which includes all given
+     * capabilities. Available surfaces capabilities may exist on surfaces other
+     * than that used for an ongoing conversation.
+     *
+     *
+     * @param capabilities capabilities Must be one of {@link SurfaceCapabilities}
+     * @return {@link Boolean} True if user has a capability available on some surface.
+     */
+    public boolean hasAvailableSurfaceCapabilities(String capabilities) {
+        debug("hasAvailableSurfaceCapabilities : " + capabilities);
+        AvailableSurfaces availableSurfaces = originalRequest.getData().getAvailableSurfaces().get(0);
+        for (Capability capability :availableSurfaces.capabilities) {
+            if (capability.getName().equalsIgnoreCase(capabilities)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns the result of the AskForNewSurface helper.
+     *
+     * @return {@link Boolean} True if user has triggered conversation on a new device
+     *     following the NEW_SURFACE intent.
+     */
+    public boolean isNewSurface() {
+        Argument argument = findArgument(AssistantApp.BuiltInArgNames.NEW_SURFACE);
+        return isNotNull(argument) &&
+                isNotNull(argument.getExtension()) &&
+                isNotNull(argument.getExtension().getStatus()) &&
+                argument.getExtension().getStatus().equalsIgnoreCase("ok");
     }
 
     /**

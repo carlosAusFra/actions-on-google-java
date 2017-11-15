@@ -1,5 +1,6 @@
 package ca.sukhsingh.actions.on.google;
 
+import ca.sukhsingh.actions.on.google.request.Request;
 import ca.sukhsingh.actions.on.google.response.Response;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.BasicCard;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
@@ -8,24 +9,17 @@ import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Carousel
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.Item;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.ListSelect;
 import ca.sukhsingh.actions.on.google.response.data.google.systemintent.SystemIntentData;
-import name.falgout.jeffrey.testing.junit5.MockitoExtension;
 import org.junit.Assert;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by sukhsingh on 2017-08-29.
@@ -1003,7 +997,7 @@ public class DialogflowAppTest extends AssertHelper {
             String initialPrompt = "Hello";
             Response response = app.askForDateTime(initialPrompt,null,null,null);
             Assert.assertNotNull(response);
-            assertSystemIntent(response);
+            assertDateTimeSystemIntent(response);
             assertInitialPrompt(initialPrompt, response);
         }
 
@@ -1013,7 +1007,7 @@ public class DialogflowAppTest extends AssertHelper {
             String datePrompt = "Hello";
             Response response = app.askForDateTime(null,datePrompt,null,null);
             Assert.assertNotNull(response);
-            assertSystemIntent(response);
+            assertDateTimeSystemIntent(response);
             assertDatePrompt(datePrompt,response);
         }
 
@@ -1023,7 +1017,7 @@ public class DialogflowAppTest extends AssertHelper {
             String timePrompt = "Hello";
             Response response = app.askForDateTime(null,null,timePrompt,null);
             Assert.assertNotNull(response);
-            assertSystemIntent(response);
+            assertDateTimeSystemIntent(response);
             assertTimePrompt(timePrompt,response);
         }
 
@@ -1032,10 +1026,28 @@ public class DialogflowAppTest extends AssertHelper {
         public void askForDateTimeWithAllText() throws Exception {
             Response response = app.askForDateTime("initialPrompt","datePrompt","Hello",null);
             Assert.assertNotNull(response);
-            assertSystemIntent(response);
+            assertDateTimeSystemIntent(response);
             assertInitialPrompt("initialPrompt",response);
             assertDatePrompt("datePrompt",response);
             assertTimePrompt("Hello",response);
+        }
+    }
+
+    @Nested
+    @DisplayName("Ask For New Surface")
+    class AskForNewSurface {
+
+        @Test
+        void happyPath() {
+            List<String> capabilities = new ArrayList<>();
+            capabilities.add(Request.SurfaceCapabilities.SCREEN_OUTPUT);
+            Response response = app.askForNewSurface("context", "notification", capabilities);
+            assertNotNull(response);
+            assertSpeech(response,"PLACEHOLDER_FOR_NEW_SURFACE");
+            assertSurfaceSystemIntent(response);
+            assertSurfaceContext(response);
+            assertNotificationTitle(response);
+            assertSurfaceCapability(response);
         }
     }
 

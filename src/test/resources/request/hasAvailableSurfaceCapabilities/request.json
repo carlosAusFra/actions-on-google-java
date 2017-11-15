@@ -1,0 +1,84 @@
+{
+  "originalRequest": {
+    "source": "google",
+    "version": "2",
+    "data": {
+      "isInSandbox": true,
+      "surface": {
+        "capabilities": [{
+          "name": "actions.capability.AUDIO_OUTPUT"
+        }]
+      },
+      "inputs": [{
+        "rawInputs": [{
+          "query": "car",
+          "inputType": "VOICE"
+        }],
+        "arguments": [{
+          "rawText": "car",
+          "textValue": "car",
+          "name": "text"
+        }],
+        "intent": "actions.intent.TEXT"
+      }],
+      "user": {
+        "lastSeen": "2017-11-14T20:41:07Z",
+        "locale": "en-US",
+        "userId": "ABwppHHx5qsuL1R2Nzs1Zoy_IlfHKZbcm4saL-1jab6f8fHbB_FTMS5HXM_uMlCfjZmH3ZjIigRcbWkWzclxKg"
+      },
+      "conversation": {
+        "conversationId": "1510699188692",
+        "type": "ACTIVE",
+        "conversationToken": "[]"
+      },
+      "availableSurfaces": [{
+        "capabilities": [{
+          "name": "actions.capability.AUDIO_OUTPUT"
+        }, {
+          "name": "actions.capability.SCREEN_OUTPUT"
+        }]
+      }]
+    }
+  },
+  "id": "68c90936-3dff-4fb2-a574-48722ea34fb5",
+  "timestamp": "2017-11-14T22:39:56.905Z",
+  "lang": "en-us",
+  "result": {
+    "source": "agent",
+    "resolvedQuery": "car",
+    "speech": "",
+    "action": "car",
+    "actionIncomplete": false,
+    "parameters": {},
+    "contexts": [{
+      "name": "google_assistant_input_type_voice",
+      "parameters": {},
+      "lifespan": 0
+    }, {
+      "name": "actions_capability_audio_output",
+      "parameters": {},
+      "lifespan": 0
+    }],
+    "metadata": {
+      "intentId": "8aa0ae7b-f8bb-4725-b09c-c94f5cffc5b0",
+      "webhookUsed": "true",
+      "webhookForSlotFillingUsed": "false",
+      "nluResponseTime": 18,
+      "intentName": "Carousel"
+    },
+    "fulfillment": {
+      "speech": "",
+      "messages": [{
+        "type": 0,
+        "speech": ""
+      }]
+    },
+    "score": 1.0
+  },
+  "status": {
+    "code": 200,
+    "errorType": "success",
+    "webhookTimedOut": false
+  },
+  "sessionId": "1510699188692"
+}

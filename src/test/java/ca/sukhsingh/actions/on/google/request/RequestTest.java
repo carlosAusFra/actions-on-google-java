@@ -1,20 +1,19 @@
 package ca.sukhsingh.actions.on.google.request;
 
 import ca.sukhsingh.actions.on.google.AssistantApp;
+import ca.sukhsingh.actions.on.google.DialogflowApp;
 import ca.sukhsingh.actions.on.google.request.originalrequest.Argument;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
 
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
-@RunWith(MockitoJUnitRunner.class)
 public class RequestTest {
 
     @Test
@@ -250,6 +249,20 @@ public class RequestTest {
     public void getContextsWithNoContext() throws Exception {
         Request request = prepareRequest("getContext/get_context_withNoContext.json");
         assertNull(request.getContexts());
+    }
+
+    @Nested
+    @DisplayName("has Available Surface Capabilities")
+    class hasAvailableSurfaceCapabilities {
+
+        @Test
+        void hasAvailableSurfaceCapabilitiesTest() {
+            Request request = prepareRequest("request/hasAvailableSurfaceCapabilities/request.json");
+            assertNotNull(request);
+            boolean result = request.hasAvailableSurfaceCapabilities(Request.SurfaceCapabilities.SCREEN_OUTPUT);
+            assertTrue(result);
+        }
+
     }
 
     private Request prepareRequest(String fileName) {

@@ -1,10 +1,13 @@
 
 package ca.sukhsingh.actions.on.google.response.data.google.systemintent;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sukhSingh on 2017-08-09.
@@ -24,6 +27,16 @@ public class SystemIntentData {
     private Carousel carousel;
     @JsonProperty("dialogSpec")
     private DialogSpec dialogSpec;
+    @JsonProperty("context")
+    public String context;
+    @JsonProperty("notificationTitle")
+    public String notificationTitle;
+    @JsonProperty("capabilities")
+    public List<String> capabilities = null;
+    @JsonProperty("addressOptions")
+    public AddressOptions addressOptions;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     public SystemIntentData() {
     }
@@ -31,6 +44,12 @@ public class SystemIntentData {
     public SystemIntentData(String optContext, List<String> permissions) {
         this.optContext = optContext;
         this.permissions = permissions;
+    }
+
+    public SystemIntentData(String context, String notificationTitle,List<String> capabilities) {
+        this.context = context;
+        this.notificationTitle = notificationTitle;
+        this.capabilities = capabilities;
     }
 
     public String getType() {
@@ -71,5 +90,45 @@ public class SystemIntentData {
 
     public void setDialogSpec(DialogSpec dialogSpec) {
         this.dialogSpec = dialogSpec;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
+
+    public String getNotificationTitle() {
+        return notificationTitle;
+    }
+
+    public void setNotificationTitle(String notificationTitle) {
+        this.notificationTitle = notificationTitle;
+    }
+
+    public List<String> getCapabilities() {
+        return capabilities;
+    }
+
+    public void setCapabilities(List<String> capabilities) {
+        this.capabilities = capabilities;
+    }
+
+    public Map<String, Object> getAdditionalProperties() {
+        return additionalProperties;
+    }
+
+    public AddressOptions getAddressOptions() {
+        return addressOptions;
+    }
+
+    public void setAddressOptions(AddressOptions addressOptions) {
+        this.addressOptions = addressOptions;
+    }
+
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
     }
 }

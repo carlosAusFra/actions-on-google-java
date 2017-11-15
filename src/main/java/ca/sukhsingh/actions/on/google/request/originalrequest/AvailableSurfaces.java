@@ -1,30 +1,21 @@
-
 package ca.sukhsingh.actions.on.google.request.originalrequest;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class Extension {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+        "capabilities"
+})
+public class AvailableSurfaces {
 
-    @JsonProperty("@type")
-    private String type;
-    @JsonProperty("status")
-    private String status;
+    @JsonProperty("capabilities")
+    public List<Capability> capabilities = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-    public String getType() {
-        return type;
-    }
-
-    public String getStatus() {
-        return status;
-    }
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {

@@ -1,5 +1,6 @@
 package ca.sukhsingh.actions.on.google;
 
+import ca.sukhsingh.actions.on.google.request.Request;
 import ca.sukhsingh.actions.on.google.response.Response;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.RichResponse;
 import ca.sukhsingh.actions.on.google.response.data.google.richresponse.Suggestion;
@@ -157,8 +158,26 @@ public class AssertHelper {
         Assert.assertEquals(timePrompt, response.getData().getGoogle().getSystemIntent().getData().getDialogSpec().getRequestTimeText());
     }
 
-    protected void assertSystemIntent(Response response) {
-        Assert.assertEquals(DialogflowApp.StandardIntents.DATETIME,response.getData().getGoogle().getSystemIntent().getIntent());
-        Assert.assertEquals(DialogflowApp.InputValueDataTypes.DATETIME,response.getData().getGoogle().getSystemIntent().getData().getType());
+    protected void assertDateTimeSystemIntent(Response response) {
+        assertEquals(DialogflowApp.StandardIntents.DATETIME,response.getData().getGoogle().getSystemIntent().getIntent());
+        assertEquals(DialogflowApp.InputValueDataTypes.DATETIME,response.getData().getGoogle().getSystemIntent().getData().getType());
     }
+
+    protected void assertSurfaceSystemIntent(Response response) {
+        assertEquals(DialogflowApp.StandardIntents.NEW_SURFACE,response.getData().getGoogle().getSystemIntent().getIntent());
+        assertEquals(DialogflowApp.InputValueDataTypes.NEW_SURFACE,response.getData().getGoogle().getSystemIntent().getData().getType());
+    }
+
+    protected void assertSurfaceContext(Response response) {
+        assertEquals("context", response.getData().getGoogle().getSystemIntent().getData().getContext());
+    }
+
+    protected void assertNotificationTitle(Response response) {
+        assertEquals("notification", response.getData().getGoogle().getSystemIntent().getData().getNotificationTitle());
+    }
+
+    protected void assertSurfaceCapability(Response response) {
+        assertEquals(Request.SurfaceCapabilities.SCREEN_OUTPUT, response.getData().getGoogle().getSystemIntent().getData().getCapabilities().get(0));
+    }
+
 }

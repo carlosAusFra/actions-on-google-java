@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * This is the class that handles the communication with Dialogflow's fulfillment API.
  */
-public class DialogflowApp extends AssistantApp{
+public class DialogflowApp extends AssistantApp {
 
     Logger logger = Logger.getLogger(DialogflowApp.class);
 
@@ -427,7 +427,7 @@ public class DialogflowApp extends AssistantApp{
         Google google;
         SystemIntent systemIntent = new SystemIntent();
 
-        final String inputPrompt = "PLACEHOLDER_FOR_PERMISSION";
+        final String inputPrompt = Placeholders.PERMISSION;
         response = buildResponse(inputPrompt, true, null);
         response.setSpeech(inputPrompt);
         systemIntent.setIntent(StandardIntents.PERMISSION);
@@ -441,7 +441,7 @@ public class DialogflowApp extends AssistantApp{
     }
 
     @Override
-    Response fulfillSystemIntent(String intent, String specType, DialogSpec intentSpec, String promptPlaceholder, Object dialogState) {
+    Response fulfillSystemIntent(String intent, String specType, SystemIntentData intentSpec, String promptPlaceholder, Object dialogState) {
         debug(String.format("fulfillSystemIntent_: intent=%s, specType=%s, intentSpec=%s, promptPlaceholder=%s dialogState=",
                             intent, specType, intentSpec.toString(), promptPlaceholder));
         Response response;
@@ -451,12 +451,10 @@ public class DialogflowApp extends AssistantApp{
         response = buildResponse(promptPlaceholder,true,null);
         response.setSpeech(promptPlaceholder);
         systemIntent.setIntent(intent);
-
-        SystemIntentData systemIntentData = new SystemIntentData();
-        systemIntentData.setType(specType);
-        systemIntentData.setDialogSpec(intentSpec);
-
-        systemIntent.setData(systemIntentData);
+        if (Util.isNotNull(intentSpec)) {
+            intentSpec.setType(specType);
+            systemIntent.setData(intentSpec);
+        }
         google = response.getData().getGoogle();
         google.setSystemIntent(systemIntent);
         data.setGoogle(google);

@@ -19,6 +19,8 @@ public class Data {
     private Boolean isInSandbox;
     @JsonProperty("surface")
     private Surface surface;
+    @JsonProperty("availableSurfaces")
+    private  List<AvailableSurfaces> availableSurfaces = null;
     @JsonProperty("inputs")
     private List<Input> inputs ;
     @JsonProperty("user")
@@ -36,6 +38,10 @@ public class Data {
 
     public Surface getSurface() {
         return surface;
+    }
+
+    public List<AvailableSurfaces> getAvailableSurfaces() {
+        return availableSurfaces;
     }
 
     public List<Input> getInputs() {
