@@ -350,7 +350,7 @@ public class DialogflowApp extends AssistantApp {
             //TODO _action_on_google_
             response.addContextOuts(new ArrayList<>());
             google.setExpectUserResponse(expectUserResponse);
-
+            google.setUserStorage("{\"data\":{}}");
             data.setGoogle(setNoInputPrompt(google,textToSpeech,noInputPrompts));
             response.setData(data);
 
@@ -421,7 +421,7 @@ public class DialogflowApp extends AssistantApp {
      * @return {@link Response}
      */
     @Override
-    Response fulfillPermissionsRequest(SystemIntentData systemIntentData) {
+    Response fulfillPermissionsRequest(SystemIntentData systemIntentData,Object dialogState) {
         Response response;
         Data data = new Data();
         Google google;

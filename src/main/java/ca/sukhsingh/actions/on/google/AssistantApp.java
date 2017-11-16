@@ -9,8 +9,7 @@ import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ca.sukhsingh.actions.on.google.Util.collectionToString;
-import static ca.sukhsingh.actions.on.google.Util.stringify;
+import static ca.sukhsingh.actions.on.google.Util.*;
 
 /**
  * <p>
@@ -54,6 +53,10 @@ public class AssistantApp {
         public static final String CANCEL = "actions.intent.CANCEL";
         /** App fires NEW_SURFACE intent when requesting handoff to a new surface from user. */
         public static final String NEW_SURFACE = "actions.intent.NEW_SURFACE";
+        /** App fires REGISTER_UPDATE intent when requesting the user to register for proactive updates. */
+        public static final String REGISTER_UPDATE = "actions.intent.REGISTER_UPDATE";
+        /** App receives CONFIGURE_UPDATES intent to indicate a custom REGISTER_UPDATE intent should be sent. */
+        public static final String CONFIGURE_UPDATES = "actions.intent.CONFIGURE_UPDATES";
     }
 
     /**
@@ -72,6 +75,10 @@ public class AssistantApp {
          * City and zipcode corresponding to the location of the user's current device, as defined in the
          */
         public static final String DEVICE_COARSE_LOCATION = "DEVICE_COARSE_LOCATION";
+        /**
+         * Confirmation to receive proactive content at any time from the app.
+         */
+        public static final String UPDATE = "UPDATE";
 
     }
 
@@ -124,6 +131,8 @@ public class AssistantApp {
         public static final String DATETIME = "type.googleapis.com/google.actions.v2.DateTimeValueSpec";
         /** New Surface Value Spec. */
         public static final String NEW_SURFACE = "type.googleapis.com/google.actions.v2.NewSurfaceValueSpec";
+        /** Register Update Value Spec. */
+        public static final String REGISTER_UPDATE = "type.googleapis.com/google.actions.v2.RegisterUpdateValueSpec";
     }
 
     /**
@@ -163,6 +172,10 @@ public class AssistantApp {
         public static final String SCREEN_OUTPUT = "actions.capability.SCREEN_OUTPUT";
     }
 
+    public class TimeContextFrequency {
+        public static final String DAILY = "DAILY";
+    }
+
     protected class Placeholders {
         public static final String PERMISSION = "PLACEHOLDER_FOR_PERMISSION";
         public static final String TXN_DECISION = "PLACEHOLDER_FOR_TXN_DECISION";
@@ -172,6 +185,7 @@ public class AssistantApp {
         public static final String CONFIRMATION = "PLACEHOLDER_FOR_CONFIRMATION";
         public static final String DATETIME = "PLACEHOLDER_FOR_DATETIME";
         public static final String NEW_SURFACE = "PLACEHOLDER_FOR_NEW_SURFACE";
+        public static final String REGISTER_UPDATE = "PLACEHOLDER_FOR_REGISTER_UPDATE";
     }
 
     /**
@@ -272,7 +286,7 @@ public class AssistantApp {
      *     invalid input, we return null.
      */
     public Response askForPermissions(String context, List<String> permissions) {
-        debug("askForPermissions: context=%s, permissions=%s", context, collectionToString(permissions));
+        debug("askForPermissions: context=%s, permissions=%s", context, stringify(permissions));
         if (Util.isNullOrEmpty(context)) {
             logger.error("invalid context");
             return null;
@@ -294,7 +308,7 @@ public class AssistantApp {
         //TODO dialog state
 
         SystemIntentData systemIntentData = new SystemIntentData(context, permissions);
-        return fulfillPermissionsRequest(systemIntentData);
+        return fulfillPermissionsRequest(systemIntentData,null);
     }
 
     /**
@@ -489,7 +503,7 @@ public class AssistantApp {
      * @return {@link Response} DialogFlowResponse Object or null
      */
     public Response askForNewSurface(String context,String notificationTitle,List<String> capabilities) {
-        debug("askForNewSurface: context=%s notificationTitle=%s capabilities=%s", context,notificationTitle,collectionToString(capabilities));
+        debug("askForNewSurface: context=%s notificationTitle=%s capabilities=%s", context,notificationTitle,stringify(capabilities));
         return askForNewSurface(context,notificationTitle,capabilities,null);
     }
 
@@ -507,7 +521,7 @@ public class AssistantApp {
      */
     public Response askForNewSurface(String context,String notificationTitle,List<String> capabilities, Object dialogState) {
         debug("askForNewSurface: context=%s notificationTitle=%s capabilities=%s dialogState=%s",
-                context,notificationTitle,collectionToString(capabilities),stringify(dialogState));
+                context,notificationTitle,stringify(capabilities),stringify(dialogState));
         SystemIntentData data = new SystemIntentData(context,notificationTitle,capabilities);
         return fulfillSystemIntent(
                 StandardIntents.NEW_SURFACE,
@@ -596,15 +610,67 @@ public class AssistantApp {
         return null;
     }
 
-    public Response askForUpdatePermission() {
-        return null;
+    /**
+     * Prompts the user for permission to send proactive updates at any time.
+     *
+     * @param intent If using Dialogflow, the action name of the intent
+     *     to be triggered when the update is received. If using Actions SDK, the
+     *     intent name to be triggered when the update is received.
+     * @param intentArguments The necessary arguments
+     *     to fulfill the intent triggered on update.
+     * @param dialogState JSON object the app uses to hold dialog state that
+     *     will be circulated back by Assistant.
+     * @return A response is sent to Assistant to ask for the user's permission; for any
+     *     invalid input, we return null.
+     */
+    public Response askForUpdatePermission(String intent,List<IntentArgument> intentArguments,Object dialogState) {
+        debug("askForUpdatePermission: intent=%s intentArguments=%s dialogState=%s",
+                intent,stringify(intentArguments),stringify(dialogState));
+        if (isNullOrEmpty(intent)) {
+            logger.error("Name of intent to trigger on update must be specified");
+            return null;
+        }
+        UpdatePermissionValueSpec updatePermissionValueSpec = new UpdatePermissionValueSpec(intent);
+
+        if (isNotNull(intentArguments)) {
+            updatePermissionValueSpec.setArguments(intentArguments);
+        }
+        List<String> permissions = new ArrayList<>();
+        permissions.add(SupportedPermissions.UPDATE);
+        SystemIntentData data = new SystemIntentData();
+        data.setPermissions(permissions);
+        data.setUpdatePermissionValueSpec(updatePermissionValueSpec);
+        return fulfillPermissionsRequest(data,dialogState);
     }
 
-    public Response askToRegisterDailyUpdate() {
-        return null;
+    public Response askToRegisterDailyUpdate(String intent,List<IntentArgument> intentArguments,Object dialogState) {
+        debug("askToRegisterDailyUpdate: intent=%s intentArguments=%s dialogState=%s",
+                intent,stringify(intentArguments),stringify(dialogState));
+        if (isNullOrEmpty(intent)) {
+            logger.error("Name of intent to trigger on update must be specified");
+            return null;
+        }
+
+        SystemIntentData data = new SystemIntentData();
+        data.setIntent(intent);
+        TriggerContext triggerContext = new TriggerContext();
+        TimeContext timeContext = new TimeContext(TimeContextFrequency.DAILY);
+        triggerContext.setTimeContext(timeContext);
+        data.setTriggerContext(triggerContext);
+        if (isNotNull(intentArguments)) {
+            data.setArguments(intentArguments);
+        }
+
+        return fulfillSystemIntent(
+                StandardIntents.REGISTER_UPDATE,
+                InputValueDataTypes.REGISTER_UPDATE,
+                data,
+                Placeholders.REGISTER_UPDATE,
+                dialogState
+        );
     }
 
-    Response fulfillPermissionsRequest(SystemIntentData systemIntentData) {return null;}
+    Response fulfillPermissionsRequest(SystemIntentData systemIntentData,Object dialogState) {return null;}
     Response fulfillSystemIntent(String intent, String specType, SystemIntentData intentSpec, String promptPlaceholder, Object dialogState) {return null;}
 
     private void debug(String format, Object... args) {

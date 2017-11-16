@@ -18,22 +18,24 @@ public class Google {
     public String conversationToken;
     @JsonProperty("expectUserResponse")
     public Boolean expectUserResponse;
-    @JsonProperty("expectedInputs")
-    public List<ExpectedInput> expectedInputs = null;
-    @JsonProperty("finalResponse")
-    public FinalResponse finalResponse;
-    @JsonProperty("customPushMessage")
-    public CustomPushMessage customPushMessage;
-    @JsonProperty("responseMetadata")
-    public ResponseMetadata responseMetadata;
+//    @JsonProperty("expectedInputs")
+//    public List<ExpectedInput> expectedInputs = null;
+//    @JsonProperty("finalResponse")
+//    public FinalResponse finalResponse;
+//    @JsonProperty("customPushMessage")
+//    public CustomPushMessage customPushMessage;
+//    @JsonProperty("responseMetadata")
+//    public ResponseMetadata responseMetadata;
     @JsonProperty("isInSandbox")
     public Boolean isInSandbox;
-    @JsonProperty("isSsml")
-    public Boolean isSsml;
     @JsonProperty("noInputPrompts")
     public List<SimpleResponse> noInputPrompts = null;
+    @JsonProperty("isSsml")
+    public Boolean isSsml;
     @JsonProperty("richResponse")
     public RichResponse richResponse;
+    @JsonProperty("userStorage")
+    private String userStorage;
     @JsonProperty("systemIntent")
     private SystemIntent systemIntent;
 
@@ -52,25 +54,17 @@ public class Google {
         this.expectUserResponse = expectUserResponse;
     }
 
-    public void setExpectedInputs(List<ExpectedInput> expectedInputs) {
-        this.expectedInputs = expectedInputs;
-    }
-
-    public void setFinalResponse(FinalResponse finalResponse) {
-        this.finalResponse = finalResponse;
-    }
-
-    public void setCustomPushMessage(CustomPushMessage customPushMessage) {
-        this.customPushMessage = customPushMessage;
-    }
-
-    public void setResponseMetadata(ResponseMetadata responseMetadata) {
-        this.responseMetadata = responseMetadata;
-    }
-
-    public void setInSandbox(Boolean inSandbox) {
-        isInSandbox = inSandbox;
-    }
+//    public void setFinalResponse(FinalResponse finalResponse) {
+//        this.finalResponse = finalResponse;
+//    }
+//
+//    public void setCustomPushMessage(CustomPushMessage customPushMessage) {
+//        this.customPushMessage = customPushMessage;
+//    }
+//
+//    public void setResponseMetadata(ResponseMetadata responseMetadata) {
+//        this.responseMetadata = responseMetadata;
+//    }
 
     public void setSsml(Boolean ssml) {
         isSsml = ssml;
@@ -98,5 +92,13 @@ public class Google {
 
     public SystemIntent getSystemIntent() {
         return systemIntent;
+    }
+
+    public String getUserStorage() {
+        return userStorage;
+    }
+
+    public void setUserStorage(String userStorage) {
+        this.userStorage = userStorage;
     }
 }

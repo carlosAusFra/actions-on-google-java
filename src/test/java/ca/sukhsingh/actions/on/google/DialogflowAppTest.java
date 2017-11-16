@@ -976,7 +976,7 @@ public class DialogflowAppTest extends AssertHelper {
         @Test
         public void fulfillPermissionsRequestTest() throws Exception {
             AssistantApp assistantApp = new AssistantApp();
-            assertNull(assistantApp.fulfillPermissionsRequest(new SystemIntentData()));
+            assertNull(assistantApp.fulfillPermissionsRequest(new SystemIntentData(),null));
         }
     }
 

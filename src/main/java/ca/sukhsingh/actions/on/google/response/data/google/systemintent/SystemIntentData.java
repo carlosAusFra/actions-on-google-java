@@ -17,6 +17,8 @@ public class SystemIntentData {
 
     @JsonProperty("@type")
     private String type;
+    @JsonProperty("intent")
+    public String intent;
     @JsonProperty("optContext")
     private String optContext;
     @JsonProperty("permissions")
@@ -35,6 +37,12 @@ public class SystemIntentData {
     public List<String> capabilities = null;
     @JsonProperty("addressOptions")
     public AddressOptions addressOptions;
+    @JsonProperty("triggerContext")
+    public TriggerContext triggerContext;
+    @JsonProperty("updatePermissionValueSpec")
+    public UpdatePermissionValueSpec updatePermissionValueSpec;
+    @JsonProperty("arguments")
+    public List<IntentArgument> arguments;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -66,6 +74,10 @@ public class SystemIntentData {
 
     public List<String> getPermissions() {
         return permissions;
+    }
+
+    public void setPermissions(List<String> permissions) {
+        this.permissions = permissions;
     }
 
     public ListSelect getListSelect() {
@@ -126,6 +138,22 @@ public class SystemIntentData {
 
     public void setAddressOptions(AddressOptions addressOptions) {
         this.addressOptions = addressOptions;
+    }
+
+    public void setTriggerContext(TriggerContext triggerContext) {
+        this.triggerContext = triggerContext;
+    }
+
+    public void setUpdatePermissionValueSpec(UpdatePermissionValueSpec updatePermissionValueSpec) {
+        this.updatePermissionValueSpec = updatePermissionValueSpec;
+    }
+
+    public void setArguments(List<IntentArgument> arguments) {
+        this.arguments = arguments;
+    }
+
+    public void setIntent(String intent) {
+        this.intent = intent;
     }
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
