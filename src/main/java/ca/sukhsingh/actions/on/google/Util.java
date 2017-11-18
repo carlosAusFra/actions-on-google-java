@@ -42,8 +42,4 @@ public class Util {
         }
         return "";
     }
-
-    public static String collectionToString(Collection c) {
-        return String.join(",",c);
-    }
 }

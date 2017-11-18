@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,55 +49,19 @@ public class Request {
     }
 
     /**
-     * Gets the {@link User} object.
-     * The user object contains information about the user, including
-     * a string identifier and personal information (requires requesting permissions,
-     * @return {@link User}
-     */
-    public User getUser() {
-        if (isNull(originalRequest.getData().getUser())) {
-            logger.error("No user object");
-            return null;
-        }
-        return originalRequest.getData().getUser();
-    }
-
-    /**
-     * If granted permission to user's name in previous intent, returns user's
-     * display name, family name, and given name. If name info is unavailable,
-     * returns null.
-     * @return Profile
-     */
-    public String getUserName() {
-        if (isNull(getUser().getProfile())) {
-            return null;
-        }
-        return getUser().getProfile().getDisplayName();
-    }
-
-    /**
-     * Gets the user locale. Returned string represents the regional language
-     * information of the user set in their Assistant settings.
-     * For example, 'en-US' represents US English.
-     * @return {string} User's locale, e.g. 'en-US'. Null if no locale given.
-     */
-    public String getUserLocale() {
-        return (isNull(getUser()) && isNull(getUser().getLocale())) ? null : getUser().getLocale();
-    }
-
-    /**
-     * If granted permission to device's location in previous intent, returns device's location.
-     * If device info is unavailable, returns null.
-     * @return {@link Coordinates}
-     */
-    public Coordinates getDeviceLocation() {
-        return originalRequest.getData().getDevice().getLocation().getCoordinates();
-    }
-
-    /**
      * Get the argument value by name from the current intent.
      * If the argument is included in originalrequest, and is not a text argument,
      * the entire argument object is returned.
+     *
+     * @param agrName {@link String}
+     * @return Object null|string|argument
+     */
+    public Object getArgumentCommon(String agrName) {
+        return getArgument(agrName);
+    }
+
+    /**
+     * Equivalent getArgumentCommon
      *
      * @param agrName {@link String}
      * @return Object null|string|argument
@@ -117,6 +82,223 @@ public class Request {
             return argument;
         }
     }
+
+    /**
+     * Returns the set of other available surfaces for the user.
+     *
+     * @return {@link List<AvailableSurfaces>} Empty if no available surfaces.
+     */
+    public List<AvailableSurfaces> getAvailableSurfaces() {
+        List<AvailableSurfaces> availableSurfaces = originalRequest.getData().getAvailableSurfaces();
+        return isNotNull(availableSurfaces) ? availableSurfaces : new ArrayList<>();
+    }
+
+    /**
+     * Gets user provided date and time. Use after askForDateTime.
+     *
+     * @return {@link DatetimeValue} Date and time given by the user. Null if no user
+     *     date and time given.
+     */
+    public DatetimeValue getDateTime() {
+        Argument argument = findArgument(DialogflowApp.BuiltInArgNames.DATETIME);
+        if (isNotNull(argument)) {
+            return argument.getDatetimeValue();
+        }
+        debug("Failed to get date/time information");
+        return null;
+    }
+
+//    /**
+//     * Gets order delivery address. Only use after calling askForDeliveryAddress.
+//     */
+//    public void getDeliveryAddress() {
+//
+//    }
+
+    /**
+     * If granted permission to device's location in previous intent, returns device's location.
+     * If device info is unavailable, returns null.
+     * @return {@link Coordinates}
+     */
+    public Coordinates getDeviceLocation() {
+        return originalRequest.getData().getDevice().getLocation().getCoordinates();
+    }
+
+    /**
+     * Gets type of input used for this request.
+     *
+     * @return {@link String} Null if no input type given.
+     */
+    public String getInputType() {
+        logger.debug("getInputType");
+        if (isNotNull(getOriginalRequest().getData().getInputs())) {
+            for (Input input : getOriginalRequest().getData().getInputs()) {
+                if (isNotNull(input.getRawInputs())) {
+                    for (RawInput rawInput : input.getRawInputs()) {
+                        if (isNotNull(rawInput.getInputType())) {
+                            return rawInput.getInputType();
+                        }
+                    }
+                }
+            }
+        }
+        logger.error("No input type in incoming request");
+        return null;
+    }
+
+    public void getLastSeen() {}
+
+    public void getRepromptCount() {}
+
+    public void getSignInStatus() {}
+
+    /**
+     * Gets surface capabilities of user device.
+     *
+     * @return List Supported surface capabilities, as defined in SurfaceCapabilities.
+     */
+    public List<Capability> getSurfaceCapabilities() {
+        logger.debug("getSurfaceCapabilities");
+        if (isNotNull(originalRequest.getData().getSurface().getCapabilities())) {
+            return originalRequest.getData().getSurface().getCapabilities();
+        }
+        logger.error("No capabilities found");
+        return null;
+    }
+
+    public void getTransactionDecision() {}
+
+    public void getTransactionRequirementsResult() {}
+
+    /**
+     * Gets the {@link User} object.
+     * The user object contains information about the user, including
+     * a string identifier and personal information (requires requesting permissions,
+     * @return {@link User}
+     */
+    public User getUser() {
+        if (isNull(originalRequest.getData().getUser())) {
+            logger.error("No user object");
+            return null;
+        }
+        return originalRequest.getData().getUser();
+    }
+
+    /**
+     * Gets confirmation decision. Use after askForConfirmation.
+     *
+     * @return {@link Object} False if user replied with negative response. Null if no user
+     *     confirmation decision given.
+     */
+    public Object getUserConfirmation() {
+        debug("getUserConfirmation");
+        Argument argument = findArgument(DialogflowApp.BuiltInArgNames.CONFIRMATION);
+        if (isNotNull(argument)) {
+            return argument.getBoolValue();
+        }
+        debug("Failed to get confirmation decision information");
+        return null;
+    }
+
+    /**
+     * Gets the user locale. Returned string represents the regional language
+     * information of the user set in their Assistant settings.
+     * For example, 'en-US' represents US English.
+     * @return {string} User's locale, e.g. 'en-US'. Null if no locale given.
+     */
+    public String getUserLocale() {
+        return (isNull(getUser()) && isNull(getUser().getLocale())) ? null : getUser().getLocale();
+    }
+
+    /**
+     * If granted permission to user's name in previous intent, returns user's
+     * display name, family name, and given name. If name info is unavailable,
+     * returns null.
+     * @return Profile
+     */
+    public String getUserName() {
+        if (isNull(getUser().getProfile())) {
+            return null;
+        }
+        return getUser().getProfile().getDisplayName();
+    }
+
+    /**
+     * Returns true if user has an available surface which includes all given
+     * capabilities. Available surfaces capabilities may exist on surfaces other
+     * than that used for an ongoing conversation.
+     *
+     *
+     * @param capabilities capabilities Must be one of {@link SurfaceCapabilities}
+     * @return {@link Boolean} True if user has a capability available on some surface.
+     */
+    public boolean hasAvailableSurfaceCapabilities(String capabilities) {
+        debug("hasAvailableSurfaceCapabilities : " + capabilities);
+        AvailableSurfaces availableSurfaces = originalRequest.getData().getAvailableSurfaces().get(0);
+        for (Capability capability :availableSurfaces.capabilities) {
+            if (capability.getName().equalsIgnoreCase(capabilities)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if user device has a given surface capability.
+     *
+     * @param requestedCapability {@link String} capability Must be one of SurfaceCapabilities.
+     * @return boolean
+     */
+    public boolean hasSurfaceCapability(String requestedCapability) {
+        if (isNotNull(getSurfaceCapabilities())) {
+            for (Capability capability : getSurfaceCapabilities()) {
+                if (capability.getName().equals(requestedCapability)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void isFinalReprompt() {}
+
+    /**
+     * Returns true if the app is being tested in sandbox mode. Enable sandbox
+     * mode in the (Actions console)[console.actions.google.com] to test
+     * transactions.
+     *
+     * @return {boolean} True if app is being used in Sandbox mode.
+     */
+    public boolean isInSandbox() {
+        return getOriginalRequest().getData().getInSandbox();
+    }
+
+    /**
+     * Returns the result of the AskForNewSurface helper.
+     *
+     * @return {@link Boolean} True if user has triggered conversation on a new device
+     *     following the NEW_SURFACE intent.
+     */
+    public boolean isNewSurface() {
+        Argument argument = findArgument(AssistantApp.BuiltInArgNames.NEW_SURFACE);
+        return isNotNull(argument) &&
+                isNotNull(argument.getExtension()) &&
+                isNotNull(argument.getExtension().getStatus()) &&
+                argument.getExtension().getStatus().equalsIgnoreCase("ok");
+    }
+
+    public boolean isPermissionGranted() {
+        String grant = (String) this.getContextParameter("actions_intent_permission", "PERMISSION");
+        if (grant.equalsIgnoreCase("false")) {
+            return false;
+        }
+        return true;
+    }
+
+    public void isUpdateRegistered() {}
+
+
+    // ##### EXTRA METHODS THEM GOOGLE NODE.JS LIBRARY ##### //
 
     /**
      * Getting all the additional parameter for results
@@ -163,141 +345,11 @@ public class Request {
         return null;
     }
 
-
-//    public void getTransactionRequirementsResult() {
-//
-//    }
-//
-//    public void getDeliveryAddress() {
-//
-//    }
-//
-//    public void getTransactionDecision() {
-//
-//    }
-
-    /**
-     * Gets confirmation decision. Use after askForConfirmation.
-     *
-     * @return {@link Object} False if user replied with negative response. Null if no user
-     *     confirmation decision given.
-     */
-    public Object getUserConfirmation() {
-        debug("getUserConfirmation");
-        Argument argument = findArgument(DialogflowApp.BuiltInArgNames.CONFIRMATION);
-        if (isNotNull(argument)) {
-            return argument.getBoolValue();
-        }
-        debug("Failed to get confirmation decision information");
-        return null;
-    }
-
-    /**
-     * Gets user provided date and time. Use after askForDateTime.
-     *
-     * @return {@link DatetimeValue} Date and time given by the user. Null if no user
-     *     date and time given.
-     */
-    public DatetimeValue getDateTime() {
-        Argument argument = findArgument(DialogflowApp.BuiltInArgNames.DATETIME);
-        if (isNotNull(argument)) {
-            return argument.getDatetimeValue();
-        }
-        debug("Failed to get date/time information");
-        return null;
-    }
-//
-//    public void getSignInStatus() {
-//
-//    }
-
-    public boolean isPermissionGranted() {
-        String grant = (String) this.getContextParameter("actions_intent_permission", "PERMISSION");
-        if (grant.equalsIgnoreCase("false")) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Returns true if user device has a given surface capability.
-     *
-     * @param requestedCapability {@link String} capability Must be one of SurfaceCapabilities.
-     * @return boolean
-     */
-    public boolean hasSurfaceCapability(String requestedCapability) {
-        if (isNotNull(getSurfaceCapabilities())) {
-            for (Capability capability : getSurfaceCapabilities()) {
-                if (capability.getName().equals(requestedCapability)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     public boolean hasScreenCapability() {
         return hasSurfaceCapability(Request.SurfaceCapabilities.SCREEN_OUTPUT);
     }
 
-    /**
-     * Gets surface capabilities of user device.
-     *
-     * @return List Supported surface capabilities, as defined in SurfaceCapabilities.
-     */
-    public List<Capability> getSurfaceCapabilities() {
-        logger.debug("getSurfaceCapabilities");
-        if (isNotNull(originalRequest.getData().getSurface().getCapabilities())) {
-            return originalRequest.getData().getSurface().getCapabilities();
-        }
-        logger.error("No capabilities found");
-        return null;
-    }
 
-    /**
-     * Returns true if user has an available surface which includes all given
-     * capabilities. Available surfaces capabilities may exist on surfaces other
-     * than that used for an ongoing conversation.
-     *
-     *
-     * @param capabilities capabilities Must be one of {@link SurfaceCapabilities}
-     * @return {@link Boolean} True if user has a capability available on some surface.
-     */
-    public boolean hasAvailableSurfaceCapabilities(String capabilities) {
-        debug("hasAvailableSurfaceCapabilities : " + capabilities);
-        AvailableSurfaces availableSurfaces = originalRequest.getData().getAvailableSurfaces().get(0);
-        for (Capability capability :availableSurfaces.capabilities) {
-            if (capability.getName().equalsIgnoreCase(capabilities)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Returns the result of the AskForNewSurface helper.
-     *
-     * @return {@link Boolean} True if user has triggered conversation on a new device
-     *     following the NEW_SURFACE intent.
-     */
-    public boolean isNewSurface() {
-        Argument argument = findArgument(AssistantApp.BuiltInArgNames.NEW_SURFACE);
-        return isNotNull(argument) &&
-                isNotNull(argument.getExtension()) &&
-                isNotNull(argument.getExtension().getStatus()) &&
-                argument.getExtension().getStatus().equalsIgnoreCase("ok");
-    }
-
-    /**
-     * Returns true if the app is being tested in sandbox mode. Enable sandbox
-     * mode in the (Actions console)[console.actions.google.com] to test
-     * transactions.
-     *
-     * @return {boolean} True if app is being used in Sandbox mode.
-     */
-    public boolean isInSandbox() {
-        return getOriginalRequest().getData().getInSandbox();
-    }
 
     public OriginalRequest getOriginalRequest() {
         return originalRequest;
@@ -379,43 +431,6 @@ public class Request {
             return null;
         }
         return result.getContexts();
-    }
-
-//    getContextArgument
-
-//    public Carousel getIncomingCarousel() {
-//        logger.debug("getIncomingCarousel");
-//        if (isNotNull(result.getFulfillment().getMessages())) {
-//            for (Message message : result.getFulfillment().getMessages()) {
-//
-//            }
-//        }
-//    }
-
-//    getIncomingList
-
-//    getIncomingRichResponse
-
-    /**
-     * Gets type of input used for this request.
-     *
-     * @return {@link String} Null if no input type given.
-     */
-    public String getInputType() {
-        logger.debug("getInputType");
-        if (isNotNull(getOriginalRequest().getData().getInputs())) {
-            for (Input input : getOriginalRequest().getData().getInputs()) {
-                if (isNotNull(input.getRawInputs())) {
-                    for (RawInput rawInput : input.getRawInputs()) {
-                        if (isNotNull(rawInput.getInputType())) {
-                            return rawInput.getInputType();
-                        }
-                    }
-                }
-            }
-        }
-        logger.error("No input type in incoming request");
-        return null;
     }
 
     public String getConversationType() {
