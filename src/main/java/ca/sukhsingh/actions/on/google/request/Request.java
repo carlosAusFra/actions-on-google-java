@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -146,7 +147,17 @@ public class Request {
         return null;
     }
 
-    public void getLastSeen() {}
+    public java.util.Date getLastSeen() {
+        User user = getUser();
+        if (isNull(user)) {
+            return null;
+        }
+        String lastSeen = user.getLastSeen();
+        if (isNull(lastSeen)) {
+            return null;
+        }
+        return new Date(lastSeen);
+    }
 
     public void getRepromptCount() {}
 

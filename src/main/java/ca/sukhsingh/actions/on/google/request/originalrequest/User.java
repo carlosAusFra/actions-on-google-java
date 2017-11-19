@@ -15,6 +15,10 @@ import java.util.Map;
  */
 public class User {
 
+    @JsonProperty("userStorage")
+    private String userStorage;
+    @JsonProperty("lastSeen")
+    private String lastSeen;
     @JsonProperty("profile")
     private Profile profile;
     @JsonProperty("locale")
@@ -42,6 +46,14 @@ public class User {
 
     public String getAccessToken() {
         return accessToken;
+    }
+
+    public String getUserStorage() {
+        return userStorage;
+    }
+
+    public String getLastSeen() {
+        return lastSeen;
     }
 
     public List<String> getPermissions() {

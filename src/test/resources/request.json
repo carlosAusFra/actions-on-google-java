@@ -31,6 +31,8 @@
           "givenName":"Google",
           "familyName":"Crawler"
         },
+        "userStorage": "{\"data\":{}}",
+        "lastSeen": "2017-11-17T19:23:45Z",
         "locale":"en-US",
         "userId":"userID"
       },
