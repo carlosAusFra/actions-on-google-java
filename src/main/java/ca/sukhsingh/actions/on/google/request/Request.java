@@ -87,7 +87,7 @@ public class Request {
     /**
      * Returns the set of other available surfaces for the user.
      *
-     * @return {@link List<AvailableSurfaces>} Empty if no available surfaces.
+     * @return {@link List} Empty if no available surfaces.
      */
     public List<AvailableSurfaces> getAvailableSurfaces() {
         List<AvailableSurfaces> availableSurfaces = originalRequest.getData().getAvailableSurfaces();

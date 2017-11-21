@@ -499,7 +499,8 @@ public class AssistantApp {
      *     prompt prefix (action phrase) we ask the user.
      * @param notificationTitle {@link String} notificationTitle Title of the notification appearing on
      *     new surface device.
-     *
+     * @param capabilities {@link List} capabilities The list of capabilities required in
+     *     the surface.
      * @return {@link Response} DialogFlowResponse Object or null
      */
     public Response askForNewSurface(String context,String notificationTitle,List<String> capabilities) {
@@ -516,6 +517,8 @@ public class AssistantApp {
      *     new surface device.
      * @param dialogState {@link Object} JSON object the app uses to hold dialog state that
      *     will be circulated back by Assistant.
+     * @param capabilities {@link List} capabilities The list of capabilities required in
+     *     the surface.
      *
      * @return {@link Response} DialogFlowResponse Object or null
      */

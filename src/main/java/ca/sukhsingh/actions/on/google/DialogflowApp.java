@@ -194,7 +194,8 @@ public class DialogflowApp extends AssistantApp {
      * Asks to collect the user's input.
      *
      * @param simpleResponse inputPrompt of {@link SimpleResponse} type
-     * @return Response
+     * @param noInputPrompt  Array of re-prompts when the user does not respond (max 3).
+     * @return Response DialogFlowResponse Object or null
      */
     public Response ask(SimpleResponse simpleResponse, String [] noInputPrompt) {
         return buildResponse(new RichResponse().addSimpleResponse(simpleResponse), true, noInputPrompt);
@@ -214,6 +215,7 @@ public class DialogflowApp extends AssistantApp {
      * Asks to collect the user's input.
      *
      * @param inputPrompt inputPrompt of {@link RichResponse} type
+     * @param noInputPrompts string array of no input prompts
      * @return {@link Response}
      */
     public Response ask(RichResponse inputPrompt,  String [] noInputPrompts) {
@@ -330,7 +332,7 @@ public class DialogflowApp extends AssistantApp {
      *
      * @param inputPrompt
      * @param expectUserResponse
-     * @param noInputPrompts
+     * @param noInputPrompts string array of no input prompts
      * @return {@link Response}
      */
     private Response  buildResponse(Object inputPrompt, boolean expectUserResponse, String [] noInputPrompts){
