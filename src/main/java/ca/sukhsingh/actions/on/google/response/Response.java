@@ -3,6 +3,7 @@ package ca.sukhsingh.actions.on.google.response;
 
 import ca.sukhsingh.actions.on.google.Util;
 import ca.sukhsingh.actions.on.google.response.data.google.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -104,6 +105,10 @@ public class Response {
 
     public List<ContextOut> getContextOut() {
         return contextOut;
+    }
+
+    public void setContextOut(List<ContextOut> contextOut) {
+        this.contextOut = contextOut;
     }
 
     public Response addContextOuts(List<ContextOut> contextOut) {

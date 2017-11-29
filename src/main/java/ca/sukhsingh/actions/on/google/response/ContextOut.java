@@ -23,6 +23,9 @@ public class ContextOut {
         this.parameters = parameters;
     }
 
+    public ContextOut() {
+    }
+
     public String getName() {
         return name;
     }

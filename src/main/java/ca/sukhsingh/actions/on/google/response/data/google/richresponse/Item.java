@@ -15,7 +15,10 @@ public class Item {
     @JsonProperty("basicCard")
     private BasicCard basicCard;
 
-//    @JsonProperty("structuredResponse")
+    public Item() {
+    }
+
+    //    @JsonProperty("structuredResponse")
 //    private StructuredResponse structuredResponse;
 
     public Item(SimpleResponse simpleResponse) {

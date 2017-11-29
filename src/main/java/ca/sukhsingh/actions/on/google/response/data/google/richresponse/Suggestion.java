@@ -12,6 +12,9 @@ public class Suggestion {
     @JsonProperty("title")
     private String title;
 
+    public Suggestion() {
+    }
+
     public Suggestion(String title) {
         this.title = title;
     }

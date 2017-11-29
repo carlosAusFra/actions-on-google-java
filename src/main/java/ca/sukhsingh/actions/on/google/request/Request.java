@@ -9,6 +9,7 @@ import ca.sukhsingh.actions.on.google.request.result.Result;
 import ca.sukhsingh.actions.on.google.request.status.Status;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.log4j.Logger;
 
@@ -23,6 +24,7 @@ import static ca.sukhsingh.actions.on.google.Util.*;
 /**
  * Created by sukh on 2017-08-09.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Request {
 
     @JsonProperty("originalRequest")
@@ -57,6 +59,7 @@ public class Request {
      * @param agrName {@link String}
      * @return Object null|string|argument
      */
+    @JsonIgnore
     public Object getArgumentCommon(String agrName) {
         return getArgument(agrName);
     }
@@ -67,6 +70,7 @@ public class Request {
      * @param agrName {@link String}
      * @return Object null|string|argument
      */
+    @JsonIgnore
     public Object getArgument(String agrName) {
         if (isNullOrEmpty(agrName)) {
             logger.error("Invalid argument name");
@@ -89,7 +93,8 @@ public class Request {
      *
      * @return {@link List} Empty if no available surfaces.
      */
-    public List<AvailableSurfaces> getAvailableSurfaces() {
+    @JsonIgnore
+    public List<AvailableSurfaces> getAvxailableSurfaces() {
         List<AvailableSurfaces> availableSurfaces = originalRequest.getData().getAvailableSurfaces();
         return isNotNull(availableSurfaces) ? availableSurfaces : new ArrayList<>();
     }
@@ -100,6 +105,7 @@ public class Request {
      * @return {@link DatetimeValue} Date and time given by the user. Null if no user
      *     date and time given.
      */
+    @JsonIgnore
     public DatetimeValue getDateTime() {
         Argument argument = findArgument(DialogflowApp.BuiltInArgNames.DATETIME);
         if (isNotNull(argument)) {
@@ -121,6 +127,7 @@ public class Request {
      * If device info is unavailable, returns null.
      * @return {@link Coordinates}
      */
+    @JsonIgnore
     public Coordinates getDeviceLocation() {
         return originalRequest.getData().getDevice().getLocation().getCoordinates();
     }
@@ -130,6 +137,7 @@ public class Request {
      *
      * @return {@link String} Null if no input type given.
      */
+    @JsonIgnore
     public String getInputType() {
         logger.debug("getInputType");
         if (isNotNull(getOriginalRequest().getData().getInputs())) {
@@ -147,6 +155,7 @@ public class Request {
         return null;
     }
 
+    @JsonIgnore
     public java.util.Date getLastSeen() {
         User user = getUser();
         if (isNull(user)) {
@@ -158,9 +167,9 @@ public class Request {
         }
         return new Date(lastSeen);
     }
-
+    @JsonIgnore
     public void getRepromptCount() {}
-
+    @JsonIgnore
     public void getSignInStatus() {}
 
     /**
@@ -168,6 +177,7 @@ public class Request {
      *
      * @return List Supported surface capabilities, as defined in SurfaceCapabilities.
      */
+    @JsonIgnore
     public List<Capability> getSurfaceCapabilities() {
         logger.debug("getSurfaceCapabilities");
         if (isNotNull(originalRequest.getData().getSurface().getCapabilities())) {
@@ -187,6 +197,7 @@ public class Request {
      * a string identifier and personal information (requires requesting permissions,
      * @return {@link User}
      */
+    @JsonIgnore
     public User getUser() {
         if (isNull(originalRequest.getData().getUser())) {
             logger.error("No user object");
@@ -201,6 +212,7 @@ public class Request {
      * @return {@link Object} False if user replied with negative response. Null if no user
      *     confirmation decision given.
      */
+    @JsonIgnore
     public Object getUserConfirmation() {
         debug("getUserConfirmation");
         Argument argument = findArgument(DialogflowApp.BuiltInArgNames.CONFIRMATION);
@@ -217,6 +229,7 @@ public class Request {
      * For example, 'en-US' represents US English.
      * @return {string} User's locale, e.g. 'en-US'. Null if no locale given.
      */
+    @JsonIgnore
     public String getUserLocale() {
         return (isNull(getUser()) && isNull(getUser().getLocale())) ? null : getUser().getLocale();
     }
@@ -227,6 +240,7 @@ public class Request {
      * returns null.
      * @return Profile
      */
+    @JsonIgnore
     public String getUserName() {
         if (isNull(getUser().getProfile())) {
             return null;
@@ -243,6 +257,7 @@ public class Request {
      * @param capabilities capabilities Must be one of {@link SurfaceCapabilities}
      * @return {@link Boolean} True if user has a capability available on some surface.
      */
+    @JsonIgnore
     public boolean hasAvailableSurfaceCapabilities(String capabilities) {
         debug("hasAvailableSurfaceCapabilities : " + capabilities);
         AvailableSurfaces availableSurfaces = originalRequest.getData().getAvailableSurfaces().get(0);
@@ -260,6 +275,7 @@ public class Request {
      * @param requestedCapability {@link String} capability Must be one of SurfaceCapabilities.
      * @return boolean
      */
+    @JsonIgnore
     public boolean hasSurfaceCapability(String requestedCapability) {
         if (isNotNull(getSurfaceCapabilities())) {
             for (Capability capability : getSurfaceCapabilities()) {
@@ -271,6 +287,7 @@ public class Request {
         return false;
     }
 
+    @JsonIgnore
     public void isFinalReprompt() {}
 
     /**
@@ -280,6 +297,7 @@ public class Request {
      *
      * @return {boolean} True if app is being used in Sandbox mode.
      */
+    @JsonIgnore
     public boolean isInSandbox() {
         return getOriginalRequest().getData().getInSandbox();
     }
@@ -290,6 +308,7 @@ public class Request {
      * @return {@link Boolean} True if user has triggered conversation on a new device
      *     following the NEW_SURFACE intent.
      */
+    @JsonIgnore
     public boolean isNewSurface() {
         Argument argument = findArgument(AssistantApp.BuiltInArgNames.NEW_SURFACE);
         return isNotNull(argument) &&
@@ -298,6 +317,7 @@ public class Request {
                 argument.getExtension().getStatus().equalsIgnoreCase("ok");
     }
 
+    @JsonIgnore
     public boolean isPermissionGranted() {
         String grant = (String) this.getContextParameter("actions_intent_permission", "PERMISSION");
         if (grant.equalsIgnoreCase("false")) {
@@ -306,15 +326,17 @@ public class Request {
         return true;
     }
 
+    @JsonIgnore
     public void isUpdateRegistered() {}
 
 
-    // ##### EXTRA METHODS THEM GOOGLE NODE.JS LIBRARY ##### //
+    // ##### EXTRA METHODS THEN GOOGLE NODE.JS LIBRARY ##### //
 
     /**
      * Getting all the additional parameter for results
      * @return {@link Map} map of property with name as key
      */
+    @JsonIgnore
     public Map<String, Object> getResultParameters() {
         if (isNotNull(getResult().getParameters().getAdditionalProperties())) {
             return getResult().getParameters().getAdditionalProperties();
@@ -323,6 +345,7 @@ public class Request {
         return null;
     }
 
+    @JsonIgnore
     public String getResultParameter(String propertyName) {
         Map<String, Object> additionalProperties = getResultParameters();
         if (isNotNull(additionalProperties)) {
@@ -334,6 +357,7 @@ public class Request {
         return null;
     }
 
+    @JsonIgnore
     public Map<String, Object> getContextParameters(String contextName) {
         if (isNotNull(getContext(contextName))) {
             Context context = getContext(contextName);
@@ -345,6 +369,7 @@ public class Request {
         return null;
     }
 
+    @JsonIgnore
     public Object getContextParameter(String contextName, String propertyName) {
         Map<String, Object> additionalProperties = getContextParameters(contextName);
         if (isNotNull(additionalProperties)) {
@@ -356,6 +381,7 @@ public class Request {
         return null;
     }
 
+    @JsonIgnore
     public boolean hasScreenCapability() {
         return hasSurfaceCapability(Request.SurfaceCapabilities.SCREEN_OUTPUT);
     }
@@ -394,6 +420,7 @@ public class Request {
         return result.getMetadata().getIntentName();
     }
 
+    @JsonIgnore
     public String getUserId() {
         return getUser().getUserId();
     }
@@ -402,10 +429,12 @@ public class Request {
         return result.getAction();
     }
 
+    @JsonIgnore
     public double getLatitude() {
         return getDeviceLocation().getLatitude();
     }
 
+    @JsonIgnore
     public double getLongitude() {
         return getDeviceLocation().getLongitude();
     }
@@ -416,6 +445,7 @@ public class Request {
      * @param name name of the context
      * @return {@link Context} if found then return context otherwise null
      */
+    @JsonIgnore
     public Context getContext(String name) {
         if (isNull(result.getContexts())) {
             logger.error("No contexts included in request");
@@ -436,6 +466,7 @@ public class Request {
      *
      * @return {@link Context} if found then return context otherwise null
      */
+    @JsonIgnore
     public List<Context> getContexts() {
         if (isNull(result.getContexts())) {
             logger.error("No contexts included in request");
@@ -444,6 +475,7 @@ public class Request {
         return result.getContexts();
     }
 
+    @JsonIgnore
     public String getConversationType() {
         return this.getOriginalRequest().getData().getConversation().getType();
     }

@@ -1,10 +1,7 @@
 
 package ca.sukhsingh.actions.on.google.request.originalrequest;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +10,7 @@ import java.util.Map;
 /**
  * Created by sukhSingh on 2017-08-09.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Data {
 
     @JsonProperty("isInSandbox")
