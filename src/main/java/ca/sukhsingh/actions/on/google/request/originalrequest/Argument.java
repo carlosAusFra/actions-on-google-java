@@ -49,6 +49,11 @@ public class Argument {
     public Extension getExtension() {
         return extension;
     }
+
+    public void setTextValue(String textValue) {
+        this.textValue = textValue;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;

@@ -43,4 +43,8 @@ public class Context {
     public Integer getLifespan() {
         return lifespan;
     }
+
+    public void setContextParameters(Parameters contextParameters) {
+        this.contextParameters = contextParameters;
+    }
 }

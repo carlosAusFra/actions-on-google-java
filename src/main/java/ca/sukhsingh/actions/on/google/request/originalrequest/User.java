@@ -56,6 +56,10 @@ public class User {
         return lastSeen;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public List<String> getPermissions() {
         return permissions;
     }

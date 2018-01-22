@@ -176,7 +176,7 @@ public class AssistantApp {
         public static final String DAILY = "DAILY";
     }
 
-    protected class Placeholders {
+    public class Placeholders {
         public static final String PERMISSION = "PLACEHOLDER_FOR_PERMISSION";
         public static final String TXN_DECISION = "PLACEHOLDER_FOR_TXN_DECISION";
         public static final String TXN_REQUIREMENTS = "PLACEHOLDER_FOR_TXN_REQUIREMENTS";

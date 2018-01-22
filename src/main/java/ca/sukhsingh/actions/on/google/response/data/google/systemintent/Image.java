@@ -17,6 +17,9 @@ public class Image {
     @JsonProperty("accessibilityText")
     private String accessibilityText;
 
+    public Image() {
+    }
+
     public Image(String url, String accessibilityText) {
         this.url = url;
         this.accessibilityText = accessibilityText;

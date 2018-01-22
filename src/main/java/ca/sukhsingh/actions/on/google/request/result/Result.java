@@ -87,4 +87,11 @@ public class Result {
         return score;
     }
 
+    public void setContexts(List<Context> contexts) {
+        this.contexts = contexts;
+    }
+
+    public void setResolvedQuery(String resolvedQuery) {
+        this.resolvedQuery = resolvedQuery;
+    }
 }
