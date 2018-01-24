@@ -319,11 +319,16 @@ public class Request {
 
     @JsonIgnore
     public boolean isPermissionGranted() {
-        String grant = (String) this.getContextParameter("actions_intent_permission", "PERMISSION");
-        if (grant.equalsIgnoreCase("false")) {
-            return false;
+        Object grantObj = this.getContextParameter("actions_intent_permission", "PERMISSION");
+        if (grantObj instanceof String) {
+            String grant = (String) grantObj;
+            if (grant.equalsIgnoreCase("false")) {
+                return false;
+            }
+            return true;
         }
-        return true;
+        return (boolean) grantObj;
+
     }
 
     @JsonIgnore
